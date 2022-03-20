@@ -1,0 +1,29 @@
+@startuml
+|room master|
+start
+:create room;
+floating note left: uc: create room
+floating note left: uc: add user
+|#AntiqueWhite|users|
+:enter the room;
+floating note right: uc: add user
+repeat
+fork
+|room master|
+:pick a card;
+floating note left: uc: register picked the card
+fork again
+|users|
+:pick a card;
+endfork
+fork
+|room master|
+:receive the result;
+floating note left: uc: notify the result
+fork again
+|users|
+:receive the result;
+end fork
+repeatwhile (continue)
+end
+@enduml
