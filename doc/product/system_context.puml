@@ -1,0 +1,14 @@
+@startuml
+:user(room master): as master
+:user:
+master -- (salon)
+user -- (salon)
+
+note right of (salon)
+salonの目的
+===
+業務などでプランニングポーカーによる見積もりを
+行いたい人たちに対し、ユーザ登録やログインなどの手間なしで、
+プランニングポーカーを実施するための環境を提供する。
+end note
+@enduml
