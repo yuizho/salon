@@ -1,0 +1,9 @@
+@startuml
+rectangle room
+collections user
+rectangle porker_table
+
+room -- porker_table
+room -- user
+user - porker_table
+@enduml
