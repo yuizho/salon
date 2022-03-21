@@ -2,29 +2,21 @@
 |room master|
 start
 :create room;
-floating note left: <<usecase>>\ncreate room
+floating note left: <<usecase>>\ncreate a new room
 |#AntiqueWhite|users|
-:enter the room;
-floating note right:  <<usecase>>\nadd user
+:enter to the room;
+floating note right:  <<usecase>>\nadd a new user to the room
 repeat
 fork
 |room master|
-:pick a card;
-floating note left:  <<usecase>>\nregister picked the card
+:choose a card;
+floating note left:  <<usecase>>\nregister the choosed card
 fork again
 |users|
-:pick a card;
+:choose a card;
 endfork
-fork
-|room master|
-:receive the result;
-floating note left:  <<usecase>>\nnotify the result
-fork again
-|users|
-:receive the result;
-end fork
-:choose continue or not;
-floating note right:  <<usecase>>\nreflesh the porker data
-repeatwhile (continue)
+:reset the choosed card data;
+floating note right:  <<usecase>>\nreflesh the porker table
+repeatwhile (reset)
 end
 @enduml
