@@ -1,0 +1,26 @@
+@startuml
+rectangle exit {
+    :user:
+    user -- (exit)
+
+    note right of (exit)
+    ユーザが途中で退出したくなった場合、
+    簡単な操作で退出できる
+    end note
+
+    (disable user)<<usecase>>
+    (exit)--(disable user)
+}
+
+rectangle reenter {
+    :user2:
+    user2 -- (reenter)
+
+    note right of (reenter)
+    一度退出したユーザが再度部屋に入ることができる
+    end note
+
+    (reenable user)<<usecase>>
+    (reenter)--(reenable user)
+}
+@enduml
