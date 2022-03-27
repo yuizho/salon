@@ -1,0 +1,32 @@
+@startuml
+!include <awslib/AWSCommon>
+
+!include <awslib/General/User>
+!include <awslib/General/Users>
+!include <awslib/ApplicationIntegration/AppSync>
+!include <awslib/Compute/Lambda>
+!include <awslib/Database/DynamoDB>
+
+left to right direction
+
+Users(users, "users", "users of a room")
+AppSync(operationMutation, "Operation mutation", "operation")
+DynamoDB(operationTable, "Operatoin Table", "event store")
+Lambda(rmu, "RMU", "synchronize event to query store")
+DynamoDB(roomTable, "Room Table", "query store")
+Lambda(mutateRoom, "Mutate Room", "push room data")
+AppSync(roomMutation, "Room mutation", "room")
+AppSync(roomSubscription, "Room subscription", "room")
+AppSync(roomQuery, "Room query", "room")
+
+users -right--> operationMutation
+operationMutation --> operationTable: dynamo resolver
+operationTable .right.> rmu: dynamo stream
+rmu --> roomTable: update room table
+roomTable .up.> mutateRoom: dynamo stream
+mutateRoom -left-> roomMutation
+roomMutation -> roomSubscription: none resolver
+roomSubscription <--> users
+users <--> roomQuery
+roomQuery <--> roomTable: dynamo resolver
+@enduml
