@@ -40,7 +40,7 @@ export class RoomStack extends cdk.Stack {
 
     // Set up table as a Datasource and grant access
     const roomDataSource = api.addDynamoDbDataSource("room", roomTable);
-    const tableDataSource = api.addNoneDataSource("table");
+    const PokerTableDataSource = api.addNoneDataSource("poker_table");
 
     // Define resolvers
     roomDataSource.createResolver({
@@ -51,11 +51,11 @@ export class RoomStack extends cdk.Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    tableDataSource.createResolver({
+    PokerTableDataSource.createResolver({
       typeName: "Mutation",
-      fieldName: "updateTable",
+      fieldName: "updatePokerTable",
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/resolvers/Mutation.updateTable.req.vtl"
+        "appsync/resolvers/Mutation.updatePokerTable.req.vtl"
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
