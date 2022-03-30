@@ -1,11 +1,5 @@
-﻿schema {
-  query: Query
-  mutation: Mutation
-  subscription: Subscription
-}
-
-type Mutation {
-  updateTable(input: UpdateTableInput!): Table
+﻿type Mutation {
+  updateTable(room_id: String!, user_id: String!, status: String!): Table
 }
 
 type Query {
@@ -17,20 +11,12 @@ type Room {
 }
 
 type Subscription {
-  onUpdateTable(room_id: String, user_id: String): Table @aws_subscribe(mutations : ["updateTable"])
+  onUpdateTable(room_id: String): Table
+    @aws_subscribe(mutations: ["updateTable"])
 }
 
 type Table {
   room_id: String!
-  user_id: String
-}
-
-input CreateRoomInput {
-  room_id: String!
   user_id: String!
-}
-
-input UpdateTableInput {
-  room_id: String!
-  user_id: String!
+  status: String!
 }
