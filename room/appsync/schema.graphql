@@ -1,0 +1,36 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Mutation {
+  updateTable(input: UpdateTableInput!): Table
+}
+
+type Query {
+  getRoom(room_id: String!): Room
+}
+
+type Room {
+  items: [Table]
+}
+
+type Subscription {
+  onUpdateTable(room_id: String, user_id: String): Table @aws_subscribe(mutations : ["updateTable"])
+}
+
+type Table {
+  room_id: String!
+  user_id: String
+}
+
+input CreateRoomInput {
+  room_id: String!
+  user_id: String!
+}
+
+input UpdateTableInput {
+  room_id: String!
+  user_id: String!
+}
