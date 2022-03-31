@@ -1,9 +1,5 @@
 ﻿type Mutation {
-  updatePokerTable(
-    room_id: String!
-    user_id: String!
-    status: String!
-  ): PokerTable
+  updatePoker(room_id: String!, user_id: String!, status: String!): Poker
 }
 
 type Query {
@@ -11,15 +7,15 @@ type Query {
 }
 
 type Room {
-  items: [PokerTable]
+  items: [Poker]
 }
 
 type Subscription {
-  onUpdatePokerTable(room_id: String): PokerTable
-    @aws_subscribe(mutations: ["updatePokerTable"])
+  onUpdatePoker(room_id: String): Poker
+    @aws_subscribe(mutations: ["updatePoker"])
 }
 
-type PokerTable {
+type Poker {
   room_id: String!
   user_id: String!
   status: String!
