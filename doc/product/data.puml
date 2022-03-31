@@ -1,7 +1,7 @@
 @startuml
-rectangle room
+agent room
 collections user
-rectangle porker_table
+collections poker
 
 room -- poker
 room -- user
