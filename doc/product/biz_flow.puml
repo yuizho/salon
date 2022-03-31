@@ -16,7 +16,7 @@ fork again
 :choose a card;
 endfork
 :reset the choosed card data;
-floating note right:  <<usecase>>\nreflesh the porker table
+floating note right:  <<usecase>>\nreflesh the poker
 repeatwhile (reset)
 end
 @enduml

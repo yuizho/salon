@@ -4,7 +4,7 @@
 state created {
     [*] --> choosing_card: add a new user to the room
     choosing_card --> choosed_card: register the choosed card
-    choosed_card --> choosing_card: reflesh the porker table
+    choosed_card --> choosing_card: reflesh the poker
     choosing_card --> disabled: disable the user
     choosed_card --> disabled: disable the user
     disabled --> choosing_card: reenable the user

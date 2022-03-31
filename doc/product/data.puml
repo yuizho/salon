@@ -3,7 +3,7 @@ rectangle room
 collections user
 rectangle porker_table
 
-room -- porker_table
+room -- poker
 room -- user
-user - porker_table
+user - poker
 @enduml
