@@ -2,10 +2,20 @@ import * as cdk from "@aws-cdk/core";
 import * as appsync from "@aws-cdk/aws-appsync";
 import * as db from "@aws-cdk/aws-dynamodb";
 import * as lambda from "@aws-cdk/aws-lambda-go";
+import * as ssm from "@aws-cdk/aws-ssm";
 
 export class RoomStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
+
+    // SSM Parameters
+    const sampleParam = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      "SampleParam",
+      {
+        parameterName: "/CDK/Sample/SampleParam",
+      }
+    );
 
     // AppSync
     const api = new appsync.GraphqlApi(this, "RoomAPI", {
@@ -65,6 +75,9 @@ export class RoomStack extends cdk.Stack {
     new lambda.GoFunction(this, "sample", {
       functionName: "cdkLambdaSample",
       entry: "lambda/sample",
+      environment: {
+        SAMPLE_PARAM: sampleParam.stringValue,
+      },
     });
 
     // Stack Ouputs
