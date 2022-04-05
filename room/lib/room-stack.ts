@@ -1,6 +1,7 @@
 import * as cdk from "@aws-cdk/core";
 import * as appsync from "@aws-cdk/aws-appsync";
 import * as db from "@aws-cdk/aws-dynamodb";
+import * as lambda from "@aws-cdk/aws-lambda-go";
 
 export class RoomStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -58,6 +59,12 @@ export class RoomStack extends cdk.Stack {
         "appsync/resolvers/Mutation.updatePoker.req.vtl"
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
+
+    // Deploy lambda functions
+    new lambda.GoFunction(this, "sample", {
+      functionName: "cdkLambdaSample",
+      entry: "lambda/sample",
     });
 
     // Stack Ouputs
