@@ -8,15 +8,6 @@ export class RoomStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // SSM Parameters
-    const sampleParam = ssm.StringParameter.fromStringParameterAttributes(
-      this,
-      "SampleParam",
-      {
-        parameterName: "/CDK/Sample/SampleParam",
-      }
-    );
-
     // AppSync
     const api = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
@@ -71,12 +62,31 @@ export class RoomStack extends cdk.Stack {
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
 
+    // SSM Parameters
+    const sampleParam = ssm.StringParameter.fromStringParameterAttributes(
+      this,
+      "SampleParam",
+      {
+        parameterName: "/CDK/Sample/SampleParam",
+      }
+    );
+    const roomApiUrl = new ssm.StringParameter(this, "room-api-url", {
+      parameterName: "/salon/appsync/room-api-url",
+      stringValue: api.graphqlUrl,
+    });
+    const roomApiKey = new ssm.StringParameter(this, "room-api-key", {
+      parameterName: "/salon/appsync/room-api-key",
+      stringValue: api.apiKey!,
+    });
+
     // Deploy lambda functions
     new lambda.GoFunction(this, "sample", {
       functionName: "cdkLambdaSample",
       entry: "lambda/sample",
       environment: {
         SAMPLE_PARAM: sampleParam.stringValue,
+        ROOM_API_URL: roomApiUrl.stringValue,
+        ROOM_API_KEY: roomApiKey.stringValue,
       },
     });
 
