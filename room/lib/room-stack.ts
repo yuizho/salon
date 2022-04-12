@@ -1,8 +1,11 @@
 import * as cdk from "@aws-cdk/core";
 import * as appsync from "@aws-cdk/aws-appsync";
 import * as db from "@aws-cdk/aws-dynamodb";
-import * as lambda from "@aws-cdk/aws-lambda-go";
+import * as lambdaGo from "@aws-cdk/aws-lambda-go";
+import lambda = require("@aws-cdk/aws-lambda");
 import * as ssm from "@aws-cdk/aws-ssm";
+import { DynamoEventSource } from "@aws-cdk/aws-lambda-event-sources";
+import { StreamViewType } from "@aws-cdk/aws-dynamodb";
 
 export class RoomStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -38,6 +41,8 @@ export class RoomStack extends cdk.Stack {
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
       sortKey: { name: "user_id", type: db.AttributeType.STRING },
+      // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
+      stream: StreamViewType.NEW_IMAGE,
     });
 
     // Set up table as a Datasource and grant access
@@ -63,13 +68,6 @@ export class RoomStack extends cdk.Stack {
     });
 
     // SSM Parameters
-    const sampleParam = ssm.StringParameter.fromStringParameterAttributes(
-      this,
-      "SampleParam",
-      {
-        parameterName: "/CDK/Sample/SampleParam",
-      }
-    );
     const roomApiUrl = new ssm.StringParameter(this, "room-api-url", {
       parameterName: "/salon/appsync/room-api-url",
       stringValue: api.graphqlUrl,
@@ -80,15 +78,21 @@ export class RoomStack extends cdk.Stack {
     });
 
     // Deploy lambda functions
-    new lambda.GoFunction(this, "sample", {
-      functionName: "cdkLambdaSample",
-      entry: "lambda/sample",
+    const mutatePokerFunction = new lambdaGo.GoFunction(this, "mutate-poker", {
+      functionName: "MutatePoker",
+      entry: "lambda/mutate-poker",
       environment: {
-        SAMPLE_PARAM: sampleParam.stringValue,
         ROOM_API_URL: roomApiUrl.stringValue,
         ROOM_API_KEY: roomApiKey.stringValue,
       },
     });
+    // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams
+    mutatePokerFunction.addEventSource(
+      new DynamoEventSource(roomTable, {
+        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+        retryAttempts: 3,
+      })
+    );
 
     // Stack Ouputs
     new cdk.CfnOutput(this, "STACK_REGION", { value: this.region });
