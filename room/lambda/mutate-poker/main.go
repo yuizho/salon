@@ -1,25 +1,25 @@
 package main
 
 import (
-	"log"
+	"os"
 
-	"github.com/yuizho/salon/room/lambda/mutate-poker/model"
+	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
+	"github.com/yuizho/salon/room/lambda/mutate-poker/service"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func HandleRequest(request events.DynamoDBEvent) error {
-	for _, event := range request.Records {
-		room, err := model.NewRoom(event.Change.NewImage)
-		if err != nil {
-			log.Fatalf("failed to request to appsync: %v", err)
-			return err
-		} else {
-			log.Printf("Room: %v", room)
-		}
-	}
+var API_URL string = os.Getenv("ROOM_API_URL")
+var API_KEY string = os.Getenv("ROOM_API_KEY")
 
+var client = appsync.CreateClient()
+
+func HandleRequest(request events.DynamoDBEvent) error {
+	err := service.HandleRequest(request, client, API_URL, API_KEY)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
