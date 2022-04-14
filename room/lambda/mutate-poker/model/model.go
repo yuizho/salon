@@ -11,7 +11,7 @@ type Room struct {
 	UserId     string
 	Status     string
 	PickedCard string
-	CraetedAt  string
+	CreatedAt  string
 }
 
 func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
@@ -34,6 +34,6 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		UserId:     attrs["user_id"].String(),
 		Status:     attrs["status"].String(),
 		PickedCard: attrs["picked_card"].String(),
-		CraetedAt:  attrs["created_at"].String(),
+		CreatedAt:  attrs["created_at"].String(),
 	}, nil
 }

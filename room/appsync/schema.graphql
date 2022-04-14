@@ -1,5 +1,11 @@
 ﻿type Mutation {
-  updatePoker(room_id: String!, user_id: String!, status: String!): Poker
+  updatePoker(
+    room_id: String!
+    user_id: String!
+    status: String!
+    picked_card: String
+    created_at: AWSDateTime!
+  ): Poker
 }
 
 type Query {
@@ -19,4 +25,6 @@ type Poker {
   room_id: String!
   user_id: String!
   status: String!
+  picked_card: String
+  created_at: AWSDateTime!
 }
