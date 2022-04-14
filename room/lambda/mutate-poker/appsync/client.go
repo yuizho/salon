@@ -26,7 +26,7 @@ func NewClient() *AppSyncClient {
 			Transport: &http.Transport{
 				DialContext: (&net.Dialer{
 					Timeout:   10 * time.Second,
-					KeepAlive: 10 * time.Second,
+					KeepAlive: 90 * time.Second,
 					DualStack: true,
 				}).DialContext,
 				ForceAttemptHTTP2:     true,
