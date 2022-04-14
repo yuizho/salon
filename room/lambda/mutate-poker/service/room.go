@@ -3,7 +3,6 @@ package service
 import (
 	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/model"
@@ -11,7 +10,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func HandleRequest(request events.DynamoDBEvent, client *http.Client, apiUrl string, apiKey string) error {
+func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, apiUrl string, apiKey string) error {
 	for _, event := range request.Records {
 		// TODO: handle event
 		room, err := model.NewRoom(event.Change.NewImage)
@@ -34,7 +33,7 @@ func HandleRequest(request events.DynamoDBEvent, client *http.Client, apiUrl str
 	return nil
 }
 
-func mutateRoomAPI(client *http.Client, room *model.Room, apiUrl string, apiKey string) (int, error) {
+func mutateRoomAPI(client *appsync.AppSyncClient, room *model.Room, apiUrl string, apiKey string) (int, error) {
 	query := fmt.Sprintf(`{
 		"query": "mutation ($room_id:String! $status:String!$user_id:String!){updatePoker(room_id: $room_id, user_id: $user_id, status: $status){room_id,user_id,status}}",
 		"variables": {
@@ -44,8 +43,7 @@ func mutateRoomAPI(client *http.Client, room *model.Room, apiUrl string, apiKey 
 		}
 	}`, room.RoomId, room.UserId, room.Status)
 
-	status, err := appsync.SendRequest(
-		client,
+	status, err := client.SendRequest(
 		appsync.Request{
 			Url:    apiUrl,
 			ApiKey: apiKey,

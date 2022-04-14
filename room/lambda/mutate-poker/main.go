@@ -13,7 +13,7 @@ import (
 var API_URL string = os.Getenv("ROOM_API_URL")
 var API_KEY string = os.Getenv("ROOM_API_KEY")
 
-var client = appsync.CreateClient()
+var client *appsync.AppSyncClient
 
 func HandleRequest(request events.DynamoDBEvent) error {
 	err := service.HandleRequest(request, client, API_URL, API_KEY)
@@ -24,5 +24,6 @@ func HandleRequest(request events.DynamoDBEvent) error {
 }
 
 func main() {
+	client = appsync.NewClient()
 	lambda.Start(HandleRequest)
 }

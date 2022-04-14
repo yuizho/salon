@@ -9,25 +9,8 @@ import (
 	"time"
 )
 
-func CreateClient() *http.Client {
-	// https://christina04.hatenablog.com/entry/go-keep-alive
-	return &http.Client{
-		Transport: &http.Transport{
-			DialContext: (&net.Dialer{
-				Timeout:   10 * time.Second,
-				KeepAlive: 10 * time.Second,
-				DualStack: true,
-			}).DialContext,
-			ForceAttemptHTTP2:     true,
-			MaxIdleConns:          10,
-			MaxConnsPerHost:       100,
-			IdleConnTimeout:       90 * time.Second,
-			TLSHandshakeTimeout:   10 * time.Second,
-			ResponseHeaderTimeout: 10 * time.Second,
-			ExpectContinueTimeout: 1 * time.Second,
-		},
-		Timeout: 10 * time.Second,
-	}
+type AppSyncClient struct {
+	HttpClient *http.Client
 }
 
 type Request struct {
@@ -36,7 +19,30 @@ type Request struct {
 	Query  string
 }
 
-func SendRequest(client *http.Client, request Request) (int, error) {
+func NewClient() *AppSyncClient {
+	// https://christina04.hatenablog.com/entry/go-keep-alive
+	return &AppSyncClient{
+		&http.Client{
+			Transport: &http.Transport{
+				DialContext: (&net.Dialer{
+					Timeout:   10 * time.Second,
+					KeepAlive: 10 * time.Second,
+					DualStack: true,
+				}).DialContext,
+				ForceAttemptHTTP2:     true,
+				MaxIdleConns:          10,
+				MaxConnsPerHost:       100,
+				IdleConnTimeout:       90 * time.Second,
+				TLSHandshakeTimeout:   10 * time.Second,
+				ResponseHeaderTimeout: 10 * time.Second,
+				ExpectContinueTimeout: 1 * time.Second,
+			},
+			Timeout: 10 * time.Second,
+		},
+	}
+}
+
+func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 	req, err := http.NewRequest(
 		"POST",
 		request.Url,
@@ -50,7 +56,7 @@ func SendRequest(client *http.Client, request Request) (int, error) {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("x-api-key", request.ApiKey)
 
-	resp, err := client.Do(req)
+	resp, err := client.HttpClient.Do(req)
 	if err != nil {
 		return 0, err
 	}
