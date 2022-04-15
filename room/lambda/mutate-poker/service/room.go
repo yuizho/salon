@@ -12,7 +12,10 @@ import (
 
 func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, apiUrl string, apiKey string) error {
 	for _, event := range request.Records {
-		// TODO: handle event
+		if event.EventName == "REMOVE" {
+			continue
+		}
+
 		room, err := model.NewRoom(event.Change.NewImage)
 		if err != nil {
 			log.Fatalf("failed to parse dynamo db stream event: %v", err)
