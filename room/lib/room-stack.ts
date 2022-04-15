@@ -1,14 +1,23 @@
-import * as cdk from "@aws-cdk/core";
-import * as appsync from "@aws-cdk/aws-appsync";
-import * as db from "@aws-cdk/aws-dynamodb";
-import * as lambdaGo from "@aws-cdk/aws-lambda-go";
-import lambda = require("@aws-cdk/aws-lambda");
-import * as ssm from "@aws-cdk/aws-ssm";
-import { DynamoEventSource } from "@aws-cdk/aws-lambda-event-sources";
-import { StreamViewType } from "@aws-cdk/aws-dynamodb";
+import {
+  Stack,
+  StackProps,
+  RemovalPolicy,
+  CfnOutput,
+  Expiration,
+  Duration,
+} from "aws-cdk-lib";
+import { Construct } from "constructs";
+// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as appsync from "@aws-cdk/aws-appsync-alpha";
+import * as db from "aws-cdk-lib/aws-dynamodb";
+import * as lambdaGo from "@aws-cdk/aws-lambda-go-alpha";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as ssm from "aws-cdk-lib/aws-ssm";
+import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
+import { StreamViewType } from "aws-cdk-lib/aws-dynamodb";
 
-export class RoomStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+export class RoomStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     // AppSync
@@ -21,7 +30,7 @@ export class RoomStack extends cdk.Stack {
           apiKeyConfig: {
             name: "default",
             description: "default auth mode",
-            expires: cdk.Expiration.after(cdk.Duration.days(365)),
+            expires: Expiration.after(Duration.days(365)),
           },
         },
       },
@@ -31,13 +40,13 @@ export class RoomStack extends cdk.Stack {
     // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
     const operationTable = new db.Table(this, "OperationTable", {
       tableName: "operation",
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
     });
     const roomTable = new db.Table(this, "RoomTable", {
       tableName: "room",
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
       sortKey: { name: "user_id", type: db.AttributeType.STRING },
@@ -95,6 +104,6 @@ export class RoomStack extends cdk.Stack {
     );
 
     // Stack Ouputs
-    new cdk.CfnOutput(this, "STACK_REGION", { value: this.region });
+    new CfnOutput(this, "STACK_REGION", { value: this.region });
   }
 }
