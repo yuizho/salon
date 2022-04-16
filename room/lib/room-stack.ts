@@ -7,14 +7,12 @@ import {
   Duration,
 } from "aws-cdk-lib";
 import { Construct } from "constructs";
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as appsync from "@aws-cdk/aws-appsync-alpha";
 import * as db from "aws-cdk-lib/aws-dynamodb";
 import * as lambdaGo from "@aws-cdk/aws-lambda-go-alpha";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
-import { StreamViewType } from "aws-cdk-lib/aws-dynamodb";
 
 export class RoomStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -51,7 +49,7 @@ export class RoomStack extends Stack {
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
       sortKey: { name: "user_id", type: db.AttributeType.STRING },
       // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
-      stream: StreamViewType.NEW_IMAGE,
+      stream: db.StreamViewType.NEW_IMAGE,
     });
 
     // Set up table as a Datasource and grant access
