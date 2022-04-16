@@ -2,8 +2,8 @@ package appsync
 
 import (
 	"bytes"
-	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"net/http"
 	"time"
@@ -61,12 +61,16 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 		return 0, err
 	}
 
+	log.Printf("status: %v\n", resp.StatusCode)
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("body: %s\n", string(body))
+
 	// https://christina04.hatenablog.com/entry/go-keep-alive
 	defer resp.Body.Close()
-	defer func() {
-		io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
-	}()
 
 	return resp.StatusCode, nil
 }
