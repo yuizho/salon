@@ -103,5 +103,7 @@ export class RoomStack extends Stack {
 
     // Stack Ouputs
     new CfnOutput(this, "STACK_REGION", { value: this.region });
+    new CfnOutput(this, "ROOM_API_URL", { value: roomApiUrl.stringValue });
+    new CfnOutput(this, "ROOM_API_KEY", { value: roomApiKey.stringValue });
   }
 }
