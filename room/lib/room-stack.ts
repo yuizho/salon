@@ -12,6 +12,7 @@ import * as db from "aws-cdk-lib/aws-dynamodb";
 import * as lambdaGo from "@aws-cdk/aws-lambda-go-alpha";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ssm from "aws-cdk-lib/aws-ssm";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 
 export class RoomStack extends Stack {
@@ -31,6 +32,11 @@ export class RoomStack extends Stack {
             expires: Expiration.after(Duration.days(365)),
           },
         },
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.IAM,
+          },
+        ],
       },
     });
 
@@ -100,6 +106,14 @@ export class RoomStack extends Stack {
         retryAttempts: 3,
       })
     );
+    // configure IAM Role
+    if (typeof mutatePokerFunction.role !== "undefined") {
+      api.grant(
+        mutatePokerFunction.role,
+        appsync.IamResource.custom("types/Mutation/fields/updatePoker"),
+        "appsync:GraphQL"
+      );
+    }
 
     // Stack Ouputs
     new CfnOutput(this, "STACK_REGION", { value: this.region });
