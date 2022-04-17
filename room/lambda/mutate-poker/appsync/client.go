@@ -22,7 +22,6 @@ type AppSyncClient struct {
 
 type Request struct {
 	Url    string
-	ApiKey string
 	Region string
 	Query  string
 }
@@ -68,7 +67,6 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 		return 0, fmt.Errorf("failed to create payload hash")
 	}
 
-	// TODO: Unauthorized error is still happend
 	// get aws credential
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithRegion(request.Region),
@@ -76,6 +74,7 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 	if err != nil {
 		log.Fatalf("unable to load  config, %v", err)
 	}
+	// TODO: should init at main function?
 	credentials, err := cfg.Credentials.Retrieve(context.TODO())
 	if err != nil {
 		return 0, fmt.Errorf("failed to retrieve credentials")

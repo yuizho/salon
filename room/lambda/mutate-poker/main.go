@@ -11,13 +11,12 @@ import (
 )
 
 var API_URL string = os.Getenv("ROOM_API_URL")
-var API_KEY string = os.Getenv("ROOM_API_KEY")
 var REGION string = os.Getenv("REGION")
 
 var client *appsync.AppSyncClient
 
 func HandleRequest(request events.DynamoDBEvent) error {
-	err := service.HandleRequest(request, client, API_URL, API_KEY, REGION)
+	err := service.HandleRequest(request, client, API_URL, REGION)
 	if err != nil {
 		return err
 	}

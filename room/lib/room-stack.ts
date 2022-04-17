@@ -96,7 +96,6 @@ export class RoomStack extends Stack {
       entry: "lambda/mutate-poker",
       environment: {
         ROOM_API_URL: roomApiUrl.stringValue,
-        ROOM_API_KEY: roomApiKey.stringValue,
         REGION: this.region,
       },
     });

@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, apiUrl string, apiKey string, region string) error {
+func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, apiUrl string, region string) error {
 	for _, event := range request.Records {
 		if event.EventName == "REMOVE" {
 			continue
@@ -23,7 +23,7 @@ func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, 
 
 		log.Printf("Room: %v", room)
 
-		_, err = appsync.MutateRoomAPI(client, room, apiUrl, apiKey, region)
+		_, err = appsync.MutateRoomAPI(client, room, apiUrl, region)
 		if err != nil {
 			log.Fatalf("failed to request to appsync: %v", err)
 			return err
