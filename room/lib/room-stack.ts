@@ -25,16 +25,16 @@ export class RoomStack extends Stack {
       schema: appsync.Schema.fromAsset("appsync/schema.graphql"),
       authorizationConfig: {
         defaultAuthorization: {
-          authorizationType: appsync.AuthorizationType.API_KEY,
-          apiKeyConfig: {
-            name: "default",
-            description: "default auth mode",
-            expires: Expiration.after(Duration.days(365)),
-          },
+          authorizationType: appsync.AuthorizationType.IAM,
         },
         additionalAuthorizationModes: [
           {
-            authorizationType: appsync.AuthorizationType.IAM,
+            authorizationType: appsync.AuthorizationType.API_KEY,
+            apiKeyConfig: {
+              name: "default",
+              description: "default auth mode",
+              expires: Expiration.after(Duration.days(365)),
+            },
           },
         ],
       },
