@@ -5,23 +5,24 @@
     status: String!
     picked_card: String
     created_at: AWSDateTime!
-  ): Poker
+  ): Poker @aws_iam
 }
 
 type Query {
-  getRoom(room_id: String!): Room
+  getRoom(room_id: String!): Room @aws_api_key
 }
 
-type Room {
+type Room @aws_api_key @aws_iam {
   items: [Poker]
 }
 
 type Subscription {
   onUpdatePoker(room_id: String): Poker
     @aws_subscribe(mutations: ["updatePoker"])
+    @aws_api_key
 }
 
-type Poker {
+type Poker @aws_api_key @aws_iam {
   room_id: String!
   user_id: String!
   status: String!

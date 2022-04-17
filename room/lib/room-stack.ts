@@ -24,13 +24,18 @@ export class RoomStack extends Stack {
       schema: appsync.Schema.fromAsset("appsync/schema.graphql"),
       authorizationConfig: {
         defaultAuthorization: {
-          authorizationType: appsync.AuthorizationType.API_KEY,
-          apiKeyConfig: {
-            name: "default",
-            description: "default auth mode",
-            expires: Expiration.after(Duration.days(365)),
-          },
+          authorizationType: appsync.AuthorizationType.IAM,
         },
+        additionalAuthorizationModes: [
+          {
+            authorizationType: appsync.AuthorizationType.API_KEY,
+            apiKeyConfig: {
+              name: "default",
+              description: "default auth mode",
+              expires: Expiration.after(Duration.days(365)),
+            },
+          },
+        ],
       },
     });
 
@@ -90,7 +95,7 @@ export class RoomStack extends Stack {
       entry: "lambda/mutate-poker",
       environment: {
         ROOM_API_URL: roomApiUrl.stringValue,
-        ROOM_API_KEY: roomApiKey.stringValue,
+        REGION: this.region,
       },
     });
     // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams
@@ -100,6 +105,14 @@ export class RoomStack extends Stack {
         retryAttempts: 3,
       })
     );
+    // configure IAM Role
+    if (typeof mutatePokerFunction.role !== "undefined") {
+      api.grant(
+        mutatePokerFunction.role,
+        appsync.IamResource.custom("types/Mutation/fields/updatePoker"),
+        "appsync:GraphQL"
+      );
+    }
 
     // Stack Ouputs
     new CfnOutput(this, "STACK_REGION", { value: this.region });
