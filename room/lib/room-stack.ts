@@ -12,7 +12,6 @@ import * as db from "aws-cdk-lib/aws-dynamodb";
 import * as lambdaGo from "@aws-cdk/aws-lambda-go-alpha";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ssm from "aws-cdk-lib/aws-ssm";
-import * as iam from "aws-cdk-lib/aws-iam";
 import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 
 export class RoomStack extends Stack {
