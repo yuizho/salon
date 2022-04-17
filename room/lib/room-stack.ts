@@ -97,6 +97,7 @@ export class RoomStack extends Stack {
       environment: {
         ROOM_API_URL: roomApiUrl.stringValue,
         ROOM_API_KEY: roomApiKey.stringValue,
+        REGION: this.region,
       },
     });
     // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams

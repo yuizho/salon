@@ -2,11 +2,18 @@ package appsync
 
 import (
 	"bytes"
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"time"
+
+	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
+	"github.com/aws/aws-sdk-go-v2/config"
 )
 
 type AppSyncClient struct {
@@ -16,6 +23,7 @@ type AppSyncClient struct {
 type Request struct {
 	Url    string
 	ApiKey string
+	Region string
 	Query  string
 }
 
@@ -54,7 +62,32 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 		return 0, err
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("x-api-key", request.ApiKey)
+
+	payloadHash, err := createPayloadHash(req)
+	if err != nil {
+		return 0, fmt.Errorf("failed to create payload hash")
+	}
+
+	// TODO: Unauthorized error is still happend
+	// get aws credential
+	cfg, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithRegion(request.Region),
+	)
+	if err != nil {
+		log.Fatalf("unable to load  config, %v", err)
+	}
+	credentials, err := cfg.Credentials.Retrieve(context.TODO())
+	if err != nil {
+		return 0, fmt.Errorf("failed to retrieve credentials")
+	}
+
+	// sign the request
+	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2@v1.2.1/aws/signer/v4#Signer.SignHTTP
+	signer := v4.NewSigner()
+	err = signer.SignHTTP(context.TODO(), credentials, req, payloadHash, "appsync", request.Region, time.Now())
+	if err != nil {
+		return 0, fmt.Errorf("failed to sign the request: %v", err)
+	}
 
 	resp, err := client.HttpClient.Do(req)
 	if err != nil {
@@ -73,4 +106,15 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 	defer resp.Body.Close()
 
 	return resp.StatusCode, nil
+}
+
+func createPayloadHash(req *http.Request) (string, error) {
+	body, err := req.GetBody()
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	buf.ReadFrom(body)
+	b := sha256.Sum256(buf.Bytes())
+	return hex.EncodeToString(b[:]), nil
 }

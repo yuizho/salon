@@ -6,7 +6,7 @@ import (
 	"github.com/yuizho/salon/room/lambda/mutate-poker/model"
 )
 
-func MutateRoomAPI(client *AppSyncClient, room *model.Room, apiUrl string, apiKey string) (int, error) {
+func MutateRoomAPI(client *AppSyncClient, room *model.Room, apiUrl string, apiKey string, region string) (int, error) {
 	query := fmt.Sprintf(`{
 		"query": "mutation ($room_id:String! $status:String! $user_id:String! $picked_card:String $created_at:AWSDateTime!){updatePoker(room_id: $room_id, user_id: $user_id, status: $status, picked_card: $picked_card, created_at: $created_at){room_id,user_id,status,picked_card,created_at}}",
 		"variables": {
@@ -22,6 +22,7 @@ func MutateRoomAPI(client *AppSyncClient, room *model.Room, apiUrl string, apiKe
 		Request{
 			Url:    apiUrl,
 			ApiKey: apiKey,
+			Region: region,
 			Query:  query,
 		},
 	)
