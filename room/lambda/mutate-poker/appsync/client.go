@@ -5,7 +5,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -64,7 +63,7 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 
 	payloadHash, err := createPayloadHash(req)
 	if err != nil {
-		return 0, fmt.Errorf("failed to create payload hash")
+		return 0, err
 	}
 
 	// get aws credential
@@ -72,12 +71,12 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 		config.WithRegion(request.Region),
 	)
 	if err != nil {
-		log.Fatalf("unable to load  config, %v", err)
+		return 0, err
 	}
 	// TODO: should init at main function?
 	credentials, err := cfg.Credentials.Retrieve(context.TODO())
 	if err != nil {
-		return 0, fmt.Errorf("failed to retrieve credentials")
+		return 0, err
 	}
 
 	// sign the request
@@ -85,7 +84,7 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 	signer := v4.NewSigner()
 	err = signer.SignHTTP(context.TODO(), credentials, req, payloadHash, "appsync", request.Region, time.Now())
 	if err != nil {
-		return 0, fmt.Errorf("failed to sign the request: %v", err)
+		return 0, err
 	}
 
 	resp, err := client.HttpClient.Do(req)
