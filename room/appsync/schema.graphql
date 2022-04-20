@@ -2,7 +2,7 @@
   updatePoker(
     room_id: String!
     user_id: String!
-    status: String!
+    status: Status!
     picked_card: String
     created_at: AWSDateTime!
   ): Poker @aws_iam
@@ -25,7 +25,13 @@ type Subscription {
 type Poker @aws_api_key @aws_iam {
   room_id: String!
   user_id: String!
-  status: String!
+  status: Status!
   picked_card: String
   created_at: AWSDateTime!
+}
+
+enum Status {
+  CHOOSING
+  CHOOSED
+  LEAVED
 }
