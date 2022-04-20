@@ -16,6 +16,7 @@ type Room struct {
 
 func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 	// validation
+	// TODO: regex validation
 	if attrs["room_id"].IsNull() {
 		return nil, errors.New("no room_id")
 	}
