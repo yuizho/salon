@@ -16,7 +16,7 @@ func MutateRoomAPI(client *AppSyncClient, room *model.Room, apiUrl string, regio
 			"picked_card": "%s",
 			"created_at": "%s"
 		}
-	}`, room.RoomId, room.UserId, room.Status, room.PickedCard, room.CreatedAt)
+	}`, room.RoomId, room.UserId, room.Status.String(), room.PickedCard, room.CreatedAt)
 
 	status, err := client.SendRequest(
 		Request{
