@@ -21,7 +21,10 @@ func HandleRequest(request events.DynamoDBEvent) error {
 
 		err := service.NewRoomService(
 			repository.NewDynamoRoomRepository(client),
-		).SaveRoom(context.TODO())
+		).SaveRoom(
+			event.Change.NewImage,
+			context.TODO(),
+		)
 		if err != nil {
 			return err
 		}
