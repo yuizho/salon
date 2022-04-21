@@ -62,8 +62,10 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		return nil, errors.New("invalid created_at")
 	}
 
-	if m, _ := regexp.MatchString(`^[0-9a-zA-Z]*$`, attrs["picked_card"].String()); !m {
-		return nil, errors.New("invalid picked_card")
+	if !attrs["picked_card"].IsNull() {
+		if m, _ := regexp.MatchString(`^[0-9a-zA-Z]*$`, attrs["picked_card"].String()); !m {
+			return nil, errors.New("invalid picked_card")
+		}
 	}
 
 	if attrs["status"].IsNull() {
