@@ -4,7 +4,7 @@
     user_id: String!
     status: Status!
     picked_card: String
-    created_at: AWSDateTime!
+    operated_at: AWSDateTime!
   ): Poker @aws_iam
 }
 
@@ -27,7 +27,7 @@ type Poker @aws_api_key @aws_iam {
   user_id: String!
   status: Status!
   picked_card: String
-  created_at: AWSDateTime!
+  operated_at: AWSDateTime!
 }
 
 enum Status {

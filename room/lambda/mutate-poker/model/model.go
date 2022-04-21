@@ -35,7 +35,7 @@ type Room struct {
 	UserId     string
 	Status     Status
 	PickedCard string
-	CreatedAt  string
+	OperatedAt string
 }
 
 func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
@@ -54,12 +54,12 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		return nil, errors.New("invalid user_id")
 	}
 
-	if attrs["created_at"].IsNull() {
-		return nil, errors.New("no created_at")
+	if attrs["operated_at"].IsNull() {
+		return nil, errors.New("no operated_at")
 	}
 	iso8601 := `^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[01][0-9]):[0-5][0-9])?$`
-	if m, _ := regexp.MatchString(iso8601, attrs["created_at"].String()); !m {
-		return nil, errors.New("invalid created_at")
+	if m, _ := regexp.MatchString(iso8601, attrs["operated_at"].String()); !m {
+		return nil, errors.New("invalid operated_at")
 	}
 
 	if !attrs["picked_card"].IsNull() {
@@ -81,6 +81,6 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		UserId:     attrs["user_id"].String(),
 		Status:     status,
 		PickedCard: attrs["picked_card"].String(),
-		CreatedAt:  attrs["created_at"].String(),
+		OperatedAt: attrs["operated_at"].String(),
 	}, nil
 }

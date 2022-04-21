@@ -18,7 +18,7 @@ func CreateRoom(operation *Operation) (*Room, error) {
 		UserId:     operation.UserId,
 		Status:     status,
 		PickedCard: pickedCard,
-		CreatedAt:  operation.OperatedAt,
+		OperatedAt: operation.OperatedAt,
 	}, nil
 }
 
