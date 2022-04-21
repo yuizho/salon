@@ -23,12 +23,9 @@ func (service *RoomService) SaveRoom(attrs map[string]events.DynamoDBAttributeVa
 	}
 	log.Printf("Operation: %#v", operation)
 
-	// TODO: convert operation to room
-	room := model.Room{
-		RoomId:    "1",
-		UserId:    "3",
-		Status:    "LEAVED",
-		CreatedAt: "2022-10-10T13:50:40Z",
+	room, err := model.CreateRoom(operation)
+	if err != nil {
+		return err
 	}
 	log.Printf("Room: %#v", room)
 

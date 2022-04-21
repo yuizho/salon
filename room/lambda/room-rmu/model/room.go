@@ -3,7 +3,7 @@ package model
 import "context"
 
 type RoomRepository interface {
-	Save(context context.Context, room Room) error
+	Save(context context.Context, room *Room) error
 }
 
 type Room struct {

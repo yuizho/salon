@@ -17,7 +17,7 @@ func NewDynamoRoomRepository(client DynamoDBPutAPI) *DynamoRoomRepository {
 	return &DynamoRoomRepository{client: client}
 }
 
-func (repos *DynamoRoomRepository) Save(context context.Context, room model.Room) error {
+func (repos *DynamoRoomRepository) Save(context context.Context, room *model.Room) error {
 	roomItem, err := attributevalue.MarshalMap(room)
 	if err != nil {
 		return err
