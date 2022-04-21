@@ -11,9 +11,9 @@ import (
 type Status string
 
 const (
-	Choosing Status = "CHOOSING"
-	Choosed         = "CHOOSED"
-	Leaved          = "LEAVED"
+	Choosing = Status("CHOOSING")
+	Choosed  = Status("CHOOSED")
+	Leaved   = Status("LEAVED")
 )
 
 func NewStatus(s string) (Status, error) {
