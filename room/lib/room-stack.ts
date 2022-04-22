@@ -18,10 +18,29 @@ export class RoomStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    // AppSync
-    const api = new appsync.GraphqlApi(this, "RoomAPI", {
+    // ================= DynamoDB =================
+    // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
+    const operationTable = new db.Table(this, "OperationTable", {
+      tableName: "operation",
+      removalPolicy: RemovalPolicy.DESTROY,
+      billingMode: db.BillingMode.PAY_PER_REQUEST,
+      partitionKey: { name: "room_id", type: db.AttributeType.STRING },
+      // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
+      stream: db.StreamViewType.NEW_IMAGE,
+    });
+    const roomTable = new db.Table(this, "RoomTable", {
+      tableName: "room",
+      removalPolicy: RemovalPolicy.DESTROY,
+      billingMode: db.BillingMode.PAY_PER_REQUEST,
+      partitionKey: { name: "room_id", type: db.AttributeType.STRING },
+      sortKey: { name: "user_id", type: db.AttributeType.STRING },
+      stream: db.StreamViewType.NEW_IMAGE,
+    });
+
+    // ================= AppSync =================
+    const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
-      schema: appsync.Schema.fromAsset("appsync/schema.graphql"),
+      schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.IAM,
@@ -38,37 +57,15 @@ export class RoomStack extends Stack {
         ],
       },
     });
-
-    // DynamoDB
-    // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
-    const operationTable = new db.Table(this, "OperationTable", {
-      tableName: "operation",
-      removalPolicy: RemovalPolicy.DESTROY,
-      billingMode: db.BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: "room_id", type: db.AttributeType.STRING },
-      // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
-      stream: db.StreamViewType.NEW_IMAGE,
-    });
-    const roomTable = new db.Table(this, "RoomTable", {
-      tableName: "room",
-      removalPolicy: RemovalPolicy.DESTROY,
-      billingMode: db.BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: "room_id", type: db.AttributeType.STRING },
-      sortKey: { name: "user_id", type: db.AttributeType.STRING },
-      // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
-      stream: db.StreamViewType.NEW_IMAGE,
-    });
-
     // Set up table as a Datasource and grant access
-    const roomDataSource = api.addDynamoDbDataSource("room", roomTable);
-    const PokerDataSource = api.addNoneDataSource("poker");
-
+    const roomDataSource = roomAPI.addDynamoDbDataSource("room", roomTable);
+    const PokerDataSource = roomAPI.addNoneDataSource("poker");
     // Define resolvers
     roomDataSource.createResolver({
       typeName: "Query",
       fieldName: "getRoom",
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/resolvers/Query.getRoom.req.vtl"
+        "appsync/room-api/resolvers/Query.getRoom.req.vtl"
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
@@ -76,22 +73,22 @@ export class RoomStack extends Stack {
       typeName: "Mutation",
       fieldName: "updatePoker",
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/resolvers/Mutation.updatePoker.req.vtl"
+        "appsync/room-api/resolvers/Mutation.updatePoker.req.vtl"
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
 
-    // SSM Parameters
+    // ================= SSM =================
     const roomApiUrl = new ssm.StringParameter(this, "room-api-url", {
       parameterName: "/salon/appsync/room-api-url",
-      stringValue: api.graphqlUrl,
+      stringValue: roomAPI.graphqlUrl,
     });
     const roomApiKey = new ssm.StringParameter(this, "room-api-key", {
       parameterName: "/salon/appsync/room-api-key",
-      stringValue: api.apiKey!,
+      stringValue: roomAPI.apiKey!,
     });
 
-    // Deploy lambda functions
+    // ================= Lambda =================
     const roomRMUFunction = new lambdaGo.GoFunction(this, "room-rmu", {
       functionName: "RoomRMU",
       entry: "lambda/room-rmu",
@@ -113,7 +110,6 @@ export class RoomStack extends Stack {
         REGION: this.region,
       },
     });
-    // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams
     mutatePokerFunction.addEventSource(
       new DynamoEventSource(roomTable, {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
@@ -122,14 +118,14 @@ export class RoomStack extends Stack {
     );
     // configure IAM Role
     if (typeof mutatePokerFunction.role !== "undefined") {
-      api.grant(
+      roomAPI.grant(
         mutatePokerFunction.role,
         appsync.IamResource.custom("types/Mutation/fields/updatePoker"),
         "appsync:GraphQL"
       );
     }
 
-    // Stack Ouputs
+    // ================= Stack Outpu =================
     new CfnOutput(this, "STACK_REGION", { value: this.region });
     new CfnOutput(this, "ROOM_API_URL", { value: roomApiUrl.stringValue });
     new CfnOutput(this, "ROOM_API_KEY", { value: roomApiKey.stringValue });
