@@ -72,10 +72,12 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		return nil, errors.New("invalid operated_at")
 	}
 
+	pickedCard := ""
 	if !attrs["picked_card"].IsNull() {
 		if m, _ := regexp.MatchString(`^[0-9a-zA-Z]*$`, attrs["picked_card"].String()); !m {
 			return nil, errors.New("invalid picked_card")
 		}
+		pickedCard = attrs["picked_card"].String()
 	}
 
 	return &Operation{
@@ -83,6 +85,6 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		OpType:     opType,
 		UserId:     attrs["user_id"].String(),
 		OperatedAt: attrs["operated_at"].String(),
-		PickedCard: attrs["picked_card"].String(),
+		PickedCard: pickedCard,
 	}, nil
 }
