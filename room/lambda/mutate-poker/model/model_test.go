@@ -36,6 +36,36 @@ func TestNewRoom(t *testing.T) {
 	}
 }
 
+func TestNewRoomNoPickedCard(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["status"] = events.NewStringAttribute("CHOOSING")
+	input["picked_card"] = events.NewNullAttribute()
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+
+	actual, err := NewRoom(input)
+	if err != nil {
+		t.Fatalf("failed to create room")
+	}
+
+	if actual.RoomId != "1" {
+		t.Fatalf("unexpected RoomId: %s", actual.RoomId)
+	}
+	if actual.UserId != "2" {
+		t.Fatalf("unexpected UserId: %s", actual.UserId)
+	}
+	if actual.Status != "CHOOSING" {
+		t.Fatalf("unexpected Status: %s", actual.Status)
+	}
+	if actual.PickedCard != "" {
+		t.Fatalf("unexpected PickedCard: %s", actual.PickedCard)
+	}
+	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
+		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
+	}
+}
+
 func TestNewRoomNoRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["user_id"] = events.NewStringAttribute("2")
