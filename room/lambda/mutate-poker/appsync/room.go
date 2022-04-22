@@ -8,15 +8,15 @@ import (
 
 func MutateRoomAPI(client *AppSyncClient, room *model.Room, apiUrl string, region string) (int, error) {
 	query := fmt.Sprintf(`{
-		"query": "mutation ($room_id:String! $status:Status! $user_id:String! $picked_card:String $created_at:AWSDateTime!){updatePoker(room_id: $room_id, user_id: $user_id, status: $status, picked_card: $picked_card, created_at: $created_at){room_id,user_id,status,picked_card,created_at}}",
+		"query": "mutation ($room_id:String! $status:Status! $user_id:String! $picked_card:String $operated_at:AWSDateTime!){updatePoker(room_id: $room_id, user_id: $user_id, status: $status, picked_card: $picked_card, operated_at: $operated_at){room_id,user_id,status,picked_card,operated_at}}",
 		"variables": {
 			"room_id" :"%s",
 			"user_id": "%s",
 			"status": "%s",
 			"picked_card": "%s",
-			"created_at": "%s"
+			"operated_at": "%s"
 		}
-	}`, room.RoomId, room.UserId, room.Status.String(), room.PickedCard, room.CreatedAt)
+	}`, room.RoomId, room.UserId, room.Status.String(), room.PickedCard, room.OperatedAt)
 
 	status, err := client.SendRequest(
 		Request{

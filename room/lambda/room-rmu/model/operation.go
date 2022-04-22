@@ -8,43 +8,53 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-type Status string
+type OpType string
 
 const (
-	Choosing = Status("CHOOSING")
-	Choosed  = Status("CHOOSED")
-	Leaved   = Status("LEAVED")
+	OpenRoom     = OpType("OPEN_ROOM")
+	Joined       = OpType("JOINED")
+	Leaved       = OpType("LEAVED")
+	Picked       = OpType("PICKED")
+	RefreshTable = OpType("REFRESH_TABLE")
 )
 
-func NewStatus(s string) (Status, error) {
-	status := Status(s)
-	switch status {
-	case Choosing, Choosed, Leaved:
-		return status, nil
+func NewOpType(s string) (OpType, error) {
+	opType := OpType(s)
+	switch opType {
+	case OpenRoom, Joined, Leaved, Picked, RefreshTable:
+		return opType, nil
 	default:
-		return "", fmt.Errorf("unexpected status string: %s", s)
+		return "", fmt.Errorf("unexpected op_type string: %s", s)
 	}
 }
 
-func (status Status) String() string {
-	return string(status)
+func (opType OpType) String() string {
+	return string(opType)
 }
 
-type Room struct {
-	RoomId     string
-	UserId     string
-	Status     Status
-	PickedCard string
-	OperatedAt string
+type Operation struct {
+	RoomId     string `dynamodbav:"room_id" json:"room_id"`
+	OpType     OpType `dynamodbav:"op_type" json:"op_type"`
+	UserId     string `dynamodbav:"user_id" json:"user_id"`
+	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
+	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
 }
 
-func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
+func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, error) {
 	// validation
 	if attrs["room_id"].IsNull() {
 		return nil, errors.New("no room_id")
 	}
 	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["room_id"].String()); !m {
 		return nil, errors.New("invalid room_id")
+	}
+
+	if attrs["op_type"].IsNull() {
+		return nil, errors.New("no op_type")
+	}
+	opType, err := NewOpType(attrs["op_type"].String())
+	if err != nil {
+		return nil, err
 	}
 
 	if attrs["user_id"].IsNull() {
@@ -70,19 +80,11 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		pickedCard = attrs["picked_card"].String()
 	}
 
-	if attrs["status"].IsNull() {
-		return nil, errors.New("no status")
-	}
-	status, err := NewStatus(attrs["status"].String())
-	if err != nil {
-		return nil, err
-	}
-
-	return &Room{
+	return &Operation{
 		RoomId:     attrs["room_id"].String(),
+		OpType:     opType,
 		UserId:     attrs["user_id"].String(),
-		Status:     status,
-		PickedCard: pickedCard,
 		OperatedAt: attrs["operated_at"].String(),
+		PickedCard: pickedCard,
 	}, nil
 }

@@ -46,6 +46,8 @@ export class RoomStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
+      // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
+      stream: db.StreamViewType.NEW_IMAGE,
     });
     const roomTable = new db.Table(this, "RoomTable", {
       tableName: "room",
@@ -90,6 +92,19 @@ export class RoomStack extends Stack {
     });
 
     // Deploy lambda functions
+    const roomRMUFunction = new lambdaGo.GoFunction(this, "room-rmu", {
+      functionName: "RoomRMU",
+      entry: "lambda/room-rmu",
+    });
+    // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams
+    roomRMUFunction.addEventSource(
+      new DynamoEventSource(operationTable, {
+        startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+        retryAttempts: 3,
+      })
+    );
+    roomTable.grantWriteData(roomRMUFunction);
+
     const mutatePokerFunction = new lambdaGo.GoFunction(this, "mutate-poker", {
       functionName: "MutatePoker",
       entry: "lambda/mutate-poker",
