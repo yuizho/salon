@@ -14,16 +14,18 @@ import (
 var client *dynamodb.Client
 
 func HandleRequest(request events.DynamoDBEvent) error {
+	roomService := service.NewRoomService(
+		repository.NewDynamoRoomRepository(client),
+	)
+
 	for _, event := range request.Records {
 		if event.EventName == "REMOVE" {
 			continue
 		}
 
-		err := service.NewRoomService(
-			repository.NewDynamoRoomRepository(client),
-		).SaveRoom(
-			event.Change.NewImage,
+		err := roomService.SaveRoom(
 			context.TODO(),
+			event.Change.NewImage,
 		)
 		if err != nil {
 			return err
