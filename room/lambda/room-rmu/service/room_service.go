@@ -29,6 +29,7 @@ func (service *RoomService) SaveRoom(attrs map[string]events.DynamoDBAttributeVa
 	}
 	log.Printf("Room: %#v", room)
 
+	// TODO: when opType is refresh_table update all user record of the room
 	err = service.repository.Save(context, room)
 	if err != nil {
 		return err

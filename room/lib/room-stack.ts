@@ -19,6 +19,8 @@ export class RoomStack extends Stack {
     super(scope, id, props);
 
     // ================= DynamoDB =================
+    // TODO: TTL config
+    // TODO: save operation logs to S3 by Dynamo DB Stream
     // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
     const operationTable = new db.Table(this, "OperationTable", {
       tableName: "operation",
@@ -38,6 +40,9 @@ export class RoomStack extends Stack {
     });
 
     // ================= AppSync =================
+    // TODO: operation API
+    // TODO: log
+    // TODO: Xray
     const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
       schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
