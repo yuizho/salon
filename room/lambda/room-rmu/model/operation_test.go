@@ -8,6 +8,7 @@ import (
 
 func TestNewOperation(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["op_type"] = events.NewStringAttribute("PICKED")
@@ -19,6 +20,9 @@ func TestNewOperation(t *testing.T) {
 		t.Fatalf("failed to create operation")
 	}
 
+	if actual.EventId != "9999" {
+		t.Fatalf("unexpected EventId: %s", actual.RoomId)
+	}
 	if actual.RoomId != "1" {
 		t.Fatalf("unexpected RoomId: %s", actual.RoomId)
 	}
@@ -38,6 +42,7 @@ func TestNewOperation(t *testing.T) {
 
 func TestNewOperationNoPickedCard(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["op_type"] = events.NewStringAttribute("PICKED")
@@ -49,6 +54,9 @@ func TestNewOperationNoPickedCard(t *testing.T) {
 		t.Fatalf("failed to create operation")
 	}
 
+	if actual.EventId != "9999" {
+		t.Fatalf("unexpected EventId: %s", actual.RoomId)
+	}
 	if actual.RoomId != "1" {
 		t.Fatalf("unexpected RoomId: %s", actual.RoomId)
 	}
@@ -66,10 +74,40 @@ func TestNewOperationNoPickedCard(t *testing.T) {
 	}
 }
 
+func TestNewOperationNoEventId(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["op_type"] = events.NewStringAttribute("PICKED")
+	input["picked_card"] = events.NewStringAttribute("5")
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+
+	_, err := NewOperation(input)
+	if err == nil {
+		t.Fatalf("failed to validate operation")
+	}
+}
+
+func TestNewOperationInvalidEventId(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9_")
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["picked_card"] = events.NewStringAttribute("5")
+	input["op_type"] = events.NewStringAttribute("PICKED")
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+
+	_, err := NewOperation(input)
+	if err == nil {
+		t.Fatalf("failed to validate operation")
+	}
+}
+
 func TestNewOperationNoRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["user_id"] = events.NewStringAttribute("2")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
@@ -81,10 +119,11 @@ func TestNewOperationNoRoomId(t *testing.T) {
 
 func TestNewOperationInvalidRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1_")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewOperation(input)
@@ -95,8 +134,9 @@ func TestNewOperationInvalidRoomId(t *testing.T) {
 
 func TestNewOperationNoUserId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
@@ -108,10 +148,11 @@ func TestNewOperationNoUserId(t *testing.T) {
 
 func TestNewOperationInvalidUserId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2_")
 	input["picked_card"] = events.NewStringAttribute("5")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewOperation(input)
@@ -122,6 +163,7 @@ func TestNewOperationInvalidUserId(t *testing.T) {
 
 func TestNewOperationNoOpType(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
@@ -135,10 +177,11 @@ func TestNewOperationNoOpType(t *testing.T) {
 
 func TestNewOperationInvalidOpType(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
-	input["opType"] = events.NewStringAttribute("UNEXPECTED")
+	input["op_type"] = events.NewStringAttribute("UNEXPECTED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewOperation(input)
@@ -149,10 +192,11 @@ func TestNewOperationInvalidOpType(t *testing.T) {
 
 func TestNewOperationInvalidPickedCard(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("_")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewOperation(input)
@@ -163,9 +207,10 @@ func TestNewOperationInvalidPickedCard(t *testing.T) {
 
 func TestNewOperationNoOperatedAt(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["picked_card"] = events.NewStringAttribute("5")
 
 	_, err := NewOperation(input)
@@ -176,10 +221,11 @@ func TestNewOperationNoOperatedAt(t *testing.T) {
 
 func TestNewOperationInvalidOperatedAt(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
 	input["room_id"] = events.NewStringAttribute("1")
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
-	input["opType"] = events.NewStringAttribute("CHOOSING")
+	input["op_type"] = events.NewStringAttribute("PICKED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40XX")
 
 	_, err := NewOperation(input)

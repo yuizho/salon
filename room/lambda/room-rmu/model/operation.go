@@ -33,6 +33,7 @@ func (opType OpType) String() string {
 }
 
 type Operation struct {
+	EventId    string `dynamodbav:"event_id" json:"event_id"`
 	RoomId     string `dynamodbav:"room_id" json:"room_id"`
 	OpType     OpType `dynamodbav:"op_type" json:"op_type"`
 	UserId     string `dynamodbav:"user_id" json:"user_id"`
@@ -42,6 +43,13 @@ type Operation struct {
 
 func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, error) {
 	// validation
+	if attrs["event_id"].IsNull() {
+		return nil, errors.New("no event_id")
+	}
+	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["event_id"].String()); !m {
+		return nil, errors.New("invalid event_id")
+	}
+
 	if attrs["room_id"].IsNull() {
 		return nil, errors.New("no room_id")
 	}
@@ -81,6 +89,7 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 	}
 
 	return &Operation{
+		EventId:    attrs["event_id"].String(),
 		RoomId:     attrs["room_id"].String(),
 		OpType:     opType,
 		UserId:     attrs["user_id"].String(),

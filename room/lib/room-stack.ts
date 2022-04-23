@@ -24,7 +24,7 @@ export class RoomStack extends Stack {
       tableName: "operation",
       removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: "room_id", type: db.AttributeType.STRING },
+      partitionKey: { name: "event_id", type: db.AttributeType.STRING },
       // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
       stream: db.StreamViewType.NEW_IMAGE,
     });
