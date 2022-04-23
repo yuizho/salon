@@ -3,6 +3,7 @@
 [*] --> created: create a new room
 state created {
     [*] --> choosing_card: add a new user to the room
+    choosing_card --> choosing_card: some player refreshes the poker
     choosing_card --> choosed_card: the user choosed a card
     choosed_card --> choosing_card: some player refreshes the poker
     choosing_card --> leaved: the user leaves
