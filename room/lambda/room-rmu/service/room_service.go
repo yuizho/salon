@@ -23,13 +23,23 @@ func (service *RoomService) SaveRoom(attrs map[string]events.DynamoDBAttributeVa
 	}
 	log.Printf("Operation: %#v", operation)
 
+	switch operation.OpType {
+	case model.RefreshTable:
+		// TODO: when opType is refresh_table update all user record of the room
+	default:
+		return service.saveUserState(operation, context)
+	}
+
+	return nil
+}
+
+func (service *RoomService) saveUserState(operation *model.Operation, context context.Context) error {
 	room, err := model.CreateRoom(operation)
 	if err != nil {
 		return err
 	}
 	log.Printf("Room: %#v", room)
 
-	// TODO: when opType is refresh_table update all user record of the room
 	err = service.repository.Save(context, room)
 	if err != nil {
 		return err
