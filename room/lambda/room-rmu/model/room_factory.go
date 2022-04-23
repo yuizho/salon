@@ -3,7 +3,7 @@ package model
 import "fmt"
 
 func CreateRoom(operation *Operation) (*Room, error) {
-	status, err := createStatusStr(operation.OpType)
+	status, err := createStatus(operation.OpType)
 	if err != nil {
 		return nil, err
 	}
@@ -22,14 +22,14 @@ func CreateRoom(operation *Operation) (*Room, error) {
 	}, nil
 }
 
-func createStatusStr(opType OpType) (string, error) {
+func createStatus(opType OpType) (Status, error) {
 	switch opType {
 	case OpenRoom, Joined, RefreshTable:
-		return "CHOOSING", nil
+		return NewStatus("CHOOSING")
 	case Leaved:
-		return "LEAVED", nil
+		return NewStatus("LEAVED")
 	case Picked:
-		return "CHOOSED", nil
+		return NewStatus("CHOOSED")
 	default:
 		return "", fmt.Errorf("unexpected op_type: %v", opType)
 	}
