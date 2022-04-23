@@ -106,7 +106,7 @@ export class RoomStack extends Stack {
         retryAttempts: 3,
       })
     );
-    roomTable.grantWriteData(roomRMUFunction);
+    roomTable.grantReadWriteData(roomRMUFunction);
 
     const mutatePokerFunction = new lambdaGo.GoFunction(this, "mutate-poker", {
       functionName: "MutatePoker",
