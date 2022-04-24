@@ -11,11 +11,29 @@ import (
 	"github.com/google/logger"
 	"github.com/yuizho/salon/room/lambda/room-rmu/repository"
 	"github.com/yuizho/salon/room/lambda/room-rmu/service"
+	"github.com/yuizho/salon/room/lambda/room-rmu/util"
 )
 
 var client *dynamodb.Client
 
-func HandleRequest(request events.DynamoDBEvent) error {
+type lambdaHandlerFunc func(ctx context.Context, request events.DynamoDBEvent) error
+
+func handleError(fn lambdaHandlerFunc) lambdaHandlerFunc {
+	return func(ctx context.Context, request events.DynamoDBEvent) error {
+		reqId, err := util.GetAWSRequestId(ctx)
+		if err != nil {
+			return err
+		}
+
+		if err := fn(ctx, request); err != nil {
+			logger.Errorf("%s %v", reqId, err)
+			return err
+		}
+		return nil
+	}
+}
+
+func HandleRequest(ctx context.Context, request events.DynamoDBEvent) error {
 	roomService := service.NewRoomService(
 		repository.NewDynamoRoomRepository(client),
 	)
@@ -26,7 +44,7 @@ func HandleRequest(request events.DynamoDBEvent) error {
 		}
 
 		err := roomService.SaveRoom(
-			context.TODO(),
+			ctx,
 			event.Change.NewImage,
 		)
 		if err != nil {
@@ -47,5 +65,5 @@ func main() {
 	}
 	client = dynamodb.NewFromConfig(cfg)
 
-	lambda.Start(HandleRequest)
+	lambda.Start(handleError(HandleRequest))
 }

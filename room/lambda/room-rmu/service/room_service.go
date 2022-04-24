@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/google/logger"
 	"github.com/yuizho/salon/room/lambda/room-rmu/model"
+	"github.com/yuizho/salon/room/lambda/room-rmu/util"
 )
 
 type RoomService struct {
@@ -21,7 +22,13 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 	if err != nil {
 		return err
 	}
-	logger.Infof("sent Operation: %#v", operation)
+
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("%s sent Operation %#v", reqId, operation)
 
 	switch operation.OpType {
 	case model.RefreshTable:
@@ -36,7 +43,13 @@ func (service *RoomService) saveUserState(context context.Context, operation *mo
 	if err != nil {
 		return err
 	}
-	logger.Infof("Room to save user state: %#v", room)
+
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("%s Room to save user state %#v", reqId, room)
 
 	return service.repository.Save(context, room)
 }
@@ -51,7 +64,13 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	if err != nil {
 		return err
 	}
-	logger.Infof("Rooms to update users status to CHOOSING: %#v", rooms)
+
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("%s Rooms to update users status to CHOOSING %#v", reqId, rooms)
 
 	// BatchWriteItem cannot specify conditions on individual put and delete requests
 	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
@@ -59,7 +78,7 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	for _, room := range rooms {
 		err = service.repository.UpdateActiveUserStatus(context, &room, choosing)
 		if err != nil {
-			logger.Warningf("failed to UpdateActiveUserStatus: %v", err)
+			logger.Warningf("%s failed to UpdateActiveUserStatus %v", err)
 		}
 	}
 
