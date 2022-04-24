@@ -1,14 +1,17 @@
 package service
 
 import (
+	"context"
+
 	"github.com/google/logger"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/model"
+	"github.com/yuizho/salon/room/lambda/mutate-poker/util"
 
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, apiUrl string, region string) error {
+func HandleRequest(ctx context.Context, request events.DynamoDBEvent, client *appsync.AppSyncClient, apiUrl string, region string) error {
 	for _, event := range request.Records {
 		if event.EventName == "REMOVE" {
 			continue
@@ -19,9 +22,14 @@ func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, 
 			return err
 		}
 
-		logger.Infof("updated Room: %#v", room)
+		reqId, err := util.GetAWSRequestId(ctx)
+		if err != nil {
+			return err
+		}
 
-		_, err = appsync.MutateRoomAPI(client, room, apiUrl, region)
+		logger.Infof("%s updated Room %#v", reqId, room)
+
+		_, err = appsync.MutateRoomAPI(ctx, client, room, apiUrl, region)
 		if err != nil {
 			return err
 		}
