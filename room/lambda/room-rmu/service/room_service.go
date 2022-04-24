@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -48,28 +47,20 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 		return err
 	}
 
-	// since this process needs to update multipe records, some times data (user status) conflict is happend
-	// that's why this process attempts multiple times update the records when update by transaction is failed.
-	const MAX_RETRY_COUNT = 3
-	retry_count := 0
-	for retry_count < MAX_RETRY_COUNT {
-		rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
-		if err != nil {
-			return err
-		}
-		log.Printf("Rooms to update users status to CHOOSING: %#v", rooms)
-
-		err = service.repository.UpdateActiveUsersStatus(context, &rooms, choosing)
-		if err != nil {
-			log.Printf("failed to UpdateActiveUsersStatus by transactional write: %v", err)
-			retry_count += 1
-		} else {
-			break
-		}
+	rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
+	if err != nil {
+		return err
 	}
+	log.Printf("Rooms to update users status to CHOOSING: %#v", rooms)
 
-	if retry_count == MAX_RETRY_COUNT {
-		return fmt.Errorf("UpdateActiveUsersStatus was attempted %d times. but all of them were failed", MAX_RETRY_COUNT)
+	// BatchWriteItem cannot specify conditions on individual put and delete requests
+	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
+	// that's why call Updateitem here to each item to use condition expression.
+	for _, room := range rooms {
+		err = service.repository.UpdateActiveUserStatus(context, &room, choosing)
+		if err != nil {
+			log.Printf("failed to UpdateActiveUserStatus: %v", err)
+		}
 	}
 
 	return nil

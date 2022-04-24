@@ -13,9 +13,9 @@ type DynamoDBPutAPI interface {
 	Query(ctx context.Context,
 		params *dynamodb.QueryInput,
 		optFns ...func(*dynamodb.Options)) (*dynamodb.QueryOutput, error)
-	TransactWriteItems(ctx context.Context,
-		params *dynamodb.TransactWriteItemsInput,
-		optFns ...func(*dynamodb.Options)) (*dynamodb.TransactWriteItemsOutput, error)
+	UpdateItem(ctx context.Context,
+		params *dynamodb.UpdateItemInput,
+		optFns ...func(*dynamodb.Options)) (*dynamodb.UpdateItemOutput, error)
 }
 
 func PutItem(c context.Context, api DynamoDBPutAPI, input *dynamodb.PutItemInput) (*dynamodb.PutItemOutput, error) {
@@ -26,6 +26,6 @@ func Query(c context.Context, api DynamoDBPutAPI, input *dynamodb.QueryInput) (*
 	return api.Query(c, input)
 }
 
-func TransactWriteItems(c context.Context, api DynamoDBPutAPI, input *dynamodb.TransactWriteItemsInput) (*dynamodb.TransactWriteItemsOutput, error) {
-	return api.TransactWriteItems(c, input)
+func UpdateItem(c context.Context, api DynamoDBPutAPI, input *dynamodb.UpdateItemInput) (*dynamodb.UpdateItemOutput, error) {
+	return api.UpdateItem(c, input)
 }
