@@ -6,13 +6,14 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"time"
 
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/google/logger"
+	"github.com/yuizho/salon/room/lambda/mutate-poker/util"
 )
 
 type AppSyncClient struct {
@@ -48,7 +49,7 @@ func NewClient() *AppSyncClient {
 	}
 }
 
-func (client *AppSyncClient) SendRequest(request Request) (int, error) {
+func (client *AppSyncClient) SendRequest(ctx context.Context, request Request) (int, error) {
 	req, err := http.NewRequest(
 		"POST",
 		request.Url,
@@ -67,14 +68,15 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 	}
 
 	// get aws credential
-	cfg, err := config.LoadDefaultConfig(context.TODO(),
+	cfg, err := config.LoadDefaultConfig(
+		ctx,
 		config.WithRegion(request.Region),
 	)
 	if err != nil {
 		return 0, err
 	}
 	// TODO: should init at main function?
-	credentials, err := cfg.Credentials.Retrieve(context.TODO())
+	credentials, err := cfg.Credentials.Retrieve(ctx)
 	if err != nil {
 		return 0, err
 	}
@@ -82,7 +84,7 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 	// sign the request
 	// https://pkg.go.dev/github.com/aws/aws-sdk-go-v2@v1.2.1/aws/signer/v4#Signer.SignHTTP
 	signer := v4.NewSigner()
-	err = signer.SignHTTP(context.TODO(), credentials, req, payloadHash, "appsync", request.Region, time.Now())
+	err = signer.SignHTTP(ctx, credentials, req, payloadHash, "appsync", request.Region, time.Now())
 	if err != nil {
 		return 0, err
 	}
@@ -92,13 +94,18 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 		return 0, err
 	}
 
-	log.Printf("status: %v\n", resp.StatusCode)
+	awsRequestId, err := util.GetAWSRequestId(ctx)
+	if err != nil {
+		return 0, err
+	}
+
+	logger.Infof("%s api response status %d", awsRequestId, resp.StatusCode)
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error(err)
 	}
-	log.Printf("body: %s\n", string(body))
+	logger.Infof("%s api response body %s", awsRequestId, string(body))
 
 	// https://christina04.hatenablog.com/entry/go-keep-alive
 	defer resp.Body.Close()
