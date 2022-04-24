@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/yuizho/salon/room/lambda/room-rmu/model"
 )
 
@@ -49,7 +50,13 @@ func TestRefleshPoker(t *testing.T) {
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	err := NewRoomService(&TestRepos{}).SaveRoom(
-		context.TODO(),
+		lambdacontext.NewContext(
+			context.TODO(),
+			&lambdacontext.LambdaContext{
+				AwsRequestID:       "1",
+				InvokedFunctionArn: "3",
+			},
+		),
 		input,
 	)
 

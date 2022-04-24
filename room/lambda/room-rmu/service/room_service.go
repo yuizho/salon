@@ -78,7 +78,7 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	for _, room := range rooms {
 		err = service.repository.UpdateActiveUserStatus(context, &room, choosing)
 		if err != nil {
-			logger.Warningf("%s failed to UpdateActiveUserStatus %v", err)
+			logger.Warningf("%s failed to UpdateActiveUserStatus %v", reqId, err)
 		}
 	}
 
