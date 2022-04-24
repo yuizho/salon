@@ -1,8 +1,10 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"
 
+	"github.com/google/logger"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/service"
 
@@ -24,6 +26,9 @@ func HandleRequest(request events.DynamoDBEvent) error {
 }
 
 func main() {
+	logger.Init("", true, false, ioutil.Discard)
+	defer logger.Close()
+
 	client = appsync.NewClient()
 	lambda.Start(HandleRequest)
 }

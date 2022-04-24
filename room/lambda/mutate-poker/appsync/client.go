@@ -6,13 +6,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"io/ioutil"
-	"log"
 	"net"
 	"net/http"
 	"time"
 
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/google/logger"
 )
 
 type AppSyncClient struct {
@@ -92,13 +92,13 @@ func (client *AppSyncClient) SendRequest(request Request) (int, error) {
 		return 0, err
 	}
 
-	log.Printf("status: %v\n", resp.StatusCode)
+	logger.Infof("status: %d\n", resp.StatusCode)
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		logger.Error(err)
 	}
-	log.Printf("body: %s\n", string(body))
+	logger.Infof("body: %s\n", string(body))
 
 	// https://christina04.hatenablog.com/entry/go-keep-alive
 	defer resp.Body.Close()

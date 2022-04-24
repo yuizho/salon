@@ -1,8 +1,7 @@
 package service
 
 import (
-	"log"
-
+	"github.com/google/logger"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
 	"github.com/yuizho/salon/room/lambda/mutate-poker/model"
 
@@ -17,15 +16,13 @@ func HandleRequest(request events.DynamoDBEvent, client *appsync.AppSyncClient, 
 
 		room, err := model.NewRoom(event.Change.NewImage)
 		if err != nil {
-			log.Fatalf("failed to parse dynamo db stream event: %v", err)
 			return err
 		}
 
-		log.Printf("Room: %v", room)
+		logger.Infof("updated Room: %#v", room)
 
 		_, err = appsync.MutateRoomAPI(client, room, apiUrl, region)
 		if err != nil {
-			log.Fatalf("failed to request to appsync: %v", err)
 			return err
 		}
 	}
