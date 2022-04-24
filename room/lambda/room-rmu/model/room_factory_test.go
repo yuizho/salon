@@ -21,7 +21,7 @@ func TestCreateRoomOpTypeJoined(t *testing.T) {
 	if actual.UserId != "2" {
 		t.Fatalf("unexpected UserId: %s", actual.UserId)
 	}
-	if actual.Status != "CHOOSING" {
+	if actual.Status.String() != "CHOOSING" {
 		t.Fatalf("unexpected Status: %s", actual.Status)
 	}
 	if actual.PickedCard != "" {
@@ -49,7 +49,7 @@ func TestCreateRoomOpTypeleaved(t *testing.T) {
 	if actual.UserId != "2" {
 		t.Fatalf("unexpected UserId: %s", actual.UserId)
 	}
-	if actual.Status != "LEAVED" {
+	if actual.Status.String() != "LEAVED" {
 		t.Fatalf("unexpected Status: %s", actual.Status)
 	}
 	if actual.PickedCard != "" {
@@ -78,7 +78,7 @@ func TestCreateRoomOpTypePicked(t *testing.T) {
 	if actual.UserId != "2" {
 		t.Fatalf("unexpected UserId: %s", actual.UserId)
 	}
-	if actual.Status != "CHOOSED" {
+	if actual.Status.String() != "CHOOSED" {
 		t.Fatalf("unexpected Status: %s", actual.Status)
 	}
 	if actual.PickedCard != "5" {

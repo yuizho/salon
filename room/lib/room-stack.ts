@@ -43,6 +43,7 @@ export class RoomStack extends Stack {
     // TODO: operation API
     // TODO: log
     // TODO: Xray
+    //  TODO: WAF
     const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
       schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
@@ -105,7 +106,7 @@ export class RoomStack extends Stack {
         retryAttempts: 3,
       })
     );
-    roomTable.grantWriteData(roomRMUFunction);
+    roomTable.grantReadWriteData(roomRMUFunction);
 
     const mutatePokerFunction = new lambdaGo.GoFunction(this, "mutate-poker", {
       functionName: "MutatePoker",
