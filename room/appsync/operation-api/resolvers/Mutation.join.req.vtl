@@ -1,0 +1,19 @@
+{
+    "version" : "2017-02-28",
+    "operation" : "PutItem",
+    "key" : {
+        "event_id": $util.dynamodb.toDynamoDBJson($util.autoUlid()),
+    },
+    "attributeValues" : {
+        "room_id": $util.dynamodb.toDynamoDBJson($ctx.args.room_id),
+        "user_id": $util.dynamodb.toDynamoDBJson($util.autoUlid()),
+        "op_type": $util.dynamodb.toDynamoDBJson("JOIN"),
+        "operated_at": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601()),
+    },
+    "condition": {
+        "expression": "attribute_not_exists(#event_id)",
+        "expressionNames": {
+            "#event_id": "event_id",
+        },
+    },
+}
