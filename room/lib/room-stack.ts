@@ -40,10 +40,68 @@ export class RoomStack extends Stack {
     });
 
     // ================= AppSync =================
-    // TODO: operation API
     // TODO: log
     // TODO: Xray
-    //  TODO: WAF
+    // TODO: WAF
+    const operationAPI = new appsync.GraphqlApi(this, "OperationAPI", {
+      name: "OperationAPI",
+      schema: appsync.Schema.fromAsset("appsync/operation-api/schema.graphql"),
+      authorizationConfig: {
+        defaultAuthorization: {
+          authorizationType: appsync.AuthorizationType.API_KEY,
+          apiKeyConfig: {
+            name: "default",
+            description: "default auth mode",
+            expires: Expiration.after(Duration.days(365)),
+          },
+        },
+      },
+    });
+    const operationDataSource = operationAPI.addDynamoDbDataSource(
+      "operation",
+      operationTable
+    );
+    operationDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "openRoom",
+      requestMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/operation-api/resolvers/Mutation.openRoom.req.vtl"
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
+    operationDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "join",
+      requestMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/operation-api/resolvers/Mutation.join.req.vtl"
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
+    operationDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "leave",
+      requestMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/operation-api/resolvers/Mutation.leave.req.vtl"
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
+    operationDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "pick",
+      requestMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/operation-api/resolvers/Mutation.pick.req.vtl"
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
+    operationDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "refreshTable",
+      requestMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/operation-api/resolvers/Mutation.refreshTable.req.vtl"
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
+
     const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
       schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
@@ -133,6 +191,10 @@ export class RoomStack extends Stack {
 
     // ================= Stack Outpu =================
     new CfnOutput(this, "STACK_REGION", { value: this.region });
+    new CfnOutput(this, "OPERATION_API_URL", {
+      value: operationAPI.graphqlUrl,
+    });
+    new CfnOutput(this, "OPERATION_API_KEY", { value: operationAPI.apiKey! });
     new CfnOutput(this, "ROOM_API_URL", { value: roomApiUrl.stringValue });
     new CfnOutput(this, "ROOM_API_KEY", { value: roomApiKey.stringValue });
   }
