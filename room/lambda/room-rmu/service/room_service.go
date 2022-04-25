@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/google/logger"
@@ -34,6 +35,7 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 	case model.RefreshTable:
 		return service.refreshPokerTable(context, operation)
 	default:
+		// TODO: needs to change put operation by op_type. for example join operation needs to check if room_id exists.
 		return service.saveUserState(context, operation)
 	}
 }
@@ -65,6 +67,10 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 		return err
 	}
 
+	if !isProperUser(rooms, operation.UserId) {
+		return fmt.Errorf("unknown user id is passed: %s", operation.UserId)
+	}
+
 	reqId, err := util.GetAWSRequestId(context)
 	if err != nil {
 		return err
@@ -75,7 +81,7 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	// BatchWriteItem cannot specify conditions on individual put and delete requests
 	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
 	// that's why call Updateitem here to each item to use condition expression.
-	for _, room := range rooms {
+	for _, room := range *rooms {
 		err = service.repository.UpdateActiveUserStatus(context, &room, choosing)
 		if err != nil {
 			logger.Warningf("%s failed to UpdateActiveUserStatus %v", reqId, err)
@@ -83,4 +89,13 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	}
 
 	return nil
+}
+
+func isProperUser(rooms *[]model.Room, userId string) bool {
+	for _, room := range *rooms {
+		if room.UserId == userId {
+			return true
+		}
+	}
+	return false
 }

@@ -35,7 +35,7 @@ func (repos *DynamoRoomRepository) Save(context context.Context, room *model.Roo
 	return nil
 }
 
-func (repos *DynamoRoomRepository) FindActiveUsers(context context.Context, roomId string) ([]model.Room, error) {
+func (repos *DynamoRoomRepository) FindActiveUsers(context context.Context, roomId string) (*[]model.Room, error) {
 	result, err := Query(context, repos.client, &dynamodb.QueryInput{
 		TableName:              aws.String("room"),
 		KeyConditionExpression: aws.String("room_id = :room_id"),
@@ -59,7 +59,7 @@ func (repos *DynamoRoomRepository) FindActiveUsers(context context.Context, room
 		rooms = append(rooms, room)
 	}
 
-	return rooms, nil
+	return &rooms, nil
 }
 
 func (repos *DynamoRoomRepository) UpdateActiveUserStatus(context context.Context, room *model.Room, status model.Status) error {

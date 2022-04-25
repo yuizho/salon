@@ -7,7 +7,7 @@ import (
 
 type RoomRepository interface {
 	Save(context context.Context, room *Room) error
-	FindActiveUsers(context context.Context, roomId string) ([]Room, error)
+	FindActiveUsers(context context.Context, roomId string) (*[]Room, error)
 	UpdateActiveUserStatus(context context.Context, room *Room, status Status) error
 }
 
