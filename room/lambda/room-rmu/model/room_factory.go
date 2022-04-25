@@ -9,7 +9,7 @@ func CreateRoom(operation *Operation) (*Room, error) {
 	}
 
 	pickedCard := ""
-	if operation.OpType == Picked {
+	if operation.OpType == Pick {
 		pickedCard = operation.PickedCard
 	}
 
@@ -24,11 +24,11 @@ func CreateRoom(operation *Operation) (*Room, error) {
 
 func createStatus(opType OpType) (Status, error) {
 	switch opType {
-	case OpenRoom, Joined, RefreshTable:
+	case OpenRoom, Join, RefreshTable:
 		return NewStatus("CHOOSING")
-	case Leaved:
+	case Leave:
 		return NewStatus("LEAVED")
-	case Picked:
+	case Pick:
 		return NewStatus("CHOOSED")
 	default:
 		return "", fmt.Errorf("unexpected op_type: %v", opType)
