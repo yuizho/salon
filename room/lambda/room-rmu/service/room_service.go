@@ -108,7 +108,7 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	}
 
 	if !isProperUser(rooms, operation.UserId) {
-		return fmt.Errorf("unknown user id is passed: %s", operation.UserId)
+		return fmt.Errorf("passed user id is not active: %s", operation.UserId)
 	}
 
 	reqId, err := util.GetAWSRequestId(context)
