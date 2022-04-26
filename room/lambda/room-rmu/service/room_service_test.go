@@ -32,12 +32,15 @@ func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) 
 		},
 	}, nil
 }
-func (repos *TestRepos) UpdateActiveUserStatus(context context.Context, room *model.Room, status model.Status) error {
+func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.Room) error {
 	// part of update is failed
 	if room.UserId == "2" {
 		return fmt.Errorf("some error")
 	}
 	return nil
+}
+func (repos *TestRepos) ExistRoom(context context.Context, roomId string) (bool, error) {
+	return true, nil
 }
 
 func TestRefleshPoker(t *testing.T) {

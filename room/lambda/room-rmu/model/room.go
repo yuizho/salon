@@ -8,7 +8,8 @@ import (
 type RoomRepository interface {
 	Save(context context.Context, room *Room) error
 	FindActiveUsers(context context.Context, roomId string) (*[]Room, error)
-	UpdateActiveUserStatus(context context.Context, room *Room, status Status) error
+	UpdateActiveUser(context context.Context, room *Room) error
+	ExistRoom(context context.Context, roomId string) (bool, error)
 }
 
 type Status string
@@ -39,4 +40,16 @@ type Room struct {
 	Status     Status `dynamodbav:"status" json:"status"`
 	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
 	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
+}
+
+func (room *Room) RefreshPokerTable(operatedAt string) error {
+	choosing, err := NewStatus("CHOOSING")
+	if err != nil {
+		return err
+	}
+
+	room.PickedCard = ""
+	room.Status = choosing
+	room.OperatedAt = operatedAt
+	return nil
 }
