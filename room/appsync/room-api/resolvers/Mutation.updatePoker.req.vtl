@@ -1,3 +1,46 @@
+#if($util.isNullOrEmpty($ctx.args.room_id))
+  $util.error("null or empty", "room_id")
+#end
+#if($ctx.args.room_id.length() > 30)
+  $util.error("unexpected length (too long)", "room_id")
+#end
+#if(!$util.matches("^[0-9a-zA-Z]+$", $ctx.args.room_id))
+  $util.error("unexpected pattern", "room_id")
+#end
+
+#if($util.isNullOrEmpty($ctx.args.user_id))
+  $util.error("null or empty", "user_id")
+#end
+#if($ctx.args.user_id.length() > 30)
+  $util.error("unexpected length (too long)", "user_id")
+#end
+#if(!$util.matches("^[0-9a-zA-Z]+$", $ctx.args.user_id))
+  $util.error("unexpected pattern", "user_id")
+#end
+
+#if($util.isNullOrEmpty($ctx.args.status))
+  $util.error("null or empty", "status")
+#end
+#if($ctx.args.status.length() > 20)
+  $util.error("unexpected length (too long)", "status")
+#end
+#if(!$util.matches("^[0-9a-zA-Z_]+$", $ctx.args.status))
+  $util.error("unexpected pattern", "status")
+#end
+
+#if(!$util.isNull($ctx.args.picked_card))
+  #if($ctx.args.picked_card.length() > 10)
+  $util.error("unexpected length (too long)", "picked_card")
+  #end
+  #if(!$util.matches("^[0-9a-zA-Z]*$", $ctx.args.picked_card))
+  $util.error("unexpected pattern", "picked_card")
+  #end
+#end
+
+#if($util.isNullOrEmpty($ctx.args.operated_at))
+  $util.error("null or empty", "operated_at")
+#end
+
 {
     "version": "2017-02-28",
     "payload": $util.toJson($context.args)

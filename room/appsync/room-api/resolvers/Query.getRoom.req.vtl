@@ -1,3 +1,13 @@
+#if($util.isNullOrEmpty($ctx.args.room_id))
+  $util.error("null or empty", "room_id")
+#end
+#if($ctx.args.room_id.length() > 30)
+  $util.error("unexpected length (too long)", "room_id")
+#end
+#if(!$util.matches("^[0-9a-zA-Z]+$", $ctx.args.room_id))
+  $util.error("unexpected pattern", "room_id")
+#end
+
 {
   "version": "2017-02-28",
   "operation": "Query",
