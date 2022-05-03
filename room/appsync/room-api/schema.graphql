@@ -1,4 +1,10 @@
 ﻿type Mutation {
+  openRoom: Operation @aws_api_key
+  join(room_id: String!): Operation @aws_api_key
+  leave(room_id: String!, user_id: String!): Operation @aws_api_key
+  pick(room_id: String!, user_id: String!, picked_card: String!): Operation
+    @aws_api_key
+  refreshTable(room_id: String!, user_id: String!): Operation @aws_api_key
   updatePoker(
     room_id: String!
     user_id: String!
@@ -12,14 +18,23 @@ type Query {
   getRoom(room_id: String!): Room @aws_api_key
 }
 
-type Room @aws_api_key @aws_iam {
-  items: [Poker]
-}
-
 type Subscription {
   onUpdatePoker(room_id: String): Poker
     @aws_subscribe(mutations: ["updatePoker"])
     @aws_api_key
+}
+
+type Operation @aws_api_key {
+  event_id: String
+  room_id: String
+  user_id: String
+  op_type: String
+  operated_at: String
+  picked_card: String
+}
+
+type Room @aws_api_key @aws_iam {
+  items: [Poker]
 }
 
 type Poker @aws_api_key @aws_iam {
