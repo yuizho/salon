@@ -41,6 +41,10 @@
   $util.error("null or empty", "operated_at")
 #end
 
+#if($util.isNullOrEmpty($ctx.args.joined_at))
+  $util.error("null or empty", "joined_at")
+#end
+
 {
     "version": "2017-02-28",
     "payload": $util.toJson($context.args)

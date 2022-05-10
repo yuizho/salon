@@ -36,6 +36,7 @@ type Room struct {
 	Status     Status
 	PickedCard string
 	OperatedAt string
+	JoinedAt   string
 }
 
 func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
@@ -61,6 +62,12 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 	if m, _ := regexp.MatchString(iso8601, attrs["operated_at"].String()); !m {
 		return nil, errors.New("invalid operated_at")
 	}
+	if attrs["joined_at"].IsNull() {
+		return nil, errors.New("no joined_at")
+	}
+	if m, _ := regexp.MatchString(iso8601, attrs["joined_at"].String()); !m {
+		return nil, errors.New("invalid joined_at")
+	}
 
 	pickedCard := ""
 	if !attrs["picked_card"].IsNull() {
@@ -84,5 +91,6 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		Status:     status,
 		PickedCard: pickedCard,
 		OperatedAt: attrs["operated_at"].String(),
+		JoinedAt:   attrs["joined_at"].String(),
 	}, nil
 }

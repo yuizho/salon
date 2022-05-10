@@ -13,6 +13,7 @@ func TestNewRoom(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	actual, err := NewRoom(input)
 	if err != nil {
@@ -34,6 +35,9 @@ func TestNewRoom(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
+	if actual.JoinedAt != "2022-10-10T13:50:40Z" {
+		t.Fatalf("unexpected JoinedAt: %s", actual.JoinedAt)
+	}
 }
 
 func TestNewRoomNoPickedCard(t *testing.T) {
@@ -43,6 +47,7 @@ func TestNewRoomNoPickedCard(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	actual, err := NewRoom(input)
 	if err != nil {
@@ -64,6 +69,9 @@ func TestNewRoomNoPickedCard(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
+	if actual.JoinedAt != "2022-10-10T13:50:40Z" {
+		t.Fatalf("unexpected JoinedAt: %s", actual.JoinedAt)
+	}
 }
 
 func TestNewRoomNoRoomId(t *testing.T) {
@@ -72,6 +80,7 @@ func TestNewRoomNoRoomId(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -86,6 +95,7 @@ func TestNewRoomInvalidRoomId(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -99,6 +109,7 @@ func TestNewRoomNoUserId(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -113,6 +124,7 @@ func TestNewRoomInvalidUserId(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -126,6 +138,7 @@ func TestNewRoomNoStatus(t *testing.T) {
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -140,6 +153,7 @@ func TestNewRoomInvalidStatus(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("UNEXPECTED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -154,6 +168,7 @@ func TestNewRoomInvalidPickedCard(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("_")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -167,6 +182,7 @@ func TestNewRoomNoOperatedAt(t *testing.T) {
 	input["user_id"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
 	_, err := NewRoom(input)
 	if err == nil {
@@ -181,6 +197,36 @@ func TestNewRoomInvalidOperatedAt(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40XX")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+
+	_, err := NewRoom(input)
+	if err == nil {
+		t.Fatalf("failed to validate room")
+	}
+}
+
+func TestNewRoomNoJoinedAt(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["status"] = events.NewStringAttribute("CHOOSING")
+	input["picked_card"] = events.NewStringAttribute("5")
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+
+	_, err := NewRoom(input)
+	if err == nil {
+		t.Fatalf("failed to validate room")
+	}
+}
+
+func TestNewRoomInvalidJoinedAt(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["picked_card"] = events.NewStringAttribute("5")
+	input["status"] = events.NewStringAttribute("CHOOSING")
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["joined_at"] = events.NewStringAttribute("2022-10-10T13:50:40XX")
 
 	_, err := NewRoom(input)
 	if err == nil {

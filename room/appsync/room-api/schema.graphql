@@ -11,6 +11,7 @@
     status: Status!
     picked_card: String
     operated_at: AWSDateTime!
+    joined_at: AWSDateTime!
   ): Poker @aws_iam
 }
 
@@ -43,6 +44,7 @@ type Poker @aws_api_key @aws_iam {
   status: Status!
   picked_card: String
   operated_at: AWSDateTime!
+  joined_at: AWSDateTime!
 }
 
 enum Status {
