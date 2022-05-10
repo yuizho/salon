@@ -40,6 +40,7 @@ type Room struct {
 	Status     Status `dynamodbav:"status" json:"status"`
 	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
 	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
+	JoinedAt   string `dynamodbav:"joined_at" json:"joined_at"`
 }
 
 func (room *Room) RefreshPokerTable(operatedAt string) error {
