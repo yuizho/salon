@@ -29,7 +29,7 @@ func createStatus(opType OpType) (Status, error) {
 	case Leave:
 		return NewStatus("LEAVED")
 	case Pick:
-		return NewStatus("CHOOSED")
+		return NewStatus("CHOSEN")
 	default:
 		return "", fmt.Errorf("unexpected op_type: %v", opType)
 	}

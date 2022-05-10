@@ -47,6 +47,6 @@ type Poker @aws_api_key @aws_iam {
 
 enum Status {
   CHOOSING
-  CHOOSED
+  CHOSEN
   LEAVED
 }

@@ -16,14 +16,14 @@ type Status string
 
 const (
 	StatusChoosing = Status("CHOOSING")
-	StatusChoosed  = Status("CHOOSED")
+	StatusChosen   = Status("CHOSEN")
 	StatusLeaved   = Status("LEAVED")
 )
 
 func NewStatus(s string) (Status, error) {
 	status := Status(s)
 	switch status {
-	case StatusChoosing, StatusChoosed, StatusLeaved:
+	case StatusChoosing, StatusChosen, StatusLeaved:
 		return status, nil
 	default:
 		return "", fmt.Errorf("unexpected status string: %s", s)

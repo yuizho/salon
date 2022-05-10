@@ -78,7 +78,7 @@ func TestCreateRoomOpTypePicked(t *testing.T) {
 	if actual.UserId != "2" {
 		t.Fatalf("unexpected UserId: %s", actual.UserId)
 	}
-	if actual.Status.String() != "CHOOSED" {
+	if actual.Status.String() != "CHOSEN" {
 		t.Fatalf("unexpected Status: %s", actual.Status)
 	}
 	if actual.PickedCard != "5" {

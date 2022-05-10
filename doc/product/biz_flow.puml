@@ -10,12 +10,12 @@ repeat
 fork
 |room master|
 :choose a card;
-floating note left:  <<usecase>>\nregister the choosed card
+floating note left:  <<usecase>>\nregister the chosen card
 fork again
 |users|
 :choose a card;
 endfork
-:reset the choosed card data;
+:reset the chosen card data;
 floating note right:  <<usecase>>\nreflesh the poker
 repeatwhile (reset)
 end

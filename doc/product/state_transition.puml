@@ -4,10 +4,10 @@
 state created {
     [*] --> choosing_card: add a new user to the room
     choosing_card --> choosing_card: some player refreshes the poker
-    choosing_card --> choosed_card: the user choosed a card
-    choosed_card --> choosing_card: some player refreshes the poker
+    choosing_card --> chosen_card: the user chosen a card
+    chosen_card --> choosing_card: some player refreshes the poker
     choosing_card --> leaved: the user leaves
-    choosed_card --> leaved: the user leaves
+    chosen_card --> leaved: the user leaves
     leaved --> choosing_card: the leaved user backs
 }
 
