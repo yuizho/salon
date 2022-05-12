@@ -29,9 +29,17 @@ type Operation @aws_api_key {
   event_id: String
   room_id: String
   user_id: String
-  op_type: String
+  op_type: OperationType
   operated_at: String
   picked_card: String
+}
+
+enum OperationType {
+  OPEN_ROOM
+  JOIN
+  LEAVE
+  PICK
+  REFRESH_TABLE
 }
 
 type Room @aws_api_key @aws_iam {
