@@ -5,6 +5,7 @@
   pick(room_id: String!, user_id: String!, picked_card: String!): Operation
     @aws_api_key
   refreshTable(room_id: String!, user_id: String!): Operation @aws_api_key
+  heartbeat(room_id: String!, user_id: String!): Operation @aws_api_key
   updatePoker(
     room_id: String!
     user_id: String!
@@ -40,6 +41,7 @@ enum OperationType {
   LEAVE
   PICK
   REFRESH_TABLE
+  HEARTBEAT
 }
 
 type Room @aws_api_key @aws_iam {

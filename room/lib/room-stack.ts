@@ -107,6 +107,14 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
+    operationDataSource.createResolver({
+      typeName: "Mutation",
+      fieldName: "heartbeat",
+      requestMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/room-api/resolvers/Mutation.heartbeat.req.vtl"
+      ),
+      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+    });
     const roomDataSource = roomAPI.addDynamoDbDataSource("room", roomTable);
     const PokerDataSource = roomAPI.addNoneDataSource("poker");
     // Define resolvers

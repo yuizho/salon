@@ -9,6 +9,7 @@ type RoomRepository interface {
 	Save(context context.Context, room *Room) error
 	FindActiveUsers(context context.Context, roomId string) (*[]Room, error)
 	UpdateActiveUser(context context.Context, room *Room) error
+	UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error
 	ExistRoom(context context.Context, roomId string) (bool, error)
 }
 
