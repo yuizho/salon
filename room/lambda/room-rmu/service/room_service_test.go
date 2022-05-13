@@ -42,6 +42,9 @@ func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.Ro
 func (repos *TestRepos) ExistRoom(context context.Context, roomId string) (bool, error) {
 	return true, nil
 }
+func (repos *TestRepos) UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error {
+	return nil
+}
 
 func TestRefleshPoker(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
