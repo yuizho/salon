@@ -17,12 +17,13 @@ const (
 	Pick         = OpType("PICK")
 	RefreshTable = OpType("REFRESH_TABLE")
 	Heartbeat    = OpType("HEARTBEAT")
+	Kick         = OpType("KICK")
 )
 
 func NewOpType(s string) (OpType, error) {
 	opType := OpType(s)
 	switch opType {
-	case OpenRoom, Join, Leave, Pick, RefreshTable, Heartbeat:
+	case OpenRoom, Join, Leave, Pick, RefreshTable, Heartbeat, Kick:
 		return opType, nil
 	default:
 		return "", fmt.Errorf("unexpected op_type string: %s", s)
@@ -34,12 +35,13 @@ func (opType OpType) String() string {
 }
 
 type Operation struct {
-	EventId    string `dynamodbav:"event_id" json:"event_id"`
-	RoomId     string `dynamodbav:"room_id" json:"room_id"`
-	OpType     OpType `dynamodbav:"op_type" json:"op_type"`
-	UserId     string `dynamodbav:"user_id" json:"user_id"`
-	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
-	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
+	EventId      string `dynamodbav:"event_id" json:"event_id"`
+	RoomId       string `dynamodbav:"room_id" json:"room_id"`
+	OpType       OpType `dynamodbav:"op_type" json:"op_type"`
+	UserId       string `dynamodbav:"user_id" json:"user_id"`
+	OperatedAt   string `dynamodbav:"operated_at" json:"operated_at"`
+	PickedCard   string `dynamodbav:"picked_card" json:"picked_card"`
+	KickedUserId string `dynamodbav:"kicked_user_id" json:"kicked_user_id"`
 }
 
 func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, error) {
@@ -81,6 +83,10 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		return nil, errors.New("invalid operated_at")
 	}
 
+	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["kicked_user_id"].String()); !m {
+		return nil, errors.New("invalid kicked_user_id")
+	}
+
 	pickedCard := ""
 	if !attrs["picked_card"].IsNull() {
 		if m, _ := regexp.MatchString(`^[0-9a-zA-Z]*$`, attrs["picked_card"].String()); !m {
@@ -90,11 +96,12 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 	}
 
 	return &Operation{
-		EventId:    attrs["event_id"].String(),
-		RoomId:     attrs["room_id"].String(),
-		OpType:     opType,
-		UserId:     attrs["user_id"].String(),
-		OperatedAt: attrs["operated_at"].String(),
-		PickedCard: pickedCard,
+		EventId:      attrs["event_id"].String(),
+		RoomId:       attrs["room_id"].String(),
+		OpType:       opType,
+		UserId:       attrs["user_id"].String(),
+		OperatedAt:   attrs["operated_at"].String(),
+		PickedCard:   pickedCard,
+		KickedUserId: attrs["kicked_user_id"].String(),
 	}, nil
 }

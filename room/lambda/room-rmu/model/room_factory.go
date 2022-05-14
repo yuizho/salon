@@ -27,7 +27,7 @@ func createStatus(opType OpType) (Status, error) {
 	switch opType {
 	case OpenRoom, Join, RefreshTable:
 		return NewStatus("CHOOSING")
-	case Leave:
+	case Leave, Kick:
 		return NewStatus("LEAVED")
 	case Pick:
 		return NewStatus("CHOSEN")

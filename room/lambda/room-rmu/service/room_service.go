@@ -42,6 +42,8 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 		return service.refreshPokerTable(context, operation)
 	case model.Heartbeat:
 		return service.updateOperatedAt(context, operation)
+	case model.Kick:
+		return service.kickUser(context, operation)
 	default:
 		return fmt.Errorf("unreachable error")
 	}
@@ -146,6 +148,32 @@ func (service *RoomService) updateOperatedAt(context context.Context, operation 
 	logger.Infof("%s Room to update operatedAt", reqId)
 
 	return service.repository.UpdateActiveUserOperatedAt(context, operation.RoomId, operation.UserId, operation.OperatedAt)
+}
+
+func (service *RoomService) kickUser(context context.Context, operation *model.Operation) error {
+	rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
+	if err != nil {
+		return err
+	}
+
+	if !isProperUser(rooms, operation.UserId) {
+		return fmt.Errorf("passed user id is not active: %s", operation.UserId)
+	}
+
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("%s Room to kick %s by %s", reqId, operation.KickedUserId, operation.UserId)
+
+	return service.updateUserState(context, &model.Operation{
+		EventId:    operation.EventId,
+		RoomId:     operation.RoomId,
+		OpType:     model.OpType("LEAVE"),
+		UserId:     operation.KickedUserId,
+		OperatedAt: operation.OperatedAt,
+	})
 }
 
 func isProperUser(rooms *[]model.Room, userId string) bool {
