@@ -83,8 +83,12 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		return nil, errors.New("invalid operated_at")
 	}
 
-	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["kicked_user_id"].String()); !m {
-		return nil, errors.New("invalid kicked_user_id")
+	kickedUserId := ""
+	if !attrs["kicked_user_id"].IsNull() {
+		if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]*$`, attrs["kicked_user_id"].String()); !m {
+			return nil, errors.New("invalid kicked_user_id")
+		}
+		kickedUserId = attrs["kicked_user_id"].String()
 	}
 
 	pickedCard := ""
@@ -102,6 +106,6 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		UserId:       attrs["user_id"].String(),
 		OperatedAt:   attrs["operated_at"].String(),
 		PickedCard:   pickedCard,
-		KickedUserId: attrs["kicked_user_id"].String(),
+		KickedUserId: kickedUserId,
 	}, nil
 }
