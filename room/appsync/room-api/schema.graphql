@@ -14,7 +14,6 @@
     status: Status!
     picked_card: String
     operated_at: AWSDateTime!
-    joined_at: AWSDateTime!
   ): User @aws_iam
 }
 
@@ -57,7 +56,6 @@ type User @aws_api_key @aws_iam {
   status: Status!
   picked_card: String
   operated_at: AWSDateTime!
-  joined_at: AWSDateTime!
 }
 
 enum Status {

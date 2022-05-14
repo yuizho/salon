@@ -30,9 +30,6 @@ func TestCreateRoomOpTypeJoined(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
-	if actual.JoinedAt != "2022-10-10T13:50:40Z" {
-		t.Fatalf("unexpected JoinedAt: %s", actual.JoinedAt)
-	}
 }
 
 func TestCreateRoomOpTypeleaved(t *testing.T) {
@@ -60,9 +57,6 @@ func TestCreateRoomOpTypeleaved(t *testing.T) {
 	}
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
-	}
-	if actual.JoinedAt != "2022-10-10T13:50:40Z" {
-		t.Fatalf("unexpected JoinedAt: %s", actual.JoinedAt)
 	}
 }
 
@@ -92,8 +86,5 @@ func TestCreateRoomOpTypePicked(t *testing.T) {
 	}
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
-	}
-	if actual.JoinedAt != "2022-10-10T13:50:40Z" {
-		t.Fatalf("unexpected JoinedAt: %s", actual.JoinedAt)
 	}
 }
