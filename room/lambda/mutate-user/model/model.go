@@ -47,11 +47,11 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		return nil, errors.New("invalid room_id")
 	}
 
-	if attrs["user_id"].IsNull() {
-		return nil, errors.New("no user_id")
+	if attrs["item_key"].IsNull() {
+		return nil, errors.New("no item_key")
 	}
-	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["user_id"].String()); !m {
-		return nil, errors.New("invalid user_id")
+	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["item_key"].String()); !m {
+		return nil, errors.New("invalid item_key")
 	}
 
 	if attrs["operated_at"].IsNull() {
@@ -80,7 +80,7 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 
 	return &Room{
 		RoomId:     attrs["room_id"].String(),
-		UserId:     attrs["user_id"].String(),
+		UserId:     attrs["item_key"].String(),
 		Status:     status,
 		PickedCard: pickedCard,
 		OperatedAt: attrs["operated_at"].String(),

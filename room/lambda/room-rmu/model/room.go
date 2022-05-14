@@ -37,7 +37,7 @@ func (status Status) String() string {
 
 type Room struct {
 	RoomId     string `dynamodbav:"room_id" json:"room_id"`
-	UserId     string `dynamodbav:"user_id" json:"user_id"`
+	UserId     string `dynamodbav:"item_key" json:"item_key"`
 	Status     Status `dynamodbav:"status" json:"status"`
 	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
 	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`

@@ -66,15 +66,15 @@ func (repos *DynamoRoomRepository) UpdateActiveUser(context context.Context, roo
 	_, err := UpdateItem(context, repos.client, &dynamodb.UpdateItemInput{
 		TableName: aws.String("room"),
 		Key: map[string]types.AttributeValue{
-			"room_id": &types.AttributeValueMemberS{Value: room.RoomId},
-			"user_id": &types.AttributeValueMemberS{Value: room.UserId},
+			"room_id":  &types.AttributeValueMemberS{Value: room.RoomId},
+			"item_key": &types.AttributeValueMemberS{Value: room.UserId},
 		},
 		UpdateExpression:    aws.String("SET #status = :status, operated_at = :operated_at, picked_card = :picked_card"),
-		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#user_id) AND #status <> :condition_status"),
+		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status"),
 		ExpressionAttributeNames: map[string]string{
-			"#room_id": "room_id",
-			"#user_id": "user_id",
-			"#status":  "status",
+			"#room_id":  "room_id",
+			"#item_key": "item_key",
+			"#status":   "status",
 		},
 		ExpressionAttributeValues: map[string]types.AttributeValue{
 			":status":           &types.AttributeValueMemberS{Value: room.Status.String()},
@@ -95,15 +95,15 @@ func (repos *DynamoRoomRepository) UpdateActiveUserOperatedAt(context context.Co
 	_, err := UpdateItem(context, repos.client, &dynamodb.UpdateItemInput{
 		TableName: aws.String("room"),
 		Key: map[string]types.AttributeValue{
-			"room_id": &types.AttributeValueMemberS{Value: roomId},
-			"user_id": &types.AttributeValueMemberS{Value: userId},
+			"room_id":  &types.AttributeValueMemberS{Value: roomId},
+			"item_key": &types.AttributeValueMemberS{Value: userId},
 		},
 		UpdateExpression:    aws.String("SET operated_at = :operated_at"),
-		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#user_id) AND #status <> :condition_status"),
+		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status"),
 		ExpressionAttributeNames: map[string]string{
-			"#room_id": "room_id",
-			"#user_id": "user_id",
-			"#status":  "status",
+			"#room_id":  "room_id",
+			"#item_key": "item_key",
+			"#status":   "status",
 		},
 		ExpressionAttributeValues: map[string]types.AttributeValue{
 			":operated_at":      &types.AttributeValueMemberS{Value: operatedAt},

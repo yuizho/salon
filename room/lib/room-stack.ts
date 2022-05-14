@@ -35,7 +35,7 @@ export class RoomStack extends Stack {
       removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
-      sortKey: { name: "user_id", type: db.AttributeType.STRING },
+      sortKey: { name: "item_key", type: db.AttributeType.STRING },
       stream: db.StreamViewType.NEW_IMAGE,
     });
 
