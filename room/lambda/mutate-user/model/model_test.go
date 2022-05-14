@@ -9,7 +9,7 @@ import (
 func TestNewRoom(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -39,7 +39,7 @@ func TestNewRoom(t *testing.T) {
 func TestNewRoomNoPickedCard(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -68,7 +68,7 @@ func TestNewRoomNoPickedCard(t *testing.T) {
 
 func TestNewRoomNoRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -82,7 +82,7 @@ func TestNewRoomNoRoomId(t *testing.T) {
 func TestNewRoomInvalidRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1_")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -109,7 +109,7 @@ func TestNewRoomNoUserId(t *testing.T) {
 func TestNewRoomInvalidUserId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2_")
+	input["item_key"] = events.NewStringAttribute("2_")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -123,7 +123,7 @@ func TestNewRoomInvalidUserId(t *testing.T) {
 func TestNewRoomNoStatus(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
@@ -136,7 +136,7 @@ func TestNewRoomNoStatus(t *testing.T) {
 func TestNewRoomInvalidStatus(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("UNEXPECTED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -150,7 +150,7 @@ func TestNewRoomInvalidStatus(t *testing.T) {
 func TestNewRoomInvalidPickedCard(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("_")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
@@ -164,7 +164,7 @@ func TestNewRoomInvalidPickedCard(t *testing.T) {
 func TestNewRoomNoOperatedAt(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 
@@ -177,7 +177,7 @@ func TestNewRoomNoOperatedAt(t *testing.T) {
 func TestNewRoomInvalidOperatedAt(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
-	input["user_id"] = events.NewStringAttribute("2")
+	input["item_key"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40XX")
