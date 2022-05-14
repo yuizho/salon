@@ -6,9 +6,9 @@ import (
 	"os"
 
 	"github.com/google/logger"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/service"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/util"
+	"github.com/yuizho/salon/room/lambda/mutate-user/appsync"
+	"github.com/yuizho/salon/room/lambda/mutate-user/service"
+	"github.com/yuizho/salon/room/lambda/mutate-user/util"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"

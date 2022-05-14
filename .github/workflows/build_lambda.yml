@@ -3,27 +3,26 @@ name: Build Lambda functions
 on: [push]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.18
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
 
-    - name: Build RoomRMU function
-      working-directory: ./room/lambda/room-rmu
-      run: go build -v ./...
-    - name: Test RoomRMU function
-      working-directory: ./room/lambda/room-rmu
-      run: go test -v ./...
+      - name: Build RoomRMU function
+        working-directory: ./room/lambda/room-rmu
+        run: go build -v ./...
+      - name: Test RoomRMU function
+        working-directory: ./room/lambda/room-rmu
+        run: go test -v ./...
 
-    - name: Build MutatePoker function
-      working-directory: ./room/lambda/mutate-poker
-      run: go build -v ./...
-    - name: Test MutatePoker function
-      working-directory: ./room/lambda/mutate-poker
-      run: go test -v ./...
+      - name: Build MutateUser function
+        working-directory: ./room/lambda/mutate-user
+        run: go build -v ./...
+      - name: Test MutateUser function
+        working-directory: ./room/lambda/mutate-user
+        run: go test -v ./...

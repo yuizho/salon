@@ -13,7 +13,7 @@ import (
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/google/logger"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/util"
+	"github.com/yuizho/salon/room/lambda/mutate-user/util"
 )
 
 type AppSyncClient struct {

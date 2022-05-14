@@ -14,17 +14,17 @@ AppSync(operationMutation, "Operation mutation", "operation")
 DynamoDB(operationTable, "Operatoin Table", "event store")
 Lambda(rmu, "RMU", "synchronize event to query store")
 DynamoDB(roomTable, "Room Table", "query store")
-Lambda(mutatePoker, "Mutate Poker", "push room data")
-AppSync(pokerMutation, "Poker mutation", "room")
-AppSync(pokerSubscription, "Poker subscription", "room")
+Lambda(mutateUser, "Mutate User", "push room data")
+AppSync(pokerMutation, "User mutation", "room")
+AppSync(pokerSubscription, "User subscription", "room")
 AppSync(roomQuery, "Room query", "room")
 
 users -right--> operationMutation
 operationMutation --> operationTable: dynamo resolver
 operationTable .right.> rmu: dynamo stream
 rmu --> roomTable: update room table
-roomTable .up.> mutatePoker: dynamo stream
-mutatePoker -left-> pokerMutation
+roomTable .up.> mutateUser: dynamo stream
+mutateUser -left-> pokerMutation
 pokerMutation -> pokerSubscription: none resolver
 pokerSubscription <--> users
 users <--> roomQuery

@@ -1,4 +1,4 @@
-module github.com/yuizho/salon/room/lambda/mutate-poker
+module github.com/yuizho/salon/room/lambda/mutate-user
 
 go 1.18
 

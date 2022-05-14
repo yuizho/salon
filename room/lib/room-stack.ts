@@ -124,7 +124,7 @@ export class RoomStack extends Stack {
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
     const roomDataSource = roomAPI.addDynamoDbDataSource("room", roomTable);
-    const PokerDataSource = roomAPI.addNoneDataSource("poker");
+    const UserDataSource = roomAPI.addNoneDataSource("poker");
     // Define resolvers
     roomDataSource.createResolver({
       typeName: "Query",
@@ -134,11 +134,11 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    PokerDataSource.createResolver({
+    UserDataSource.createResolver({
       typeName: "Mutation",
-      fieldName: "updatePoker",
+      fieldName: "updateUser",
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.updatePoker.req.vtl"
+        "appsync/room-api/resolvers/Mutation.updateUser.req.vtl"
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
@@ -167,25 +167,25 @@ export class RoomStack extends Stack {
     );
     roomTable.grantReadWriteData(roomRMUFunction);
 
-    const mutatePokerFunction = new lambdaGo.GoFunction(this, "mutate-poker", {
-      functionName: "MutatePoker",
-      entry: "lambda/mutate-poker",
+    const mutateUserFunction = new lambdaGo.GoFunction(this, "mutate-user", {
+      functionName: "MutateUser",
+      entry: "lambda/mutate-user",
       environment: {
         ROOM_API_URL: roomApiUrl.stringValue,
         REGION: this.region,
       },
     });
-    mutatePokerFunction.addEventSource(
+    mutateUserFunction.addEventSource(
       new DynamoEventSource(roomTable, {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
         retryAttempts: 3,
       })
     );
     // configure IAM Role
-    if (typeof mutatePokerFunction.role !== "undefined") {
+    if (typeof mutateUserFunction.role !== "undefined") {
       roomAPI.grant(
-        mutatePokerFunction.role,
-        appsync.IamResource.custom("types/Mutation/fields/updatePoker"),
+        mutateUserFunction.role,
+        appsync.IamResource.custom("types/Mutation/fields/updateUser"),
         "appsync:GraphQL"
       );
     }

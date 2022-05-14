@@ -8,14 +8,14 @@
   heartbeat(room_id: String!, user_id: String!): Operation @aws_api_key
   kick(room_id: String!, user_id: String!, kicked_user_id: String!): Operation
     @aws_api_key
-  updatePoker(
+  updateUser(
     room_id: String!
     user_id: String!
     status: Status!
     picked_card: String
     operated_at: AWSDateTime!
     joined_at: AWSDateTime!
-  ): Poker @aws_iam
+  ): User @aws_iam
 }
 
 type Query {
@@ -23,8 +23,8 @@ type Query {
 }
 
 type Subscription {
-  onUpdatePoker(room_id: String): Poker
-    @aws_subscribe(mutations: ["updatePoker"])
+  onUpdateUser(room_id: String): User
+    @aws_subscribe(mutations: ["updateUser"])
     @aws_api_key
 }
 
@@ -48,10 +48,10 @@ enum OperationType {
 }
 
 type Room @aws_api_key @aws_iam {
-  items: [Poker]
+  items: [User]
 }
 
-type Poker @aws_api_key @aws_iam {
+type User @aws_api_key @aws_iam {
   room_id: String!
   user_id: String!
   status: Status!

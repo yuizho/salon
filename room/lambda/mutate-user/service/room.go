@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/logger"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/appsync"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/model"
-	"github.com/yuizho/salon/room/lambda/mutate-poker/util"
+	"github.com/yuizho/salon/room/lambda/mutate-user/appsync"
+	"github.com/yuizho/salon/room/lambda/mutate-user/model"
+	"github.com/yuizho/salon/room/lambda/mutate-user/util"
 
 	"github.com/aws/aws-lambda-go/events"
 )
