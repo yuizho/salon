@@ -17,7 +17,11 @@ func HandleRequest(ctx context.Context, request events.DynamoDBEvent, client *ap
 			continue
 		}
 
-		room, err := model.NewRoom(event.Change.NewImage)
+		if event.Change.NewImage["item_type"].String() != "USER" {
+			continue
+		}
+
+		user, err := model.NewUser(event.Change.NewImage)
 		if err != nil {
 			return err
 		}
@@ -27,9 +31,9 @@ func HandleRequest(ctx context.Context, request events.DynamoDBEvent, client *ap
 			return err
 		}
 
-		logger.Infof("%s updated Room %#v", reqId, room)
+		logger.Infof("%s updated Room %#v", reqId, user)
 
-		_, err = appsync.MutateRoomAPI(ctx, client, room, apiUrl, region)
+		_, err = appsync.MutateRoomAPI(ctx, client, user, apiUrl, region)
 		if err != nil {
 			return err
 		}

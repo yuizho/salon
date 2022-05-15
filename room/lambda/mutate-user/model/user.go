@@ -30,7 +30,7 @@ func (status Status) String() string {
 	return string(status)
 }
 
-type Room struct {
+type User struct {
 	RoomId     string
 	UserId     string
 	Status     Status
@@ -38,7 +38,7 @@ type Room struct {
 	OperatedAt string
 }
 
-func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
+func NewUser(attrs map[string]events.DynamoDBAttributeValue) (*User, error) {
 	// validation
 	if attrs["room_id"].IsNull() {
 		return nil, errors.New("no room_id")
@@ -78,7 +78,7 @@ func NewRoom(attrs map[string]events.DynamoDBAttributeValue) (*Room, error) {
 		return nil, err
 	}
 
-	return &Room{
+	return &User{
 		RoomId:     attrs["room_id"].String(),
 		UserId:     attrs["item_key"].String(),
 		Status:     status,

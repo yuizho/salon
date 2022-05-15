@@ -7,7 +7,7 @@ import (
 	"github.com/yuizho/salon/room/lambda/mutate-user/model"
 )
 
-func MutateRoomAPI(ctx context.Context, client *AppSyncClient, room *model.Room, apiUrl string, region string) (int, error) {
+func MutateRoomAPI(ctx context.Context, client *AppSyncClient, user *model.User, apiUrl string, region string) (int, error) {
 	query := fmt.Sprintf(`{
 		"query": "mutation ($room_id:String! $status:Status! $user_id:String! $picked_card:String $operated_at:AWSDateTime!){updateUser(room_id: $room_id, user_id: $user_id, status: $status, picked_card: $picked_card, operated_at: $operated_at){room_id,user_id,status,picked_card,operated_at}}",
 		"variables": {
@@ -17,7 +17,7 @@ func MutateRoomAPI(ctx context.Context, client *AppSyncClient, room *model.Room,
 			"picked_card": "%s",
 			"operated_at": "%s"
 		}
-	}`, room.RoomId, room.UserId, room.Status.String(), room.PickedCard, room.OperatedAt)
+	}`, user.RoomId, user.UserId, user.Status.String(), user.PickedCard, user.OperatedAt)
 
 	status, err := client.SendRequest(
 		ctx,

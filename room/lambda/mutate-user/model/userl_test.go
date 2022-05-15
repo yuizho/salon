@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func TestNewRoom(t *testing.T) {
+func TestNewUser(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2")
@@ -14,7 +14,7 @@ func TestNewRoom(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	actual, err := NewRoom(input)
+	actual, err := NewUser(input)
 	if err != nil {
 		t.Fatalf("failed to create room")
 	}
@@ -36,7 +36,7 @@ func TestNewRoom(t *testing.T) {
 	}
 }
 
-func TestNewRoomNoPickedCard(t *testing.T) {
+func TestNewUserNoPickedCard(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2")
@@ -44,7 +44,7 @@ func TestNewRoomNoPickedCard(t *testing.T) {
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	actual, err := NewRoom(input)
+	actual, err := NewUser(input)
 	if err != nil {
 		t.Fatalf("failed to create room")
 	}
@@ -66,20 +66,20 @@ func TestNewRoomNoPickedCard(t *testing.T) {
 	}
 }
 
-func TestNewRoomNoRoomId(t *testing.T) {
+func TestNewUserNoRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["item_key"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomInvalidRoomId(t *testing.T) {
+func TestNewUserInvalidRoomId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1_")
 	input["item_key"] = events.NewStringAttribute("2")
@@ -87,26 +87,26 @@ func TestNewRoomInvalidRoomId(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomNoUserId(t *testing.T) {
+func TestNewUserNoUserId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomInvalidUserId(t *testing.T) {
+func TestNewUserInvalidUserId(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2_")
@@ -114,20 +114,20 @@ func TestNewRoomInvalidUserId(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomNoStatus(t *testing.T) {
+func TestNewUserNoStatus(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
@@ -141,13 +141,13 @@ func TestNewRoomInvalidStatus(t *testing.T) {
 	input["status"] = events.NewStringAttribute("UNEXPECTED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomInvalidPickedCard(t *testing.T) {
+func TestNewUserInvalidPickedCard(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2")
@@ -155,26 +155,26 @@ func TestNewRoomInvalidPickedCard(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomNoOperatedAt(t *testing.T) {
+func TestNewUserNoOperatedAt(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2")
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["picked_card"] = events.NewStringAttribute("5")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
 }
 
-func TestNewRoomInvalidOperatedAt(t *testing.T) {
+func TestNewUserInvalidOperatedAt(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["room_id"] = events.NewStringAttribute("1")
 	input["item_key"] = events.NewStringAttribute("2")
@@ -182,7 +182,7 @@ func TestNewRoomInvalidOperatedAt(t *testing.T) {
 	input["status"] = events.NewStringAttribute("CHOOSING")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40XX")
 
-	_, err := NewRoom(input)
+	_, err := NewUser(input)
 	if err == nil {
 		t.Fatalf("failed to validate room")
 	}
