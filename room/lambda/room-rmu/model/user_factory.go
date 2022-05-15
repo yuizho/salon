@@ -2,7 +2,7 @@ package model
 
 import "fmt"
 
-func CreateRoom(operation *Operation) (*Room, error) {
+func CreateUser(operation *Operation) (*User, error) {
 	status, err := createStatus(operation.OpType)
 	if err != nil {
 		return nil, err
@@ -13,7 +13,7 @@ func CreateRoom(operation *Operation) (*Room, error) {
 		pickedCard = operation.PickedCard
 	}
 
-	return &Room{
+	return &User{
 		RoomId:     operation.RoomId,
 		UserId:     operation.UserId,
 		Status:     status,

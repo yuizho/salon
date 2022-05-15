@@ -50,7 +50,7 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 }
 
 func (service *RoomService) openRoom(context context.Context, operation *model.Operation) error {
-	room, err := model.CreateRoom(operation)
+	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
 	}
@@ -60,13 +60,13 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 		return err
 	}
 
-	logger.Infof("%s Room to save user state %#v", reqId, room)
+	logger.Infof("%s Room to save user state %#v", reqId, user)
 
-	return service.repository.Save(context, room)
+	return service.repository.SaveUser(context, user)
 }
 
 func (service *RoomService) addUserToRoom(context context.Context, operation *model.Operation) error {
-	room, err := model.CreateRoom(operation)
+	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
 	}
@@ -84,13 +84,13 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 		return err
 	}
 
-	logger.Infof("%s Room to save user state %#v", reqId, room)
+	logger.Infof("%s Room to save user state %#v", reqId, user)
 
-	return service.repository.Save(context, room)
+	return service.repository.SaveUser(context, user)
 }
 
 func (service *RoomService) updateUserState(context context.Context, operation *model.Operation) error {
-	room, err := model.CreateRoom(operation)
+	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
 	}
@@ -100,9 +100,9 @@ func (service *RoomService) updateUserState(context context.Context, operation *
 		return err
 	}
 
-	logger.Infof("%s Room to update user state %#v", reqId, room)
+	logger.Infof("%s Room to update user state %#v", reqId, user)
 
-	return service.repository.UpdateActiveUser(context, room)
+	return service.repository.UpdateActiveUser(context, user)
 }
 
 func (service *RoomService) refreshPokerTable(context context.Context, operation *model.Operation) error {
@@ -176,7 +176,7 @@ func (service *RoomService) kickUser(context context.Context, operation *model.O
 	})
 }
 
-func isProperUser(rooms *[]model.Room, userId string) bool {
+func isProperUser(rooms *[]model.User, userId string) bool {
 	for _, room := range *rooms {
 		if room.UserId == userId {
 			return true

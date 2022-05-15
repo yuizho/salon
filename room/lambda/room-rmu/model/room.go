@@ -6,9 +6,9 @@ import (
 )
 
 type RoomRepository interface {
-	Save(context context.Context, room *Room) error
-	FindActiveUsers(context context.Context, roomId string) (*[]Room, error)
-	UpdateActiveUser(context context.Context, room *Room) error
+	SaveUser(context context.Context, room *User) error
+	FindActiveUsers(context context.Context, roomId string) (*[]User, error)
+	UpdateActiveUser(context context.Context, room *User) error
 	UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error
 	ExistRoom(context context.Context, roomId string) (bool, error)
 }
@@ -35,7 +35,7 @@ func (status Status) String() string {
 	return string(status)
 }
 
-type Room struct {
+type User struct {
 	RoomId     string `dynamodbav:"room_id" json:"room_id"`
 	UserId     string `dynamodbav:"item_key" json:"item_key"`
 	Status     Status `dynamodbav:"status" json:"status"`
@@ -43,14 +43,14 @@ type Room struct {
 	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
 }
 
-func (room *Room) RefreshPokerTable(operatedAt string) error {
+func (user *User) RefreshPokerTable(operatedAt string) error {
 	choosing, err := NewStatus("CHOOSING")
 	if err != nil {
 		return err
 	}
 
-	room.PickedCard = ""
-	room.Status = choosing
-	room.OperatedAt = operatedAt
+	user.PickedCard = ""
+	user.Status = choosing
+	user.OperatedAt = operatedAt
 	return nil
 }

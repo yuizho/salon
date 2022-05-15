@@ -5,7 +5,7 @@ import (
 )
 
 func TestCreateRoomOpTypeJoined(t *testing.T) {
-	actual, err := CreateRoom(&Operation{
+	actual, err := CreateUser(&Operation{
 		RoomId:     "1",
 		OpType:     Join,
 		UserId:     "2",
@@ -33,7 +33,7 @@ func TestCreateRoomOpTypeJoined(t *testing.T) {
 }
 
 func TestCreateRoomOpTypeleaved(t *testing.T) {
-	actual, err := CreateRoom(&Operation{
+	actual, err := CreateUser(&Operation{
 		RoomId:     "1",
 		OpType:     Leave,
 		UserId:     "2",
@@ -61,7 +61,7 @@ func TestCreateRoomOpTypeleaved(t *testing.T) {
 }
 
 func TestCreateRoomOpTypePicked(t *testing.T) {
-	actual, err := CreateRoom(&Operation{
+	actual, err := CreateUser(&Operation{
 		RoomId:     "1",
 		OpType:     Pick,
 		UserId:     "2",

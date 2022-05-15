@@ -13,11 +13,11 @@ import (
 type TestRepos struct {
 }
 
-func (repos *TestRepos) Save(context context.Context, room *model.Room) error {
+func (repos *TestRepos) SaveUser(context context.Context, room *model.User) error {
 	return nil
 }
-func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) (*[]model.Room, error) {
-	return &[]model.Room{
+func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) (*[]model.User, error) {
+	return &[]model.User{
 		{
 			RoomId:     "1",
 			UserId:     "1",
@@ -32,7 +32,7 @@ func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) 
 		},
 	}, nil
 }
-func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.Room) error {
+func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.User) error {
 	// part of update is failed
 	if room.UserId == "2" {
 		return fmt.Errorf("some error")
