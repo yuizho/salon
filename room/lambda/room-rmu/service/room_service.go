@@ -3,9 +3,12 @@ package service
 import (
 	"context"
 	"fmt"
+	"math/rand"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/google/logger"
+	"github.com/oklog/ulid/v2"
 	"github.com/yuizho/salon/room/lambda/room-rmu/model"
 	"github.com/yuizho/salon/room/lambda/room-rmu/util"
 )
@@ -62,7 +65,18 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 
 	logger.Infof("%s Room to save user state %#v", reqId, user)
 
-	return service.repository.SaveUser(context, user)
+	err = service.repository.SaveUser(context, user)
+	if err != nil {
+		return err
+	}
+
+	now := time.Now()
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(now.UnixNano())), 0)
+	itemKey := ulid.MustNew(ulid.Timestamp(now), entropy)
+	// in 30 min is room expiration
+	expirationUnixTimestamp := now.Unix() + (60 * 30)
+
+	return service.repository.OpenRoom(context, operation.RoomId, itemKey.String(), expirationUnixTimestamp)
 }
 
 func (service *RoomService) addUserToRoom(context context.Context, operation *model.Operation) error {

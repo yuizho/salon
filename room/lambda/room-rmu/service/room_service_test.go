@@ -13,6 +13,10 @@ import (
 type TestRepos struct {
 }
 
+func (repos *TestRepos) OpenRoom(context context.Context, roomId string, itemKey string, expirationUnixTimestamp int64) error {
+	return nil
+}
+
 func (repos *TestRepos) SaveUser(context context.Context, room *model.User) error {
 	return nil
 }

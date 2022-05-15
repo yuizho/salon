@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
@@ -16,6 +17,19 @@ type DynamoRoomRepository struct {
 
 func NewDynamoRoomRepository(client DynamoDBPutAPI) *DynamoRoomRepository {
 	return &DynamoRoomRepository{client: client}
+}
+
+func (repos *DynamoRoomRepository) OpenRoom(context context.Context, roomId string, itemKey string, expirationUnixTimestamp int64) error {
+	_, err := PutItem(context, repos.client, &dynamodb.PutItemInput{
+		TableName: aws.String("room"),
+		Item: map[string]types.AttributeValue{
+			"room_id":                   &types.AttributeValueMemberS{Value: roomId},
+			"item_key":                  &types.AttributeValueMemberS{Value: itemKey},
+			"item_type":                 &types.AttributeValueMemberS{Value: "ROOM"},
+			"expiration_unix_timestamp": &types.AttributeValueMemberN{Value: strconv.FormatInt(expirationUnixTimestamp, 10)},
+		},
+	})
+	return err
 }
 
 func (repos *DynamoRoomRepository) SaveUser(context context.Context, user *model.User) error {
