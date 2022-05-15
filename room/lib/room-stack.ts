@@ -19,7 +19,6 @@ export class RoomStack extends Stack {
     super(scope, id, props);
 
     // ================= DynamoDB =================
-    // TODO: TTL config
     // TODO: save operation logs to S3 by Dynamo DB Stream
     // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
     const operationTable = new db.Table(this, "OperationTable", {
@@ -36,6 +35,7 @@ export class RoomStack extends Stack {
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: "room_id", type: db.AttributeType.STRING },
       sortKey: { name: "item_key", type: db.AttributeType.STRING },
+      timeToLiveAttribute: "expiration_unix_timestamp",
       stream: db.StreamViewType.NEW_IMAGE,
     });
 
