@@ -1,13 +1,24 @@
 #set($items = [])
+#set($expiration_unix_timestamp = 0)
+#set($is_opened = false)
 
 #foreach($item in $context.result.items)
-    $util.qr($items.add({
-        "room_id": $item.room_id,
-        "user_id": $item.item_key,
-        "picked_card": $item.picked_card,
-        "status": $item.status,
-        "operated_at": $item.operated_at
-    }))
+    #if($item.item_type == "USER")
+      $util.qr($items.add({
+          "room_id": $item.room_id,
+          "user_id": $item.item_key,
+          "picked_card": $item.picked_card,
+          "status": $item.status,
+          "operated_at": $item.operated_at
+      }))
+    #elseif($item.item_type == "ROOM")
+        #set($is_opened = true)
+        #set($expiration_unix_timestamp = $item.expiration_unix_timestamp)
+    #end
 #end
 
-$util.toJson({ "items" : $items })
+$util.toJson({
+    "items" : $items,
+    "expiration_unix_timestamp": $expiration_unix_timestamp,
+    "is_opened": $is_opened
+})

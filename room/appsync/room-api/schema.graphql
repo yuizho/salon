@@ -48,6 +48,8 @@ enum OperationType {
 
 type Room @aws_api_key @aws_iam {
   items: [User]
+  expiration_unix_timestamp: AWSTimestamp!
+  is_opened: Boolean!
 }
 
 type User @aws_api_key @aws_iam {
