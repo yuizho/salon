@@ -1,0 +1,13 @@
+#set($items = [])
+
+#foreach($item in $context.result.items)
+    $util.qr($items.add({
+        "room_id": $item.room_id,
+        "user_id": $item.item_key,
+        "picked_card": $item.picked_card,
+        "status": $item.status,
+        "operated_at": $item.operated_at
+    }))
+#end
+
+$util.toJson({ "items" : $items })

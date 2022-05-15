@@ -132,7 +132,9 @@ export class RoomStack extends Stack {
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
         "appsync/room-api/resolvers/Query.getRoom.req.vtl"
       ),
-      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
+      responseMappingTemplate: appsync.MappingTemplate.fromFile(
+        "appsync/room-api/resolvers/Query.getRoom.resp.vtl"
+      ),
     });
     UserDataSource.createResolver({
       typeName: "Mutation",
