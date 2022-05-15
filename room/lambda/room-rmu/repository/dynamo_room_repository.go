@@ -55,13 +55,14 @@ func (repos *DynamoRoomRepository) FindActiveUsers(context context.Context, room
 	result, err := Query(context, repos.client, &dynamodb.QueryInput{
 		TableName:              aws.String("room"),
 		KeyConditionExpression: aws.String("room_id = :room_id"),
-		FilterExpression:       aws.String("#status <> :status"),
+		FilterExpression:       aws.String("#status <> :status AND item_type = :item_type"),
 		ExpressionAttributeNames: map[string]string{
 			"#status": "status",
 		},
 		ExpressionAttributeValues: map[string]types.AttributeValue{
-			":room_id": &types.AttributeValueMemberS{Value: roomId},
-			":status":  &types.AttributeValueMemberS{Value: "LEAVED"},
+			":room_id":   &types.AttributeValueMemberS{Value: roomId},
+			":status":    &types.AttributeValueMemberS{Value: "LEAVED"},
+			":item_type": &types.AttributeValueMemberS{Value: "USER"},
 		},
 	})
 	if err != nil {
@@ -86,7 +87,7 @@ func (repos *DynamoRoomRepository) UpdateActiveUser(context context.Context, use
 			"item_key": &types.AttributeValueMemberS{Value: user.UserId},
 		},
 		UpdateExpression:    aws.String("SET #status = :status, operated_at = :operated_at, picked_card = :picked_card"),
-		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status"),
+		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status AND item_type = :item_type"),
 		ExpressionAttributeNames: map[string]string{
 			"#room_id":  "room_id",
 			"#item_key": "item_key",
@@ -97,6 +98,7 @@ func (repos *DynamoRoomRepository) UpdateActiveUser(context context.Context, use
 			":operated_at":      &types.AttributeValueMemberS{Value: user.OperatedAt},
 			":picked_card":      &types.AttributeValueMemberS{Value: user.PickedCard},
 			":condition_status": &types.AttributeValueMemberS{Value: "LEAVED"},
+			":item_type":        &types.AttributeValueMemberS{Value: "USER"},
 		},
 	})
 
@@ -115,7 +117,7 @@ func (repos *DynamoRoomRepository) UpdateActiveUserOperatedAt(context context.Co
 			"item_key": &types.AttributeValueMemberS{Value: userId},
 		},
 		UpdateExpression:    aws.String("SET operated_at = :operated_at"),
-		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status"),
+		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status AND item_type = :item_type"),
 		ExpressionAttributeNames: map[string]string{
 			"#room_id":  "room_id",
 			"#item_key": "item_key",
@@ -124,6 +126,7 @@ func (repos *DynamoRoomRepository) UpdateActiveUserOperatedAt(context context.Co
 		ExpressionAttributeValues: map[string]types.AttributeValue{
 			":operated_at":      &types.AttributeValueMemberS{Value: operatedAt},
 			":condition_status": &types.AttributeValueMemberS{Value: "LEAVED"},
+			":item_type":        &types.AttributeValueMemberS{Value: "USER"},
 		},
 	})
 
