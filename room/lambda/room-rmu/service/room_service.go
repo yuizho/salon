@@ -65,16 +65,17 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 
 	logger.Infof("%s Room to save user state %#v", reqId, user)
 
-	err = service.repository.SaveUser(context, user)
+	now := time.Now()
+	// in 30 min is room expiration
+	expirationUnixTimestamp := now.Unix() + (60 * 30)
+
+	err = service.repository.SaveUser(context, user, expirationUnixTimestamp)
 	if err != nil {
 		return err
 	}
 
-	now := time.Now()
 	entropy := ulid.Monotonic(rand.New(rand.NewSource(now.UnixNano())), 0)
 	itemKey := ulid.MustNew(ulid.Timestamp(now), entropy)
-	// in 30 min is room expiration
-	expirationUnixTimestamp := now.Unix() + (60 * 30)
 
 	return service.repository.OpenRoom(context, operation.RoomId, itemKey.String(), expirationUnixTimestamp)
 }
@@ -100,7 +101,11 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 
 	logger.Infof("%s Room to save user state %#v", reqId, user)
 
-	return service.repository.SaveUser(context, user)
+	now := time.Now()
+	// in 30 min is room expiration
+	expirationUnixTimestamp := now.Unix() + (60 * 30)
+
+	return service.repository.SaveUser(context, user, expirationUnixTimestamp)
 }
 
 func (service *RoomService) updateUserState(context context.Context, operation *model.Operation) error {

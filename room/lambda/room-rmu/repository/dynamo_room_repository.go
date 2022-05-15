@@ -32,12 +32,13 @@ func (repos *DynamoRoomRepository) OpenRoom(context context.Context, roomId stri
 	return err
 }
 
-func (repos *DynamoRoomRepository) SaveUser(context context.Context, user *model.User) error {
+func (repos *DynamoRoomRepository) SaveUser(context context.Context, user *model.User, expirationUnixTimestamp int64) error {
 	roomItem, err := attributevalue.MarshalMap(user)
 	if err != nil {
 		return err
 	}
 	roomItem["item_type"] = &types.AttributeValueMemberS{Value: "USER"}
+	roomItem["expiration_unix_timestamp"] = &types.AttributeValueMemberN{Value: strconv.FormatInt(expirationUnixTimestamp, 10)}
 
 	_, err = PutItem(context, repos.client, &dynamodb.PutItemInput{
 		TableName: aws.String("room"),

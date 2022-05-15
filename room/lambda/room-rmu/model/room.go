@@ -7,7 +7,7 @@ import (
 
 type RoomRepository interface {
 	OpenRoom(context context.Context, roomId string, itemKey string, expirationUnixTimestamp int64) error
-	SaveUser(context context.Context, room *User) error
+	SaveUser(context context.Context, room *User, expirationUnixTimestamp int64) error
 	FindActiveUsers(context context.Context, roomId string) (*[]User, error)
 	UpdateActiveUser(context context.Context, room *User) error
 	UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error

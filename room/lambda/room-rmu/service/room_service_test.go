@@ -17,7 +17,7 @@ func (repos *TestRepos) OpenRoom(context context.Context, roomId string, itemKey
 	return nil
 }
 
-func (repos *TestRepos) SaveUser(context context.Context, room *model.User) error {
+func (repos *TestRepos) SaveUser(context context.Context, room *model.User, expirationUnixTimestamp int64) error {
 	return nil
 }
 func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) (*[]model.User, error) {
