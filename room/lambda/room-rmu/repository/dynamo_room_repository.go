@@ -138,8 +138,10 @@ func (repos *DynamoRoomRepository) ExistRoom(context context.Context, roomId str
 	result, err := Query(context, repos.client, &dynamodb.QueryInput{
 		TableName:              aws.String("room"),
 		KeyConditionExpression: aws.String("room_id = :room_id"),
+		FilterExpression:       aws.String("item_type = :item_type"),
 		ExpressionAttributeValues: map[string]types.AttributeValue{
-			":room_id": &types.AttributeValueMemberS{Value: roomId},
+			":room_id":   &types.AttributeValueMemberS{Value: roomId},
+			":item_type": &types.AttributeValueMemberS{Value: "ROOM"},
 		},
 	})
 	if err != nil {
