@@ -14,6 +14,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { FieldLogLevel } from "@aws-cdk/aws-appsync-alpha";
+import * as waf from "aws-cdk-lib/aws-wafv2";
 
 export class RoomStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -41,7 +42,6 @@ export class RoomStack extends Stack {
     });
 
     // ================= AppSync =================
-    // TODO: WAF
     const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
       schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
@@ -200,9 +200,45 @@ export class RoomStack extends Stack {
       );
     }
 
+    // ================= WAF =================
+    const apiWebAcl = new waf.CfnWebACL(this, "RoomAPI-WebAcl", {
+      defaultAction: { allow: {} },
+      scope: "REGIONAL",
+      visibilityConfig: {
+        cloudWatchMetricsEnabled: true,
+        sampledRequestsEnabled: true,
+        metricName: "RoomAPI-WebAclMetric",
+      },
+      rules: [
+        {
+          name: "FloodProtection",
+          action: { block: {} },
+          priority: 1,
+          statement: {
+            rateBasedStatement: { aggregateKeyType: "IP", limit: 300 },
+          },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            sampledRequestsEnabled: true,
+            metricName: `RoomAPI-FloodProtection`,
+          },
+        },
+      ],
+    });
+    const webAclAssociation = new waf.CfnWebACLAssociation(
+      this,
+      "webAclAssociation",
+      {
+        resourceArn: roomAPI.arn,
+        webAclArn: apiWebAcl.attrArn,
+      }
+    );
+
     // ================= Stack Outpu =================
     new CfnOutput(this, "STACK_REGION", { value: this.region });
     new CfnOutput(this, "ROOM_API_URL", { value: roomApiUrl.stringValue });
     new CfnOutput(this, "ROOM_API_KEY", { value: roomApiKey.stringValue });
+    new CfnOutput(this, "ACLRef", { value: apiWebAcl.ref });
+    new CfnOutput(this, "ACLAPIAssoc", { value: webAclAssociation.ref });
   }
 }
