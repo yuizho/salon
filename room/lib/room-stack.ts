@@ -41,11 +41,11 @@ export class RoomStack extends Stack {
     });
 
     // ================= AppSync =================
-    // TODO: Xray
     // TODO: WAF
     const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
       schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
+      xrayEnabled: true,
       logConfig: {
         excludeVerboseContent: true,
         fieldLogLevel: FieldLogLevel.ALL,
@@ -163,6 +163,7 @@ export class RoomStack extends Stack {
     const roomRMUFunction = new lambdaGo.GoFunction(this, "room-rmu", {
       functionName: "RoomRMU",
       entry: "lambda/room-rmu",
+      tracing: lambda.Tracing.ACTIVE,
     });
     // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams
     roomRMUFunction.addEventSource(
@@ -180,6 +181,7 @@ export class RoomStack extends Stack {
         ROOM_API_URL: roomApiUrl.stringValue,
         REGION: this.region,
       },
+      tracing: lambda.Tracing.ACTIVE,
     });
     mutateUserFunction.addEventSource(
       new DynamoEventSource(roomTable, {
