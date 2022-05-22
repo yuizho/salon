@@ -163,6 +163,7 @@ export class RoomStack extends Stack {
     const roomRMUFunction = new lambdaGo.GoFunction(this, "room-rmu", {
       functionName: "RoomRMU",
       entry: "lambda/room-rmu",
+      timeout: Duration.seconds(10),
       tracing: lambda.Tracing.ACTIVE,
     });
     // https://docs.aws.amazon.com/cdk/api/v1/docs/aws-lambda-event-sources-readme.html#dynamodb-streams
@@ -181,6 +182,7 @@ export class RoomStack extends Stack {
         ROOM_API_URL: roomApiUrl.stringValue,
         REGION: this.region,
       },
+      timeout: Duration.seconds(10),
       tracing: lambda.Tracing.ACTIVE,
     });
     mutateUserFunction.addEventSource(
