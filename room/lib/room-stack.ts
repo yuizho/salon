@@ -13,6 +13,7 @@ import * as lambdaGo from "@aws-cdk/aws-lambda-go-alpha";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as ssm from "aws-cdk-lib/aws-ssm";
 import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
+import { FieldLogLevel } from "@aws-cdk/aws-appsync-alpha";
 
 export class RoomStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -40,12 +41,15 @@ export class RoomStack extends Stack {
     });
 
     // ================= AppSync =================
-    // TODO: log
     // TODO: Xray
     // TODO: WAF
     const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
       name: "RoomAPI",
       schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
+      logConfig: {
+        excludeVerboseContent: true,
+        fieldLogLevel: FieldLogLevel.ALL,
+      },
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.IAM,
