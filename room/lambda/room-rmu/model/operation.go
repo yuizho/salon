@@ -16,14 +16,13 @@ const (
 	Leave        = OpType("LEAVE")
 	Pick         = OpType("PICK")
 	RefreshTable = OpType("REFRESH_TABLE")
-	Heartbeat    = OpType("HEARTBEAT")
 	Kick         = OpType("KICK")
 )
 
 func NewOpType(s string) (OpType, error) {
 	opType := OpType(s)
 	switch opType {
-	case OpenRoom, Join, Leave, Pick, RefreshTable, Heartbeat, Kick:
+	case OpenRoom, Join, Leave, Pick, RefreshTable, Kick:
 		return opType, nil
 	default:
 		return "", fmt.Errorf("unexpected op_type string: %s", s)

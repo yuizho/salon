@@ -113,14 +113,6 @@ export class RoomStack extends Stack {
     });
     operationDataSource.createResolver({
       typeName: "Mutation",
-      fieldName: "heartbeat",
-      requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.heartbeat.req.vtl"
-      ),
-      responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
-    });
-    operationDataSource.createResolver({
-      typeName: "Mutation",
       fieldName: "kick",
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
         "appsync/room-api/resolvers/Mutation.kick.req.vtl"

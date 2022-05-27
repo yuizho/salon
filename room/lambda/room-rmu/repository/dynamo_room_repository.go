@@ -109,34 +109,6 @@ func (repos *DynamoRoomRepository) UpdateActiveUser(context context.Context, use
 	return nil
 }
 
-func (repos *DynamoRoomRepository) UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error {
-	_, err := UpdateItem(context, repos.client, &dynamodb.UpdateItemInput{
-		TableName: aws.String("room"),
-		Key: map[string]types.AttributeValue{
-			"room_id":  &types.AttributeValueMemberS{Value: roomId},
-			"item_key": &types.AttributeValueMemberS{Value: userId},
-		},
-		UpdateExpression:    aws.String("SET operated_at = :operated_at"),
-		ConditionExpression: aws.String("attribute_exists(#room_id) AND attribute_exists(#item_key) AND #status <> :condition_status AND item_type = :item_type"),
-		ExpressionAttributeNames: map[string]string{
-			"#room_id":  "room_id",
-			"#item_key": "item_key",
-			"#status":   "status",
-		},
-		ExpressionAttributeValues: map[string]types.AttributeValue{
-			":operated_at":      &types.AttributeValueMemberS{Value: operatedAt},
-			":condition_status": &types.AttributeValueMemberS{Value: "LEAVED"},
-			":item_type":        &types.AttributeValueMemberS{Value: "USER"},
-		},
-	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (repos *DynamoRoomRepository) ExistRoom(context context.Context, roomId string) (bool, error) {
 	result, err := Query(context, repos.client, &dynamodb.QueryInput{
 		TableName:              aws.String("room"),

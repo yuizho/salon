@@ -43,8 +43,6 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 		return service.updateUserState(context, operation)
 	case model.RefreshTable:
 		return service.refreshPokerTable(context, operation)
-	case model.Heartbeat:
-		return service.updateOperatedAt(context, operation)
 	case model.Kick:
 		return service.kickUser(context, operation)
 	default:
@@ -156,17 +154,6 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	}
 
 	return nil
-}
-
-func (service *RoomService) updateOperatedAt(context context.Context, operation *model.Operation) error {
-	reqId, err := util.GetAWSRequestId(context)
-	if err != nil {
-		return err
-	}
-
-	logger.Infof("%s Room to update operatedAt", reqId)
-
-	return service.repository.UpdateActiveUserOperatedAt(context, operation.RoomId, operation.UserId, operation.OperatedAt)
 }
 
 func (service *RoomService) kickUser(context context.Context, operation *model.Operation) error {

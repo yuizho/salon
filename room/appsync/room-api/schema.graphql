@@ -5,7 +5,6 @@
   pick(room_id: String!, user_id: String!, picked_card: String!): Operation
     @aws_api_key
   refreshTable(room_id: String!, user_id: String!): Operation @aws_api_key
-  heartbeat(room_id: String!, user_id: String!): Operation @aws_api_key
   kick(room_id: String!, user_id: String!, kicked_user_id: String!): Operation
     @aws_api_key
   updateUser(
