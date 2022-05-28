@@ -2,11 +2,10 @@
   "extends": ["prettier", "airbnb"],
   "parser": "@typescript-eslint/parser" ,
   "plugins": [],
+  "ignorePatterns": ["lib/room-stack.ts"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "env": {"es2021": true},
-  "rules": {
-    "no-new": 0
-  }
+  "rules": {}
 }
