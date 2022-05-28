@@ -1,6 +1,9 @@
 name: Build Lambda functions
 
-on: [push]
+on:
+  push:
+    paths:
+      - "backend/lambda/**"
 
 jobs:
   build:
@@ -14,15 +17,15 @@ jobs:
           go-version: 1.18
 
       - name: Build RoomRMU function
-        working-directory: ./room/lambda/room-rmu
+        working-directory: ./backend/lambda/room-rmu
         run: go build -v ./...
       - name: Test RoomRMU function
-        working-directory: ./room/lambda/room-rmu
+        working-directory: ./backend/lambda/room-rmu
         run: go test -v ./...
 
       - name: Build MutateUser function
-        working-directory: ./room/lambda/mutate-user
+        working-directory: ./backend/lambda/mutate-user
         run: go build -v ./...
       - name: Test MutateUser function
-        working-directory: ./room/lambda/mutate-user
+        working-directory: ./backend/lambda/mutate-user
         run: go test -v ./...

@@ -5,16 +5,16 @@ import {
   CfnOutput,
   Expiration,
   Duration,
-} from "aws-cdk-lib";
-import { Construct } from "constructs";
-import * as appsync from "@aws-cdk/aws-appsync-alpha";
-import * as db from "aws-cdk-lib/aws-dynamodb";
-import * as lambdaGo from "@aws-cdk/aws-lambda-go-alpha";
-import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as ssm from "aws-cdk-lib/aws-ssm";
-import { DynamoEventSource } from "aws-cdk-lib/aws-lambda-event-sources";
-import { FieldLogLevel } from "@aws-cdk/aws-appsync-alpha";
-import * as waf from "aws-cdk-lib/aws-wafv2";
+} from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as appsync from '@aws-cdk/aws-appsync-alpha';
+import * as db from 'aws-cdk-lib/aws-dynamodb';
+import * as lambdaGo from '@aws-cdk/aws-lambda-go-alpha';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
+import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
+import * as waf from 'aws-cdk-lib/aws-wafv2';
 
 export class RoomStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -23,28 +23,28 @@ export class RoomStack extends Stack {
     // ================= DynamoDB =================
     // TODO: save operation logs to S3 by Dynamo DB Stream
     // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
-    const operationTable = new db.Table(this, "OperationTable", {
-      tableName: "operation",
+    const operationTable = new db.Table(this, 'OperationTable', {
+      tableName: 'operation',
       removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: "event_id", type: db.AttributeType.STRING },
+      partitionKey: { name: 'event_id', type: db.AttributeType.STRING },
       // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
       stream: db.StreamViewType.NEW_IMAGE,
     });
-    const roomTable = new db.Table(this, "RoomTable", {
-      tableName: "room",
+    const roomTable = new db.Table(this, 'RoomTable', {
+      tableName: 'room',
       removalPolicy: RemovalPolicy.DESTROY,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
-      partitionKey: { name: "room_id", type: db.AttributeType.STRING },
-      sortKey: { name: "item_key", type: db.AttributeType.STRING },
-      timeToLiveAttribute: "expiration_unix_timestamp",
+      partitionKey: { name: 'room_id', type: db.AttributeType.STRING },
+      sortKey: { name: 'item_key', type: db.AttributeType.STRING },
+      timeToLiveAttribute: 'expiration_unix_timestamp',
       stream: db.StreamViewType.NEW_IMAGE,
     });
 
     // ================= AppSync =================
-    const roomAPI = new appsync.GraphqlApi(this, "RoomAPI", {
-      name: "RoomAPI",
-      schema: appsync.Schema.fromAsset("appsync/room-api/schema.graphql"),
+    const roomAPI = new appsync.GraphqlApi(this, 'RoomAPI', {
+      name: 'RoomAPI',
+      schema: appsync.Schema.fromAsset('../graphql/schema.graphql'),
       xrayEnabled: true,
       logConfig: {
         excludeVerboseContent: true,
@@ -58,8 +58,8 @@ export class RoomStack extends Stack {
           {
             authorizationType: appsync.AuthorizationType.API_KEY,
             apiKeyConfig: {
-              name: "default",
-              description: "default auth mode",
+              name: 'default',
+              description: 'default auth mode',
               expires: Expiration.after(Duration.days(365)),
             },
           },
@@ -68,93 +68,93 @@ export class RoomStack extends Stack {
     });
     // Set up table as a Datasource and grant access
     const operationDataSource = roomAPI.addDynamoDbDataSource(
-      "operation",
-      operationTable
+      'operation',
+      operationTable,
     );
     operationDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "openRoom",
+      typeName: 'Mutation',
+      fieldName: 'openRoom',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.openRoom.req.vtl"
+        'appsync/room-api/resolvers/Mutation.openRoom.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
     operationDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "join",
+      typeName: 'Mutation',
+      fieldName: 'join',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.join.req.vtl"
+        'appsync/room-api/resolvers/Mutation.join.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
     operationDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "leave",
+      typeName: 'Mutation',
+      fieldName: 'leave',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.leave.req.vtl"
+        'appsync/room-api/resolvers/Mutation.leave.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
     operationDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "pick",
+      typeName: 'Mutation',
+      fieldName: 'pick',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.pick.req.vtl"
+        'appsync/room-api/resolvers/Mutation.pick.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
     operationDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "refreshTable",
+      typeName: 'Mutation',
+      fieldName: 'refreshTable',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.refreshTable.req.vtl"
+        'appsync/room-api/resolvers/Mutation.refreshTable.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
     operationDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "kick",
+      typeName: 'Mutation',
+      fieldName: 'kick',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.kick.req.vtl"
+        'appsync/room-api/resolvers/Mutation.kick.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    const roomDataSource = roomAPI.addDynamoDbDataSource("room", roomTable);
-    const UserDataSource = roomAPI.addNoneDataSource("poker");
+    const roomDataSource = roomAPI.addDynamoDbDataSource('room', roomTable);
+    const UserDataSource = roomAPI.addNoneDataSource('poker');
     // Define resolvers
     roomDataSource.createResolver({
-      typeName: "Query",
-      fieldName: "getRoom",
+      typeName: 'Query',
+      fieldName: 'getRoom',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Query.getRoom.req.vtl"
+        'appsync/room-api/resolvers/Query.getRoom.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Query.getRoom.resp.vtl"
+        'appsync/room-api/resolvers/Query.getRoom.resp.vtl',
       ),
     });
     UserDataSource.createResolver({
-      typeName: "Mutation",
-      fieldName: "updateUser",
+      typeName: 'Mutation',
+      fieldName: 'updateUser',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
-        "appsync/room-api/resolvers/Mutation.updateUser.req.vtl"
+        'appsync/room-api/resolvers/Mutation.updateUser.req.vtl',
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
 
     // ================= SSM =================
-    const roomApiUrl = new ssm.StringParameter(this, "room-api-url", {
-      parameterName: "/salon/appsync/room-api-url",
+    const roomApiUrl = new ssm.StringParameter(this, 'room-api-url', {
+      parameterName: '/salon/appsync/room-api-url',
       stringValue: roomAPI.graphqlUrl,
     });
-    const roomApiKey = new ssm.StringParameter(this, "room-api-key", {
-      parameterName: "/salon/appsync/room-api-key",
+    const roomApiKey = new ssm.StringParameter(this, 'room-api-key', {
+      parameterName: '/salon/appsync/room-api-key',
       stringValue: roomAPI.apiKey!,
     });
 
     // ================= Lambda =================
-    const roomRMUFunction = new lambdaGo.GoFunction(this, "room-rmu", {
-      functionName: "RoomRMU",
-      entry: "lambda/room-rmu",
+    const roomRMUFunction = new lambdaGo.GoFunction(this, 'room-rmu', {
+      functionName: 'RoomRMU',
+      entry: 'lambda/room-rmu',
       timeout: Duration.seconds(10),
       tracing: lambda.Tracing.ACTIVE,
     });
@@ -163,13 +163,13 @@ export class RoomStack extends Stack {
       new DynamoEventSource(operationTable, {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
         retryAttempts: 3,
-      })
+      }),
     );
     roomTable.grantReadWriteData(roomRMUFunction);
 
-    const mutateUserFunction = new lambdaGo.GoFunction(this, "mutate-user", {
-      functionName: "MutateUser",
-      entry: "lambda/mutate-user",
+    const mutateUserFunction = new lambdaGo.GoFunction(this, 'mutate-user', {
+      functionName: 'MutateUser',
+      entry: 'lambda/mutate-user',
       environment: {
         ROOM_API_URL: roomApiUrl.stringValue,
         REGION: this.region,
@@ -181,33 +181,33 @@ export class RoomStack extends Stack {
       new DynamoEventSource(roomTable, {
         startingPosition: lambda.StartingPosition.TRIM_HORIZON,
         retryAttempts: 3,
-      })
+      }),
     );
     // configure IAM Role
-    if (typeof mutateUserFunction.role !== "undefined") {
+    if (typeof mutateUserFunction.role !== 'undefined') {
       roomAPI.grant(
         mutateUserFunction.role,
-        appsync.IamResource.custom("types/Mutation/fields/updateUser"),
-        "appsync:GraphQL"
+        appsync.IamResource.custom('types/Mutation/fields/updateUser'),
+        'appsync:GraphQL',
       );
     }
 
     // ================= WAF =================
-    const apiWebAcl = new waf.CfnWebACL(this, "RoomAPI-WebAcl", {
+    const apiWebAcl = new waf.CfnWebACL(this, 'RoomAPI-WebAcl', {
       defaultAction: { allow: {} },
-      scope: "REGIONAL",
+      scope: 'REGIONAL',
       visibilityConfig: {
         cloudWatchMetricsEnabled: true,
         sampledRequestsEnabled: true,
-        metricName: "RoomAPI-WebAclMetric",
+        metricName: 'RoomAPI-WebAclMetric',
       },
       rules: [
         {
-          name: "FloodProtection",
+          name: 'FloodProtection',
           action: { block: {} },
           priority: 1,
           statement: {
-            rateBasedStatement: { aggregateKeyType: "IP", limit: 300 },
+            rateBasedStatement: { aggregateKeyType: 'IP', limit: 300 },
           },
           visibilityConfig: {
             cloudWatchMetricsEnabled: true,
@@ -219,18 +219,18 @@ export class RoomStack extends Stack {
     });
     const webAclAssociation = new waf.CfnWebACLAssociation(
       this,
-      "webAclAssociation",
+      'webAclAssociation',
       {
         resourceArn: roomAPI.arn,
         webAclArn: apiWebAcl.attrArn,
-      }
+      },
     );
 
     // ================= Stack Outpu =================
-    new CfnOutput(this, "STACK_REGION", { value: this.region });
-    new CfnOutput(this, "ROOM_API_URL", { value: roomApiUrl.stringValue });
-    new CfnOutput(this, "ROOM_API_KEY", { value: roomApiKey.stringValue });
-    new CfnOutput(this, "ACLRef", { value: apiWebAcl.ref });
-    new CfnOutput(this, "ACLAPIAssoc", { value: webAclAssociation.ref });
+    new CfnOutput(this, 'STACK_REGION', { value: this.region });
+    new CfnOutput(this, 'ROOM_API_URL', { value: roomApiUrl.stringValue });
+    new CfnOutput(this, 'ROOM_API_KEY', { value: roomApiKey.stringValue });
+    new CfnOutput(this, 'ACLRef', { value: apiWebAcl.ref });
+    new CfnOutput(this, 'ACLAPIAssoc', { value: webAclAssociation.ref });
   }
 }
