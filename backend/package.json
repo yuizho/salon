@@ -1,5 +1,5 @@
 {
-  "name": "room",
+  "name": "salon-backend",
   "version": "0.1.0",
   "bin": {
     "room": "bin/room.js"
