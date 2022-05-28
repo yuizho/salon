@@ -1,4 +1,20 @@
 {
     "private": true,
-    "workspaces": ["frontend", "backend"]
+    "workspaces": ["frontend", "backend"],
+    "scripts": {
+        "prepare": "husky install && yarn husky add .husky/pre-commit 'yarn pre-commit'",
+        "pre-commit": "lint-staged"
+    },
+    "devDependencies": {
+        "eslint": "8.16.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-prettier": "^8.5.0",
+        "husky": "^8.0.1",
+        "lint-staged": "^12.4.2"
+    },
+    "lint-staged": {
+      "./**/*.{js,jsx,ts,tsx}": [
+        "yarn workspaces run lint . --fix"
+      ]
+    }
 }
