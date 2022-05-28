@@ -44,7 +44,7 @@ export class RoomStack extends Stack {
     // ================= AppSync =================
     const roomAPI = new appsync.GraphqlApi(this, 'RoomAPI', {
       name: 'RoomAPI',
-      schema: appsync.Schema.fromAsset('appsync/room-api/schema.graphql'),
+      schema: appsync.Schema.fromAsset('../graphql/schema.graphql'),
       xrayEnabled: true,
       logConfig: {
         excludeVerboseContent: true,
