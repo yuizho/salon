@@ -14,12 +14,23 @@ const baseClassNames = `
 flex
 items-center justify-center
 w-16 h-20
-rounded border border-black/50
-shadow-xl
+rounded border
 `;
 
 const chooableClassNames = `
-hover:animate-bounce hover:cursor-pointer
+border-black/50
+shadow-md
+hover:animate-bounce
+hover:cursor-pointer
+hover:border-2
+active:animate-none
+active:shadow-none
+active:border
+active:border-black/25
+`;
+
+const unchoosableClassnames = `
+border-black/25
 `;
 
 const shown = (value: string, isChoosable: boolean) => (
@@ -27,7 +38,7 @@ const shown = (value: string, isChoosable: boolean) => (
     key={value}
     className={`
       ${baseClassNames}
-      ${isChoosable ? chooableClassNames : ''} 
+      ${isChoosable ? chooableClassNames : unchoosableClassnames} 
       font-bold text-2xl
     `}
   >
@@ -40,7 +51,7 @@ const hidden = (value: string, isChoosable: boolean) => (
     key={value}
     className={`
     ${baseClassNames}
-    ${isChoosable ? chooableClassNames : ''} 
+    ${isChoosable ? chooableClassNames : unchoosableClassnames} 
     `}
     style={{ backgroundImage: `url(${pattern})` }}
   />
