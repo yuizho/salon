@@ -7,7 +7,6 @@ type Props = {
   isChoosable?: boolean;
 };
 
-// TODO: this is sample module
 const Card: FC<Props> = ({ value, isShown = true, isChoosable = true }) => (isShown ? shown(value, isChoosable) : hidden(value, isChoosable));
 
 const baseClassNames = `
