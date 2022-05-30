@@ -14,6 +14,7 @@ flex
 items-center justify-center
 w-16 h-20
 rounded border
+bg-white
 `;
 
 const chooableClassNames = `
