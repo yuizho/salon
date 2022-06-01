@@ -3,12 +3,17 @@ import Card from './Card';
 import User from './User';
 
 type Props = {
+  userId: string;
+  value: string;
   isShown: boolean;
   isMe: boolean;
 };
 
-const Player: FC<Props> = ({ isShown, isMe }) => (
+const Player: FC<Props> = ({
+  userId, value, isShown, isMe,
+}) => (
   <div
+    key={userId}
     className={`
       flex
       flex-col
@@ -19,7 +24,7 @@ const Player: FC<Props> = ({ isShown, isMe }) => (
   `}
   >
     <User isMe={isMe} />
-    <Card value="XS" isShown={isShown} isChoosable={false} />
+    <Card value={value} isShown={isShown} isChoosable={false} />
   </div>
 );
 
