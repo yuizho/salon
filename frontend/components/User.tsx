@@ -4,6 +4,17 @@ type Props = {
   isMe: boolean;
 };
 
+const clickableUsesr = `
+border-black/50 shadow-md
+hover:cursor-pointer
+hover:border-red-400
+hover:border-2
+active:animate-none
+active:shadow-none
+active:border
+active:border-red-400/25
+`;
+
 const User: FC<Props> = ({ isMe }) => (
   <div
     className={`
@@ -21,15 +32,8 @@ const User: FC<Props> = ({ isMe }) => (
         w-16
         rounded-full
         border
-        border-black/50
-        shadow-md
         bg-white
-        hover:cursor-pointer
-        hover:border-2
-        active:animate-none
-        active:shadow-none
-        active:border
-        active:border-black/25
+        ${isMe ? 'border-black/25' : clickableUsesr}
       `}
     >
       <div className="relative">
