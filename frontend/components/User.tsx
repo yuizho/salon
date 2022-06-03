@@ -7,12 +7,12 @@ type Props = {
 const clickableUsesr = `
 border-black/50 shadow-md
 hover:cursor-pointer
-hover:border-red-400
+hover:border-blue-600
 hover:border-2
 active:animate-none
 active:shadow-none
 active:border
-active:border-red-400/25
+active:border-blue-600/25
 `;
 
 const User: FC<Props> = ({ isMe }) => (
