@@ -1,5 +1,4 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
-import { useRef } from 'react';
 import { Component } from './ModelDialog';
 
 export default {
