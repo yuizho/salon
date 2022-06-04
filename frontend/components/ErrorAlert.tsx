@@ -1,15 +1,12 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 
 type Props = {
   message: string;
-};
-
-type ComponentProps = Props & {
   error: boolean;
   onClose: () => void;
 };
 
-export const Component: FC<ComponentProps> = ({ message, error, onClose }) => (
+export const Component: FC<Props> = ({ message, error, onClose }) => (
   <div>
     {error && (
       <div
@@ -34,16 +31,8 @@ export const Component: FC<ComponentProps> = ({ message, error, onClose }) => (
   </div>
 );
 
-const Container: FC<Props> = ({ message }) => {
-  const [error, setError] = useState(false);
-
-  return (
-    <Component
-      message={message}
-      error={error}
-      onClose={() => setError(false)}
-    />
-  );
-};
+const Container: FC<Props> = ({ message, error, onClose }) => (
+  <Component message={message} error={error} onClose={onClose} />
+);
 
 export default Container;
