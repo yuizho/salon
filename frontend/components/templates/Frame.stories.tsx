@@ -10,26 +10,28 @@ export default {
 const Template: Story = () => {
   return (
     <Component>
-      <div className="border rounded p-8">
-        <Players
-          myUserId="xxx"
-          players={[
-            { userId: 'xxx', pickedCard: 'XL' },
-            { userId: 'yyy', pickedCard: 'S' },
-            { userId: 'zzz', pickedCard: 'M' },
-            { userId: 'zzz', pickedCard: 'M' },
-            { userId: 'zzz', pickedCard: 'M' },
-            { userId: 'zzz', pickedCard: 'M' },
-            { userId: 'zzz', pickedCard: 'M' },
-            { userId: 'zzz', pickedCard: 'M' },
-          ]}
-          shown={false}
-        />
-      </div>
-      <div className="flex justify-center">
-        <Hands
-          values={['0', '1', '2', '3', '5', '8', '13', '21', '34', '55']}
-        />
+      <div className="flex flex-col space-y-10">
+        <div className="border rounded p-8">
+          <Players
+            myUserId="xxx"
+            players={[
+              { userId: 'xxx', pickedCard: 'XL' },
+              { userId: 'yyy', pickedCard: 'S' },
+              { userId: 'zzz', pickedCard: 'M' },
+              { userId: 'zzz', pickedCard: 'M' },
+              { userId: 'zzz', pickedCard: 'M' },
+              { userId: 'zzz', pickedCard: 'M' },
+              { userId: 'zzz', pickedCard: 'M' },
+              { userId: 'zzz', pickedCard: 'M' },
+            ]}
+            shown={false}
+          />
+        </div>
+        <div className="flex justify-center">
+          <Hands
+            values={['0', '1', '2', '3', '5', '8', '13', '21', '34', '55']}
+          />
+        </div>
       </div>
     </Component>
   );
