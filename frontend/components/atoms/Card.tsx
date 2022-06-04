@@ -26,7 +26,6 @@ const chooableClassNames = `
 shadow-md
 hover:cursor-pointer
 hover:border-2
-active:animate-none
 active:shadow-none
 active:border
 active:border-slate-300
