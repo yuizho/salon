@@ -21,7 +21,7 @@ type Query {
 }
 
 type Subscription {
-  onUpdateUser(room_id: String): User
+  onUpdateUser(room_id: String!): User
     @aws_subscribe(mutations: ["updateUser"])
     @aws_api_key
 }
