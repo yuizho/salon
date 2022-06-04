@@ -1,4 +1,5 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
+import Button from '../atoms/Button';
 import Hands from '../organisms/Hands';
 import Players from '../organisms/Players';
 import { Component } from './Frame';
@@ -11,7 +12,7 @@ const Template: Story = () => {
   return (
     <Component>
       <div className="flex flex-col space-y-10">
-        <div className="border rounded p-8">
+        <div className="flex flex-col space-y-6 border rounded p-8">
           <Players
             myUserId="xxx"
             players={[
@@ -26,6 +27,7 @@ const Template: Story = () => {
             ]}
             shown={false}
           />
+          <Button text="Reset" onClick={() => alert('clicked')} />
         </div>
         <div className="flex justify-center">
           <Hands
