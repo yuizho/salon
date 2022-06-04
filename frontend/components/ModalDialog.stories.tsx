@@ -6,11 +6,10 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ title, content, open, setOpen, onClickOK }) => {
+const Template: Story = ({ message, open, setOpen, onClickOK }) => {
   return (
     <Component
-      title={title}
-      content={content}
+      message={message}
       open={open}
       setOpen={setOpen}
       onClickOK={onClickOK}
@@ -23,6 +22,6 @@ Default.args = {
   open: true,
   setOpen: (b: boolean) => console.log(b),
   title: 'タイトルです！！',
-  content: '選択したユーザを部屋からキックします！よろしいですか？',
+  message: '選択したユーザを部屋からキックします！よろしいですか？',
   onClickOK: () => alert('OK button is clicked!!!'),
 };

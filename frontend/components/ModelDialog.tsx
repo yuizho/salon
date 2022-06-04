@@ -2,8 +2,7 @@ import { FC, Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 
 type Props = {
-  title: string;
-  content: string;
+  message: string;
   onClickOK: () => void;
 };
 
@@ -13,8 +12,7 @@ type ComponentProps = Props & {
 };
 
 export const Component: FC<ComponentProps> = ({
-  title,
-  content,
+  message,
   open,
   setOpen,
   onClickOK,
@@ -48,14 +46,8 @@ export const Component: FC<ComponentProps> = ({
               <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="sm:flex sm:items-start">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <Dialog.Title
-                      as="h3"
-                      className="text-lg leading-6 font-medium text-gray-900"
-                    >
-                      {title}
-                    </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">{content}</p>
+                      <p className="text-sm text-gray-500">{message}</p>
                     </div>
                   </div>
                 </div>
@@ -87,13 +79,12 @@ export const Component: FC<ComponentProps> = ({
   </Transition.Root>
 );
 
-const Container: FC<Props> = ({ title, content, onClickOK }) => {
+const Container: FC<Props> = ({ message, onClickOK }) => {
   const [open, setOpen] = useState(true);
 
   return (
     <Component
-      title={title}
-      content={content}
+      message={message}
       open={open}
       setOpen={setOpen}
       onClickOK={onClickOK}
