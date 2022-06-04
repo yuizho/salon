@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import Hands from './Hands';
 
 export default {
-  title: 'Hands',
+  title: 'Organisms/Hands',
   component: Hands,
 } as Meta;
 

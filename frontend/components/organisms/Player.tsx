@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import Card from './Card';
-import User from './User';
+import Card from '../atoms/Card';
+import User from '../atoms/User';
 
 type Props = {
   userId: string;

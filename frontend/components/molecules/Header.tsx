@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import ErrorAlert from './ErrorAlert';
-import NavBar from './NavBar';
+import ErrorAlert from '../atoms/ErrorAlert';
+import NavBar from '../atoms/NavBar';
 
 type ComponentProps = {
   message: string;

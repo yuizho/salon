@@ -1,7 +1,7 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { Component } from './ErrorAlert';
 export default {
-  title: 'ErrorAlert',
+  title: 'Atoms/ErrorAlert',
   component: Component,
 } as Meta;
 

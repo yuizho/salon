@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import { Component } from './ModelDialog';
 
 export default {
-  title: 'ModalDialog',
+  title: 'Molecules/ModalDialog',
   component: Component,
 } as Meta;
 

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import pattern from '../public/intersecting-circles.svg';
+import pattern from '../../public/intersecting-circles.svg';
 
 type Props = {
   value: string;

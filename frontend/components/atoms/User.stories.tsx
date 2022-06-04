@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react/types-6-0';
 import User from './User';
 
 export default {
-  title: 'User',
+  title: 'Atoms/User',
   component: User,
 } as Meta;
 
