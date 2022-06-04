@@ -5,14 +5,14 @@ type Props = {
 };
 
 const clickableUsesr = `
-border-black/50 shadow-md
+border-slate-400
+shadow-md
 hover:cursor-pointer
-hover:border-blue-600
 hover:border-2
 active:animate-none
 active:shadow-none
 active:border
-active:border-blue-600/25
+active:border-slate-300
 `;
 
 const User: FC<Props> = ({ me }) => (
@@ -33,12 +33,12 @@ const User: FC<Props> = ({ me }) => (
         rounded-full
         border
         bg-white
-        ${me ? 'border-black/25' : clickableUsesr}
+        ${me ? 'border-slate-400' : clickableUsesr}
       `}
     >
       <div className="relative">
         <svg
-          className="h-10 w-10 text-black/75"
+          className="h-10 w-10 text-slate-600"
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -57,8 +57,9 @@ const User: FC<Props> = ({ me }) => (
           bottom-8
           left-1/2 -translate-x-1/2
           select-none
-          text-black/75
+          text-slate-600
           text-md
+          font-bold
         `}
           >
             you

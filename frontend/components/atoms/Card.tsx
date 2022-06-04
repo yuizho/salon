@@ -15,24 +15,21 @@ const baseClassNames = `
 flex
 items-center justify-center
 w-16 h-20
+border-slate-400
 rounded border
+text-slate-600
+select-none
 bg-white
 `;
 
 const chooableClassNames = `
-border-black/50
 shadow-md
-hover:animate-bounce
 hover:cursor-pointer
 hover:border-2
 active:animate-none
 active:shadow-none
 active:border
-active:border-black/25
-`;
-
-const unchoosableClassnames = `
-border-black/25
+active:border-slate-300
 `;
 
 const show = (value: string, choosable: boolean) => (
@@ -40,7 +37,7 @@ const show = (value: string, choosable: boolean) => (
     key={value}
     className={`
       ${baseClassNames}
-      ${choosable ? chooableClassNames : unchoosableClassnames} 
+      ${choosable ? chooableClassNames : ''} 
       font-bold text-2xl
     `}
   >
@@ -53,7 +50,7 @@ const hide = (value: string, choooable: boolean) => (
     key={value}
     className={`
     ${baseClassNames}
-    ${choooable ? chooableClassNames : unchoosableClassnames} 
+    ${choooable ? chooableClassNames : ''} 
     `}
     style={{ backgroundImage: `url(${pattern})` }}
   />
