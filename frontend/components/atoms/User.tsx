@@ -59,7 +59,7 @@ const User: FC<Props> = ({ me }) => (
           select-none
           text-slate-600
           text-md
-          font-bold
+          font-semibold
         `}
           >
             you
