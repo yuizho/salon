@@ -5,12 +5,12 @@ import User from './User';
 type Props = {
   userId: string;
   value: string;
-  isShown: boolean;
-  isMe: boolean;
+  shown: boolean;
+  me: boolean;
 };
 
 const Player: FC<Props> = ({
-  userId, value, isShown, isMe,
+  userId, value, shown, me,
 }) => (
   <div
     key={userId}
@@ -23,8 +23,8 @@ const Player: FC<Props> = ({
       w-24
   `}
   >
-    <User isMe={isMe} />
-    <Card value={value} isShown={isShown} isChoosable={false} />
+    <User me={me} />
+    <Card value={value} shown={shown} choosable={false} />
   </div>
 );
 

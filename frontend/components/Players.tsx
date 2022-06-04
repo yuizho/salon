@@ -8,25 +8,25 @@ type Props = {
     userId: string;
     pickedCard: string;
   }>;
-  shouldOpenCards: boolean;
+  shown: boolean;
 };
 
-const Players: FC<Props> = ({ myUserId, players, shouldOpenCards }) => (
+const Players: FC<Props> = ({ myUserId, players, shown }) => (
   <div
     className={`
   flex flex-wrap gap-2
   `}
   >
     {players.map((u) => {
-      const isMe = u.userId === myUserId;
-      const isShown = shouldOpenCards || isMe;
+      const me = u.userId === myUserId;
+      const showThisCard = shown || me;
       return (
         <Player
           key={u.userId}
           userId={u.userId}
           value={u.pickedCard}
-          isShown={isShown}
-          isMe={isMe}
+          shown={showThisCard}
+          me={me}
         />
       );
     })}

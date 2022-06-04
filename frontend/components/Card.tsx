@@ -3,11 +3,13 @@ import pattern from '../public/intersecting-circles.svg';
 
 type Props = {
   value: string;
-  isShown?: boolean;
-  isChoosable?: boolean;
+  shown: boolean;
+  choosable: boolean;
 };
 
-const Card: FC<Props> = ({ value, isShown = true, isChoosable = true }) => (isShown ? shown(value, isChoosable) : hidden(value, isChoosable));
+const Card: FC<Props> = ({ value, shown, choosable }) => (
+  <div>{shown ? show(value, choosable) : hide(value, choosable)}</div>
+);
 
 const baseClassNames = `
 flex
@@ -33,12 +35,12 @@ const unchoosableClassnames = `
 border-black/25
 `;
 
-const shown = (value: string, isChoosable: boolean) => (
+const show = (value: string, choosable: boolean) => (
   <div
     key={value}
     className={`
       ${baseClassNames}
-      ${isChoosable ? chooableClassNames : unchoosableClassnames} 
+      ${choosable ? chooableClassNames : unchoosableClassnames} 
       font-bold text-2xl
     `}
   >
@@ -46,12 +48,12 @@ const shown = (value: string, isChoosable: boolean) => (
   </div>
 );
 
-const hidden = (value: string, isChoosable: boolean) => (
+const hide = (value: string, choooable: boolean) => (
   <div
     key={value}
     className={`
     ${baseClassNames}
-    ${isChoosable ? chooableClassNames : unchoosableClassnames} 
+    ${choooable ? chooableClassNames : unchoosableClassnames} 
     `}
     style={{ backgroundImage: `url(${pattern})` }}
   />

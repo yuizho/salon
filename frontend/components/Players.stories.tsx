@@ -6,12 +6,8 @@ export default {
   component: Players,
 } as Meta;
 
-const Template: Story = ({ myUserId, players, shouldOpenCards }) => (
-  <Players
-    myUserId={myUserId}
-    players={players}
-    shouldOpenCards={shouldOpenCards}
-  />
+const Template: Story = ({ myUserId, players, shown }) => (
+  <Players myUserId={myUserId} players={players} shown={shown} />
 );
 
 export const Hidden = Template.bind({});
@@ -22,7 +18,7 @@ Hidden.args = {
     { userId: 'yyy', pickedCard: 'S' },
     { userId: 'zzz', pickedCard: 'M' },
   ],
-  shouldOpenCards: false,
+  shown: false,
 };
 
 export const Shown = Template.bind({});
@@ -33,5 +29,5 @@ Shown.args = {
     { userId: 'yyy', pickedCard: 'S' },
     { userId: 'zzz', pickedCard: 'M' },
   ],
-  shouldOpenCards: true,
+  shown: true,
 };

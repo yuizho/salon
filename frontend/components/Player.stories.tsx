@@ -6,14 +6,14 @@ export default {
   component: Player,
 } as Meta;
 
-const Template: Story = ({ userId, value, isShown, isMe }) => (
-  <Player userId={userId} value={value} isShown={isShown} isMe={isMe} />
+const Template: Story = ({ userId, value, shown, me }) => (
+  <Player userId={userId} value={value} shown={shown} me={me} />
 );
 
 export const Default = Template.bind({});
 Default.args = {
   userId: 'xxx',
   value: 'XL',
-  isMe: true,
-  isShown: false,
+  me: true,
+  shown: false,
 };

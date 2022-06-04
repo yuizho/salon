@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 type Props = {
-  isMe: boolean;
+  me: boolean;
 };
 
 const clickableUsesr = `
@@ -15,7 +15,7 @@ active:border
 active:border-blue-600/25
 `;
 
-const User: FC<Props> = ({ isMe }) => (
+const User: FC<Props> = ({ me }) => (
   <div
     className={`
       flex
@@ -33,7 +33,7 @@ const User: FC<Props> = ({ isMe }) => (
         rounded-full
         border
         bg-white
-        ${isMe ? 'border-black/25' : clickableUsesr}
+        ${me ? 'border-black/25' : clickableUsesr}
       `}
     >
       <div className="relative">
@@ -50,7 +50,7 @@ const User: FC<Props> = ({ isMe }) => (
           <circle cx="12" cy="7" r="4" />
           <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
         </svg>
-        {isMe ? (
+        {me ? (
           <div
             className={`
           absolute

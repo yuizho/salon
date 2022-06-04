@@ -1,5 +1,4 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
-import { useState } from 'react';
 import { Component } from './Header';
 export default {
   title: 'Header',

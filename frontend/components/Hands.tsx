@@ -12,7 +12,7 @@ const Hands: FC<Props> = ({ values }) => (
   `}
   >
     {values.map((v) => (
-      <Card key={v} value={v} />
+      <Card key={v} value={v} shown choosable />
     ))}
   </div>
 );

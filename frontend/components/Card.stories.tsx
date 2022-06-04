@@ -6,20 +6,20 @@ export default {
   component: Card,
 } as Meta;
 
-const Template: Story = ({ value, isShown, isChoosable }) => (
-  <Card value={value} isShown={isShown} isChoosable={isChoosable} />
+const Template: Story = ({ value, shown, choosable }) => (
+  <Card value={value} shown={shown} choosable={choosable} />
 );
 
 export const Shown = Template.bind({});
 Shown.args = {
   value: '5',
-  isShown: true,
-  isChoosable: true,
+  shown: true,
+  choosable: true,
 };
 
 export const Hidden = Template.bind({});
 Hidden.args = {
   value: '5',
-  isShown: false,
-  isChoosable: true,
+  shown: false,
+  choosable: true,
 };

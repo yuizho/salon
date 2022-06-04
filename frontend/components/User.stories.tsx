@@ -6,9 +6,9 @@ export default {
   component: User,
 } as Meta;
 
-const Template: Story = ({ isMe }) => <User isMe={isMe} />;
+const Template: Story = ({ me }) => <User me={me} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  isMe: true,
+  me: true,
 };
