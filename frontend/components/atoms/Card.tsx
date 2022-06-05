@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import pattern from '../../public/intersecting-circles.svg';
 
 type Props = {
   value: string;
@@ -51,7 +50,7 @@ const hide = (value: string, choooable: boolean) => (
     ${baseClassNames}
     ${choooable ? chooableClassNames : ''} 
     `}
-    style={{ backgroundImage: `url(${pattern})` }}
+    style={{ backgroundImage: 'url(/intersecting-circles.svg)' }}
   />
 );
 
