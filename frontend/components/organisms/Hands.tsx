@@ -16,6 +16,10 @@ type Props = {
   values: Array<string>;
 };
 
+type ComponentProps = Props & {
+  onClick: (pickedCard: string) => Promise<boolean>;
+};
+
 const mutatePick = async (
   roomId: string,
   userId: string,
@@ -39,7 +43,19 @@ const mutatePick = async (
   }
 };
 
-const Hands: FC<Props> = ({ values }) => {
+export const Component: FC<ComponentProps> = ({ values, onClick }) => (
+  <div
+    className={`
+  flex flex-wrap gap-1
+`}
+  >
+    {values.map((v) => (
+      <Card key={v} value={v} shown choosable onClick={onClick} />
+    ))}
+  </div>
+);
+
+const Container: FC<Props> = ({ values }) => {
   const [me] = useRecoilState(myState);
   const setUsers = useSetRecoilState(usersState);
 
@@ -59,22 +75,8 @@ const Hands: FC<Props> = ({ values }) => {
   };
 
   return (
-    <div
-      className={`
-    flex flex-wrap gap-1
-  `}
-    >
-      {values.map((v) => (
-        <Card
-          key={v}
-          value={v}
-          shown
-          choosable
-          onClick={onClickCard(me.roomId, me.userId)}
-        />
-      ))}
-    </div>
+    <Component values={values} onClick={onClickCard(me.roomId, me.userId)} />
   );
 };
 
-export default Hands;
+export default Container;

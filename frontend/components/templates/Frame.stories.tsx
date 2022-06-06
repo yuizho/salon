@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
 import Button from '../atoms/Button';
-import Hands from '../organisms/Hands';
+import Container from '../organisms/Hands';
 import Players from '../organisms/Players';
 import { Component } from './Frame';
 export default {
@@ -29,11 +29,7 @@ const Template: Story = () => {
           />
           <Button text="Reset" onClick={() => alert('clicked')} />
         </div>
-        <div className="flex justify-center">
-          <Hands
-            values={['0', '1', '2', '3', '5', '8', '13', '21', '34', '55']}
-          />
-        </div>
+        <div className="flex justify-center"></div>
       </div>
     </Component>
   );
