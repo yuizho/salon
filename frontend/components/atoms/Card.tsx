@@ -1,14 +1,14 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { FC } from 'react';
 
 type Props = {
   value: string;
   shown: boolean;
   choosable: boolean;
+  // eslint-disable-next-line react/require-default-props
+  onClick?: (pickedCard: string) => Promise<boolean> | null;
 };
-
-const Card: FC<Props> = ({ value, shown, choosable }) => (
-  <div>{shown ? show(value, choosable) : hide(value, choosable)}</div>
-);
 
 const baseClassNames = `
 flex
@@ -30,28 +30,42 @@ active:border
 active:border-slate-300
 `;
 
-const show = (value: string, choosable: boolean) => (
-  <div
-    key={value}
-    className={`
+const Card: FC<Props> = ({
+  value, shown, choosable, onClick = null,
+}) => {
+  const handleClick = () => {
+    if (choosable && onClick !== null) {
+      onClick(value);
+    }
+  };
+
+  return (
+    <div>
+      {shown ? (
+        <div
+          key={value}
+          className={`
       ${baseClassNames}
-      ${choosable ? chooableClassNames : ''} 
+      ${choosable ? chooableClassNames : ''}
       font-bold text-2xl
     `}
-  >
-    {value}
-  </div>
-);
-
-const hide = (value: string, choooable: boolean) => (
-  <div
-    key={value}
-    className={`
-    ${baseClassNames}
-    ${choooable ? chooableClassNames : ''} 
-    `}
-    style={{ backgroundImage: 'url(/intersecting-circles.svg)' }}
-  />
-);
+          onClick={handleClick}
+        >
+          {value}
+        </div>
+      ) : (
+        <div
+          key={value}
+          className={`
+            ${baseClassNames}
+            ${choosable ? chooableClassNames : ''}
+          `}
+          style={{ backgroundImage: 'url(/intersecting-circles.svg)' }}
+          onClick={handleClick}
+        />
+      )}
+    </div>
+  );
+};
 
 export default Card;
