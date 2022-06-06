@@ -1,18 +1,22 @@
 import { FC } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import Button from '../../../components/atoms/Button';
 import Hands from '../../../components/organisms/Hands';
 import Players from '../../../components/organisms/Players';
 import Frame from '../../../components/templates/Frame';
 import { Status } from '../../../graphql/schema';
 import useJoin from '../../../hooks/use-join';
+import useSubscription from '../../../hooks/use-subscription';
 import { myState } from '../../../states/me';
+import { pokerState } from '../../../states/poker';
 import { usersState } from '../../../states/users';
 
 const Rooms: FC = (): JSX.Element => {
   useJoin();
+  useSubscription();
   const [me] = useRecoilState(myState);
   const [users] = useRecoilState(usersState);
+  const poker = useRecoilValue(pokerState);
 
   return (
     <Frame>
@@ -23,7 +27,7 @@ const Rooms: FC = (): JSX.Element => {
             players={users
               .filter((u) => u.status !== Status.LEAVED)
               .map((u) => ({ userId: u.userId, pickedCard: u.pickedCard }))}
-            shown={false}
+            shown={poker.shown}
           />
           <Button text="Reset" onClick={() => {}} />
         </div>
