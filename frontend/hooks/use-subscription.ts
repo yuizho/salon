@@ -31,6 +31,9 @@ const useSubscription = () => {
     }
 
     const roomId = router.query.roomId as string;
+
+    // TODO: check roomId
+
     const subscription = setupSubscription(roomId).subscribe({
       next: ({ value }: SubscriptionValue) => {
         const item = value.data.onUpdateUser;
