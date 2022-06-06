@@ -55,7 +55,7 @@ const Hands: FC<Props> = ({ values }) => {
       },
     ]);
 
-    mutatePick(roomId, userId, pickedCard);
+    return mutatePick(roomId, userId, pickedCard);
   };
 
   return (
@@ -70,7 +70,7 @@ const Hands: FC<Props> = ({ values }) => {
           value={v}
           shown
           choosable
-          onClick={onClickCard(me.roomId, me.userId, v)}
+          onClick={onClickCard(me.roomId, me.userId)}
         />
       ))}
     </div>
