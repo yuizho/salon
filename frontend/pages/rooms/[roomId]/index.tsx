@@ -6,6 +6,7 @@ import Players from '../../../components/organisms/Players';
 import Frame from '../../../components/templates/Frame';
 import { Status } from '../../../graphql/schema';
 import useJoin from '../../../hooks/use-join';
+import useLeave from '../../../hooks/use-leave';
 import useSubscription from '../../../hooks/use-subscription';
 import { myState } from '../../../states/me';
 import { pokerState } from '../../../states/poker';
@@ -14,6 +15,7 @@ import { usersState } from '../../../states/users';
 const Rooms: FC = (): JSX.Element => {
   useJoin();
   useSubscription();
+  useLeave();
   const [me] = useRecoilState(myState);
   const [users] = useRecoilState(usersState);
   const poker = useRecoilValue(pokerState);
