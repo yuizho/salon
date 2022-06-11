@@ -44,9 +44,7 @@ export const Component: FC<ComponentProps> = ({
   <div className="flex flex-col space-y-6 border rounded p-8">
     <Players
       myUserId={me.userId}
-      players={users
-        .filter((u) => u.status !== Status.LEAVED)
-        .map((u) => ({ userId: u.userId, pickedCard: u.pickedCard }))}
+      players={users.filter((u) => u.status !== Status.LEAVED)}
       shown={poker.shown}
     />
     <Button

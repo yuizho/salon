@@ -6,6 +6,7 @@ type Props = {
   value: string;
   shown: boolean;
   choosable: boolean;
+  chosen: boolean;
   // eslint-disable-next-line react/require-default-props
   onClick?: (pickedCard: string) => Promise<boolean> | null;
 };
@@ -31,7 +32,11 @@ active:border-slate-300
 `;
 
 const Card: FC<Props> = ({
-  value, shown, choosable, onClick = null,
+  value,
+  shown,
+  choosable,
+  chosen,
+  onClick = null,
 }) => {
   const handleClick = () => {
     if (choosable && onClick !== null) {
@@ -47,6 +52,7 @@ const Card: FC<Props> = ({
           className={`
       ${baseClassNames}
       ${choosable ? chooableClassNames : ''}
+      ${chosen && !shown ? 'animate-bounce' : ''}
       font-bold text-2xl
     `}
           onClick={handleClick}
@@ -59,6 +65,7 @@ const Card: FC<Props> = ({
           className={`
             ${baseClassNames}
             ${choosable ? chooableClassNames : ''}
+            ${chosen && !shown ? 'animate-bounce' : ''}
           `}
           style={{ backgroundImage: 'url(/intersecting-circles.svg)' }}
           onClick={handleClick}

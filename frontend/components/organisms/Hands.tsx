@@ -50,7 +50,14 @@ export const Component: FC<ComponentProps> = ({ values, onClick }) => (
 `}
   >
     {values.map((v) => (
-      <Card key={v} value={v} shown choosable onClick={onClick} />
+      <Card
+        key={v}
+        value={v}
+        shown
+        choosable
+        onClick={onClick}
+        chosen={false}
+      />
     ))}
   </div>
 );

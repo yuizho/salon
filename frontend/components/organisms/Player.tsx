@@ -1,16 +1,18 @@
 import { FC } from 'react';
+import { Status } from '../../graphql/schema';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
 
 type Props = {
   userId: string;
+  status: Status;
   value: string;
   shown: boolean;
   me: boolean;
 };
 
 const Player: FC<Props> = ({
-  userId, value, shown, me,
+  userId, status, value, shown, me,
 }) => (
   <div
     key={userId}
@@ -24,7 +26,12 @@ const Player: FC<Props> = ({
   `}
   >
     <User me={me} />
-    <Card value={value} shown={shown} choosable={false} />
+    <Card
+      value={value}
+      shown={shown}
+      choosable={false}
+      chosen={status === Status.CHOSEN}
+    />
   </div>
 );
 
