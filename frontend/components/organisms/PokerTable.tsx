@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import API, { GraphQLResult } from '@aws-amplify/api';
 import {
   RefreshTableMutation,
@@ -66,12 +66,20 @@ export const Component: FC<ComponentProps> = ({
 const Container: FC = () => {
   const [me] = useRecoilState(myState);
   const [users] = useRecoilState(usersState);
+  const setUsers = useSetRecoilState(usersState);
   const poker = useRecoilValue(pokerState);
   const [openResetDialog, setOpenResetDialog] = useState(false);
 
   const refresh = async () => {
+    // update user state before sending request to GraphQL API
+    // to show the result of user operation as soon as possible.
+    setUsers((currentUsers) => currentUsers.map((u) => ({
+      userId: u.userId,
+      status: Status.CHOOSING,
+      pickedCard: '',
+    })));
+
     await mutateRefreshTable(me.roomId, me.userId);
-    console.log('refreshed!!!');
   };
 
   return (
