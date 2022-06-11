@@ -22,6 +22,7 @@ const useLeave = () => {
       const handleWindowClose = (event: Event) => {
         event.preventDefault();
         (async () => {
+          // TODO: error handling
           await mutateLeave(me.roomId, me.userId);
           console.log('leaved!!!!!');
         })();

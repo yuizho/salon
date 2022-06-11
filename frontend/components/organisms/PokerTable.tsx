@@ -24,6 +24,7 @@ type ComponentProps = {
   setOpenResetDialog: (b: boolean) => void;
 };
 
+// TODO: error handling
 const mutateRefreshTable = async (roomId: string, userId: string) => API.graphql({
   query: refreshTable,
   variables: {
