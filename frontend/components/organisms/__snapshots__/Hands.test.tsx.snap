@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Counter render 1`] = `
+<DocumentFragment>
+  <div
+    class="
+  flex flex-wrap gap-1
+"
+  >
+    <div>
+      <div
+        class="
+      
+flex
+items-center justify-center
+w-16 h-20
+border-slate-400
+rounded border
+text-slate-600
+select-none
+bg-white
+
+      
+shadow-md
+hover:cursor-pointer
+hover:border-2
+active:shadow-none
+active:border
+active:border-slate-300
+
+      
+      font-bold text-2xl
+    "
+      >
+        1
+      </div>
+    </div>
+    <div>
+      <div
+        class="
+      
+flex
+items-center justify-center
+w-16 h-20
+border-slate-400
+rounded border
+text-slate-600
+select-none
+bg-white
+
+      
+shadow-md
+hover:cursor-pointer
+hover:border-2
+active:shadow-none
+active:border
+active:border-slate-300
+
+      
+      font-bold text-2xl
+    "
+      >
+        2
+      </div>
+    </div>
+    <div>
+      <div
+        class="
+      
+flex
+items-center justify-center
+w-16 h-20
+border-slate-400
+rounded border
+text-slate-600
+select-none
+bg-white
+
+      
+shadow-md
+hover:cursor-pointer
+hover:border-2
+active:shadow-none
+active:border
+active:border-slate-300
+
+      
+      font-bold text-2xl
+    "
+      >
+        3
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
