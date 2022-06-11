@@ -1,22 +1,16 @@
-import { FC, Fragment, useState } from 'react';
+import { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Button from '../atoms/Button';
 
 type Props = {
   message: string;
   onClickOK: () => void;
-};
-
-type ComponentProps = Props & {
   open: boolean;
   setOpen: (b: boolean) => void;
 };
 
-export const Component: FC<ComponentProps> = ({
-  message,
-  open,
-  setOpen,
-  onClickOK,
+export const Component: FC<Props> = ({
+  message, open, setOpen, onClickOK,
 }) => (
   <Transition.Root show={open} as={Fragment}>
     <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -69,17 +63,15 @@ export const Component: FC<ComponentProps> = ({
   </Transition.Root>
 );
 
-const Container: FC<Props> = ({ message, onClickOK }) => {
-  const [open, setOpen] = useState(true);
-
-  return (
-    <Component
-      message={message}
-      open={open}
-      setOpen={setOpen}
-      onClickOK={onClickOK}
-    />
-  );
-};
+const Container: FC<Props> = ({
+  message, onClickOK, open, setOpen,
+}) => (
+  <Component
+    message={message}
+    open={open}
+    setOpen={setOpen}
+    onClickOK={onClickOK}
+  />
+);
 
 export default Container;

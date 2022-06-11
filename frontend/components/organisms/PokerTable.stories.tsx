@@ -1,4 +1,5 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
+import { useState } from 'react';
 import { Component } from './PokerTable';
 
 export default {
@@ -7,7 +8,18 @@ export default {
 } as Meta;
 
 const Template: Story = ({ me, users, poker, onReset }) => {
-  return <Component me={me} users={users} poker={poker} onReset={onReset} />;
+  const [openResetDialog, setOpenResetDialog] = useState(false);
+
+  return (
+    <Component
+      me={me}
+      users={users}
+      poker={poker}
+      onReset={onReset}
+      openResetDialog={openResetDialog}
+      setOpenResetDialog={setOpenResetDialog}
+    />
+  );
 };
 
 export const Default = Template.bind({});
