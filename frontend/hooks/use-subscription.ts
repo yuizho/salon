@@ -38,14 +38,18 @@ const useSubscription = () => {
       next: ({ value }: SubscriptionValue) => {
         const item = value.data.onUpdateUser;
         if (item) {
-          setUsers((currentUsers) => [
-            ...currentUsers.filter((u) => u.userId !== item.user_id),
-            {
-              userId: item.user_id,
-              status: item.status,
-              pickedCard: item.picked_card ?? '',
-            },
-          ]);
+          setUsers((currentUsers) => {
+            const users = [
+              ...currentUsers.filter((u) => u.userId !== item.user_id),
+              {
+                userId: item.user_id,
+                status: item.status,
+                pickedCard: item.picked_card ?? '',
+              },
+            ];
+            users.sort((a, b) => (a.userId > b.userId ? 1 : -1));
+            return users;
+          });
         }
       },
       error: ({ error }) => console.warn(error),

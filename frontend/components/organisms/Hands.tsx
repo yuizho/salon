@@ -69,14 +69,18 @@ const Container: FC<Props> = ({ values }) => {
   const onClickCard = (roomId: string, userId: string) => (pickedCard: string) => {
     // update user state before sending request to GraphQL API
     // to show the result of user operation as soon as possible.
-    setUsers((currentUsers) => [
-      ...currentUsers.filter((u) => u.userId !== userId),
-      {
-        userId,
-        status: Status.CHOSEN,
-        pickedCard,
-      },
-    ]);
+    setUsers((currentUsers) => {
+      const users = [
+        ...currentUsers.filter((u) => u.userId !== userId),
+        {
+          userId,
+          status: Status.CHOSEN,
+          pickedCard,
+        },
+      ];
+      users.sort((a, b) => (a.userId > b.userId ? 1 : -1));
+      return users;
+    });
 
     return mutatePick(roomId, userId, pickedCard);
   };
