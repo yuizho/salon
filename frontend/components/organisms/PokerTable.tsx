@@ -42,7 +42,7 @@ export const Component: FC<ComponentProps> = ({
     <Players
       myUserId={me.userId}
       players={users.filter((u) => u.status !== Status.LEAVED)}
-      shown={poker.shown}
+      shown={poker.state === 'EVERYONE_CHOSEN'}
     />
     <Button
       text="Reset"
