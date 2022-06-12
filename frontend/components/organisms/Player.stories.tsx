@@ -1,14 +1,20 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { Status } from '../../graphql/schema';
-import Player from './Player';
+import { Component } from './Player';
 
 export default {
   title: 'Organisms/Player',
-  component: Player,
+  component: Component,
 } as Meta;
 
 const Template: Story = ({ userId, status, value, shown, me }) => (
-  <Player userId={userId} status={status} value={value} shown={shown} me={me} />
+  <Component
+    userId={userId}
+    status={status}
+    value={value}
+    shown={shown}
+    me={me}
+  />
 );
 
 export const Default = Template.bind({});

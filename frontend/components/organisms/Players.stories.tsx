@@ -1,13 +1,13 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
-import Players from './Players';
+import { Component } from './Players';
 
 export default {
   title: 'Organisms/Players',
-  component: Players,
+  component: Component,
 } as Meta;
 
 const Template: Story = ({ myUserId, players, shown }) => (
-  <Players myUserId={myUserId} players={players} shown={shown} />
+  <Component myUserId={myUserId} players={players} shown={shown} />
 );
 
 export const Hidden = Template.bind({});

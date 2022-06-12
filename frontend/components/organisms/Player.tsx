@@ -11,7 +11,7 @@ type Props = {
   me: boolean;
 };
 
-const Player: FC<Props> = ({
+export const Component: FC<Props> = ({
   userId, status, value, shown, me,
 }) => (
   <div
@@ -35,4 +35,16 @@ const Player: FC<Props> = ({
   </div>
 );
 
-export default Player;
+const Container: FC<Props> = ({
+  userId, status, value, shown, me,
+}) => (
+  <Component
+    userId={userId}
+    status={status}
+    value={value}
+    shown={shown}
+    me={me}
+  />
+);
+
+export default Container;

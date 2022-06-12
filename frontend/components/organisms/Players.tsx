@@ -13,7 +13,7 @@ type Props = {
   shown: boolean;
 };
 
-const Players: FC<Props> = ({ myUserId, players, shown }) => (
+export const Component: FC<Props> = ({ myUserId, players, shown }) => (
   <div
     className={`
   flex flex-wrap gap-2
@@ -36,4 +36,8 @@ const Players: FC<Props> = ({ myUserId, players, shown }) => (
   </div>
 );
 
-export default Players;
+const Container: FC<Props> = ({ myUserId, players, shown }) => (
+  <Component myUserId={myUserId} players={players} shown={shown} />
+);
+
+export default Container;
