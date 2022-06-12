@@ -5,7 +5,7 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
-  extends: ['next/core-web-vitals', 'prettier', 'airbnb'],
+  extends: ['next/core-web-vitals', 'airbnb', 'prettier'],
   ignorePatterns: ['pages/_app.tsx', '*.stories.*', '*.test.*'],
   rules: {
     'max-len': 'off',
@@ -15,10 +15,7 @@ module.exports = {
     'no-use-before-define': 'off',
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
-    'react/jsx-filename-extension': [
-      1,
-      { extensions: ['.js', '.jsx', '.tsx'] },
-    ],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
     'react/jsx-props-no-spreading': [
       'error',
       {
