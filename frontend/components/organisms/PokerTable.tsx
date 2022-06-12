@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import API, { GraphQLResult } from '@aws-amplify/api';
 import { RefreshTableMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
 import { Poker, PokerState, pokerState } from '../../states/poker';
@@ -11,6 +11,7 @@ import Players from './Players';
 import { refreshTable } from '../../graphql/mutations';
 import ModalDialog from '../molecules/ModalDialog';
 import Message from '../atoms/Message';
+import { appState } from '../../states/app';
 
 type ComponentProps = {
   me: Me;
@@ -81,8 +82,10 @@ const Container: FC = () => {
   const [users] = useRecoilState(usersState);
   const poker = useRecoilValue(pokerState);
   const [openResetDialog, setOpenResetDialog] = useState(false);
+  const setApp = useSetRecoilState(appState);
 
   const refresh = async () => {
+    setApp((app) => ({ ...app, loading: true }));
     await mutateRefreshTable(me.roomId, me.userId);
   };
 

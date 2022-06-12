@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
 import API, { GraphQLResult } from '@aws-amplify/api';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { kick } from '../../graphql/mutations';
 import { KickMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
 import ModalDialog from '../molecules/ModalDialog';
 import { myState } from '../../states/me';
+import { appState } from '../../states/app';
 
 type Props = {
   userId: string;
@@ -73,8 +74,10 @@ export const Component: FC<ComponentProps> = ({
 const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const [myRecoilState] = useRecoilState(myState);
   const [openKickDialog, setOpenKickDialog] = useState(false);
+  const setApp = useSetRecoilState(appState);
 
   const kickThisUser = async () => {
+    setApp((app) => ({ ...app, loading: true }));
     await mutateKick(myRecoilState.roomId, myRecoilState.userId, userId);
   };
 

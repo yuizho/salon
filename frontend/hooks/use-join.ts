@@ -1,7 +1,7 @@
 import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { GraphQLResult } from '@aws-amplify/api';
 import {
   GetRoomQuery,
@@ -13,6 +13,7 @@ import { join } from '../graphql/mutations';
 import { getRoom } from '../graphql/queries';
 import { myState } from '../states/me';
 import { usersState } from '../states/users';
+import { appState } from '../states/app';
 
 const queryGetRoom = async (roomId: string) =>
   API.graphql({
@@ -35,12 +36,15 @@ const useJoin = () => {
 
   const [, setMe] = useRecoilState(myState);
   const [, setUsers] = useRecoilState(usersState);
+  const setApp = useSetRecoilState(appState);
 
   useEffect(() => {
     const execute = async () => {
       const roomId = router.query.roomId as string;
 
       // TODO: check roomId
+
+      setApp((app) => ({ ...app, loading: true }));
 
       try {
         const joinned = await mutateJoin(roomId);
@@ -80,7 +84,7 @@ const useJoin = () => {
 
     // cleanup
     return () => {};
-  }, [router, setMe, setUsers]);
+  }, [router, setMe, setUsers, setApp]);
 };
 
 export default useJoin;

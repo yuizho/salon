@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { pick } from '../../graphql/mutations';
 import { PickMutation, PickMutationVariables, Status } from '../../graphql/schema';
+import { appState } from '../../states/app';
 import { myState } from '../../states/me';
 import { usersState } from '../../states/users';
 import Card from '../atoms/Card';
@@ -50,8 +51,11 @@ export const Component: FC<ComponentProps> = ({ values, onClick }) => (
 const Container: FC<Props> = ({ values }) => {
   const [me] = useRecoilState(myState);
   const setUsers = useSetRecoilState(usersState);
+  const setApp = useSetRecoilState(appState);
 
   const onClickCard = (roomId: string, userId: string) => (pickedCard: string) => {
+    setApp((app) => ({ ...app, loading: true }));
+
     // update user state before sending request to GraphQL API
     // to show the result of user operation as soon as possible.
     setUsers((currentUsers) => {

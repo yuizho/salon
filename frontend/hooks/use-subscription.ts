@@ -6,6 +6,7 @@ import { useSetRecoilState } from 'recoil';
 import { Observable } from 'zen-observable-ts';
 import { OnUpdateUserSubscription } from '../graphql/schema';
 import { onUpdateUser } from '../graphql/subscriptions';
+import { appState } from '../states/app';
 import { usersState } from '../states/users';
 
 type SubscriptionValue = {
@@ -25,6 +26,7 @@ const setupSubscription = (roomId: string) =>
 const useSubscription = () => {
   const router = useRouter();
   const setUsers = useSetRecoilState(usersState);
+  const setApp = useSetRecoilState(appState);
 
   useEffect(() => {
     if (!router.isReady) {
@@ -52,6 +54,7 @@ const useSubscription = () => {
             return users;
           });
         }
+        setApp((app) => ({ ...app, loading: false }));
       },
       error: ({ error }) => console.warn(error),
     });
@@ -59,7 +62,7 @@ const useSubscription = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, setUsers]);
+  }, [router, setUsers, setApp]);
 };
 
 export default useSubscription;
