@@ -7,7 +7,7 @@ export type Poker = {
   state: PokerState;
 };
 
-type PokerState = 'KICKED' | 'EVERYONE_CHOSEN' | 'CHOOSING' | 'WAITING_OTHERS';
+export type PokerState = 'KICKED' | 'EVERYONE_CHOSEN' | 'CHOOSING' | 'WAITING_OTHERS';
 
 const isKicked = (users: Array<User>, myUserId: string) => {
   const active = users

@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import API, { GraphQLResult } from '@aws-amplify/api';
 import { RefreshTableMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
-import { Poker, pokerState } from '../../states/poker';
+import { Poker, PokerState, pokerState } from '../../states/poker';
 import { User, usersState } from '../../states/users';
 import { Me, myState } from '../../states/me';
 import Button from '../atoms/Button';
@@ -10,6 +10,7 @@ import Button from '../atoms/Button';
 import Players from './Players';
 import { refreshTable } from '../../graphql/mutations';
 import ModalDialog from '../molecules/ModalDialog';
+import Message from '../atoms/Message';
 
 type ComponentProps = {
   me: Me;
@@ -18,6 +19,7 @@ type ComponentProps = {
   onReset: () => void;
   openResetDialog: boolean;
   setOpenResetDialog: (b: boolean) => void;
+  message: string;
 };
 
 // TODO: error handling
@@ -30,6 +32,19 @@ const mutateRefreshTable = async (roomId: string, userId: string) =>
     } as RefreshTableMutationVariables,
   }) as GraphQLResult<RefreshTableMutation>;
 
+const getMessageByPokerState = (state: PokerState) => {
+  if (state === 'CHOOSING') {
+    return 'カードを選択してください。';
+  }
+  if (state === 'WAITING_OTHERS') {
+    return '他のユーザがカードを選択中です……';
+  }
+  if (state === 'EVERYONE_CHOSEN') {
+    return '全員がカードを選択しました。次のプランニングポーカーを始めるにはResetボタンを押してください。';
+  }
+  return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
+};
+
 export const Component: FC<ComponentProps> = ({
   me,
   users,
@@ -37,8 +52,10 @@ export const Component: FC<ComponentProps> = ({
   onReset,
   openResetDialog,
   setOpenResetDialog,
+  message,
 }) => (
   <div className="flex flex-col space-y-6 border rounded p-8">
+    <Message message={message} />
     <Players
       myUserId={me.userId}
       players={users.filter((u) => u.status !== Status.LEAVED)}
@@ -77,6 +94,7 @@ const Container: FC = () => {
       onReset={() => refresh()}
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
+      message={getMessageByPokerState(poker.state)}
     />
   );
 };

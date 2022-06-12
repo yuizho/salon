@@ -6,6 +6,16 @@ exports[`PokerTable snapshot 1`] = `
     class="flex flex-col space-y-6 border rounded p-8"
   >
     <div
+      class="border-t border-b border-slate-400 text-slate-600 px-4 py-3"
+      role="alert"
+    >
+      <p
+        class="text-sm"
+      >
+        他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。
+      </p>
+    </div>
+    <div
       class="
   flex flex-wrap gap-2
   "

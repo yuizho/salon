@@ -7,7 +7,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ me, users, poker, onReset }) => {
+const Template: Story = ({ me, users, poker, onReset, message }) => {
   const [openResetDialog, setOpenResetDialog] = useState(false);
 
   return (
@@ -18,6 +18,7 @@ const Template: Story = ({ me, users, poker, onReset }) => {
       onReset={onReset}
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
+      message={message}
     />
   );
 };
@@ -37,4 +38,5 @@ Default.args = {
   ],
   poker: { shown: false },
   onReset: () => alert('reset button is clicked!!'),
+  message: '他のユーザが選択中です……',
 };
