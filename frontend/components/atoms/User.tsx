@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import { FC } from 'react';
 
 type Props = {
   me: boolean;
+  onClick: () => void;
 };
 
 const clickableUsesr = `
@@ -15,7 +18,7 @@ active:border
 active:border-slate-300
 `;
 
-const User: FC<Props> = ({ me }) => (
+export const Component: FC<Props> = ({ me, onClick }) => (
   <div
     className={`
       flex
@@ -23,6 +26,13 @@ const User: FC<Props> = ({ me }) => (
       items-center
       w-20
     `}
+    onClick={
+      me
+        ? () => {}
+        : () => {
+          onClick();
+        }
+    }
   >
     <div
       className={`
@@ -72,4 +82,8 @@ const User: FC<Props> = ({ me }) => (
   </div>
 );
 
-export default User;
+const Container: FC<Props> = ({ me, onClick }) => (
+  <Component me={me} onClick={onClick} />
+);
+
+export default Container;
