@@ -6,7 +6,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   extends: ['next/core-web-vitals', 'prettier', 'airbnb'],
-  ignorePatterns: ['pages/_app.tsx', '*.stories.*'],
+  ignorePatterns: ['pages/_app.tsx', '*.stories.*', '*.test.*'],
   rules: {
     'max-len': 'off',
     'no-undef': 'off',
