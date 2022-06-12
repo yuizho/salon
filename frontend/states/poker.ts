@@ -1,5 +1,6 @@
 import { selector } from 'recoil';
 import { Status } from '../graphql/schema';
+import { appState } from './app';
 import { myState } from './me';
 import { User, usersState } from './users';
 
@@ -7,7 +8,7 @@ export type Poker = {
   state: PokerState;
 };
 
-export type PokerState = 'KICKED' | 'EVERYONE_CHOSEN' | 'CHOOSING' | 'WAITING_OTHERS';
+export type PokerState = 'LOADING' | 'KICKED' | 'EVERYONE_CHOSEN' | 'CHOOSING' | 'WAITING_OTHERS';
 
 const isKicked = (users: Array<User>, myUserId: string) => {
   const active = users
@@ -30,9 +31,12 @@ export const pokerState = selector({
   get: ({ get }) => {
     const users = get(usersState);
     const me = get(myState);
+    const app = get(appState);
 
     let state: PokerState;
-    if (isKicked(users, me.userId)) {
+    if (app.loading) {
+      state = 'LOADING';
+    } else if (isKicked(users, me.userId)) {
       state = 'KICKED';
     } else if (isEveryoneChosen(users)) {
       state = 'EVERYONE_CHOSEN';

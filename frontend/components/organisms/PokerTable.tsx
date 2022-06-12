@@ -43,7 +43,10 @@ const getMessageByPokerState = (state: PokerState) => {
   if (state === 'EVERYONE_CHOSEN') {
     return '全員がカードを選択しました。次のプランニングポーカーを始めるにはResetボタンを押してください。';
   }
-  return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
+  if (state === 'KICKED') {
+    return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
+  }
+  return 'Loading……';
 };
 
 export const Component: FC<ComponentProps> = ({
