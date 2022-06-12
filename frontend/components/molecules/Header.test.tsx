@@ -1,13 +1,12 @@
 import { render } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
+import Header from './Header';
 
-import Hands from './Hands';
-
-describe('Hands', () => {
+describe('Header', () => {
   test('snapshot', () => {
     const { asFragment } = render(
       <RecoilRoot>
-        <Hands values={['1', '2', '3']} />
+        <Header />
       </RecoilRoot>,
     );
     expect(asFragment()).toMatchSnapshot();

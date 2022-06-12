@@ -9,7 +9,8 @@
     "lint": "next lint",
     "storybook": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook",
-    "test": "jest"
+    "test": "jest",
+    "snapshot": "jest --watch"
   },
   "dependencies": {
     "@aws-amplify/api": "^4.0.42",

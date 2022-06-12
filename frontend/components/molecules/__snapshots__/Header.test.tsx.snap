@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header snapshot 1`] = `
+<DocumentFragment>
+  <nav
+    class="flex items-center justify-between flex-wrap p-4 border-b"
+  >
+    <div
+      class="flex items-center flex-shrink-0 text-slate-800"
+    >
+      <span
+        class="font-semibold text-2xl tracking-tight"
+      >
+        Salon
+      </span>
+    </div>
+  </nav>
+  <div />
+</DocumentFragment>
+`;

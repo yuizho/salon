@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
+import { Status } from '../../graphql/schema';
+import PokerTable from './PokerTable';
 
-import Hands from './Hands';
-
-describe('Hands', () => {
+describe('PokerTable', () => {
   test('snapshot', () => {
     const { asFragment } = render(
       <RecoilRoot>
-        <Hands values={['1', '2', '3']} />
+        <PokerTable />
       </RecoilRoot>,
     );
     expect(asFragment()).toMatchSnapshot();

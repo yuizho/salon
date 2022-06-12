@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Players snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="
+  flex flex-wrap gap-2
+  "
+  >
+    <div
+      class="
+      flex
+      flex-col
+      items-center
+      gap-2
+      p-2
+      w-24
+  "
+    >
+      <div
+        class="
+      flex
+      flex-col
+      items-center
+      w-20
+    "
+      >
+        <div
+          class="
+        flex
+        items-center justify-center
+        h-16
+        w-16
+        rounded-full
+        border
+        bg-white
+        border-slate-400
+      "
+        >
+          <div
+            class="relative"
+          >
+            <svg
+              class="h-10 w-10 text-slate-600"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+            >
+              <path
+                d="M0 0h24v24H0z"
+                stroke="none"
+              />
+              <circle
+                cx="12"
+                cy="7"
+                r="4"
+              />
+              <path
+                d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+              />
+            </svg>
+            <div
+              class="
+          absolute
+          bottom-8
+          left-1/2 -translate-x-1/2
+          select-none
+          text-slate-600
+          text-md
+          font-semibold
+        "
+            >
+              you
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="
+      
+flex
+items-center justify-center
+w-16 h-20
+border-slate-400
+rounded border
+text-slate-600
+select-none
+bg-white
+
+      
+      
+      font-bold text-2xl
+    "
+        >
+          XL
+        </div>
+      </div>
+    </div>
+    <div
+      class="
+      flex
+      flex-col
+      items-center
+      gap-2
+      p-2
+      w-24
+  "
+    >
+      <div
+        class="
+      flex
+      flex-col
+      items-center
+      w-20
+    "
+      >
+        <div
+          class="
+        flex
+        items-center justify-center
+        h-16
+        w-16
+        rounded-full
+        border
+        bg-white
+        
+border-slate-400
+shadow-md
+hover:cursor-pointer
+hover:border-2
+active:animate-none
+active:shadow-none
+active:border
+active:border-slate-300
+
+      "
+        >
+          <div
+            class="relative"
+          >
+            <svg
+              class="h-10 w-10 text-slate-600"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+            >
+              <path
+                d="M0 0h24v24H0z"
+                stroke="none"
+              />
+              <circle
+                cx="12"
+                cy="7"
+                r="4"
+              />
+              <path
+                d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="
+      
+flex
+items-center justify-center
+w-16 h-20
+border-slate-400
+rounded border
+text-slate-600
+select-none
+bg-white
+
+      
+      
+      font-bold text-2xl
+    "
+        >
+          S
+        </div>
+      </div>
+    </div>
+    <div
+      class="
+      flex
+      flex-col
+      items-center
+      gap-2
+      p-2
+      w-24
+  "
+    >
+      <div
+        class="
+      flex
+      flex-col
+      items-center
+      w-20
+    "
+      >
+        <div
+          class="
+        flex
+        items-center justify-center
+        h-16
+        w-16
+        rounded-full
+        border
+        bg-white
+        
+border-slate-400
+shadow-md
+hover:cursor-pointer
+hover:border-2
+active:animate-none
+active:shadow-none
+active:border
+active:border-slate-300
+
+      "
+        >
+          <div
+            class="relative"
+          >
+            <svg
+              class="h-10 w-10 text-slate-600"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+            >
+              <path
+                d="M0 0h24v24H0z"
+                stroke="none"
+              />
+              <circle
+                cx="12"
+                cy="7"
+                r="4"
+              />
+              <path
+                d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="
+      
+flex
+items-center justify-center
+w-16 h-20
+border-slate-400
+rounded border
+text-slate-600
+select-none
+bg-white
+
+      
+      
+      font-bold text-2xl
+    "
+        >
+          M
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
