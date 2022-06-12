@@ -6,9 +6,7 @@ export default {
 } as Meta;
 
 const Template: Story = ({ message, error, onClose }) => {
-  return (
-    <Component message={message} error={error} onClose={() => onClose(false)} />
-  );
+  return <Component message={message} error={error} onClose={() => onClose(false)} />;
 };
 
 export const Default = Template.bind({});

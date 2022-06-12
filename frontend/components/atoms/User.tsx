@@ -30,8 +30,8 @@ export const Component: FC<Props> = ({ me, onClick }) => (
       me
         ? () => {}
         : () => {
-          onClick();
-        }
+            onClick();
+          }
     }
   >
     <div
@@ -82,8 +82,6 @@ export const Component: FC<Props> = ({ me, onClick }) => (
   </div>
 );
 
-const Container: FC<Props> = ({ me, onClick }) => (
-  <Component me={me} onClick={onClick} />
-);
+const Container: FC<Props> = ({ me, onClick }) => <Component me={me} onClick={onClick} />;
 
 export default Container;

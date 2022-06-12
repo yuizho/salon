@@ -1,11 +1,7 @@
 import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import API, { GraphQLResult } from '@aws-amplify/api';
-import {
-  RefreshTableMutation,
-  RefreshTableMutationVariables,
-  Status,
-} from '../../graphql/schema';
+import { RefreshTableMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
 import { Poker, pokerState } from '../../states/poker';
 import { User, usersState } from '../../states/users';
 import { Me, myState } from '../../states/me';
@@ -25,13 +21,14 @@ type ComponentProps = {
 };
 
 // TODO: error handling
-const mutateRefreshTable = async (roomId: string, userId: string) => API.graphql({
-  query: refreshTable,
-  variables: {
-    room_id: roomId,
-    user_id: userId,
-  } as RefreshTableMutationVariables,
-}) as GraphQLResult<RefreshTableMutation>;
+const mutateRefreshTable = async (roomId: string, userId: string) =>
+  API.graphql({
+    query: refreshTable,
+    variables: {
+      room_id: roomId,
+      user_id: userId,
+    } as RefreshTableMutationVariables,
+  }) as GraphQLResult<RefreshTableMutation>;
 
 export const Component: FC<ComponentProps> = ({
   me,

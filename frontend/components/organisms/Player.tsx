@@ -2,11 +2,7 @@ import { FC, useState } from 'react';
 import API, { GraphQLResult } from '@aws-amplify/api';
 import { useRecoilState } from 'recoil';
 import { kick } from '../../graphql/mutations';
-import {
-  KickMutation,
-  RefreshTableMutationVariables,
-  Status,
-} from '../../graphql/schema';
+import { KickMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
 import ModalDialog from '../molecules/ModalDialog';
@@ -27,18 +23,15 @@ type ComponentProps = Props & {
 };
 
 // TODO: error handling
-const mutateKick = async (
-  roomId: string,
-  userId: string,
-  kickedUserId: string,
-) => API.graphql({
-  query: kick,
-  variables: {
-    room_id: roomId,
-    user_id: userId,
-    kicked_user_id: kickedUserId,
-  } as RefreshTableMutationVariables,
-}) as GraphQLResult<KickMutation>;
+const mutateKick = async (roomId: string, userId: string, kickedUserId: string) =>
+  API.graphql({
+    query: kick,
+    variables: {
+      room_id: roomId,
+      user_id: userId,
+      kicked_user_id: kickedUserId,
+    } as RefreshTableMutationVariables,
+  }) as GraphQLResult<KickMutation>;
 
 export const Component: FC<ComponentProps> = ({
   userId,
@@ -67,12 +60,7 @@ export const Component: FC<ComponentProps> = ({
         setOpenKickDialog(true);
       }}
     />
-    <Card
-      value={value}
-      shown={shown}
-      choosable={false}
-      chosen={status === Status.CHOSEN}
-    />
+    <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
     <ModalDialog
       message="選択したユーザを部屋から退出させます。よろしいですか？"
       onClickOK={onKick}
@@ -82,9 +70,7 @@ export const Component: FC<ComponentProps> = ({
   </div>
 );
 
-const Container: FC<Props> = ({
-  userId, status, value, shown, me,
-}) => {
+const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const [myRecoilState] = useRecoilState(myState);
   const [openKickDialog, setOpenKickDialog] = useState(false);
 

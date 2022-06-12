@@ -31,8 +31,6 @@ export const Component: FC<Props> = ({ text, onClick }) => (
   </button>
 );
 
-const Container: FC<Props> = ({ text, onClick }) => (
-  <Component text={text} onClick={onClick} />
-);
+const Container: FC<Props> = ({ text, onClick }) => <Component text={text} onClick={onClick} />;
 
 export default Container;

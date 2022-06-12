@@ -16,9 +16,7 @@ const Rooms: FC = (): JSX.Element => {
       <div className="flex flex-col space-y-10">
         <PokerTable />
         <div className="flex justify-center">
-          <Hands
-            values={['0', '1', '2', '3', '5', '8', '13', '21', '34', '55']}
-          />
+          <Hands values={['0', '1', '2', '3', '5', '8', '13', '21', '34', '55']} />
         </div>
       </div>
     </Frame>

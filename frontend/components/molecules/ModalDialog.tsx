@@ -9,9 +9,7 @@ type Props = {
   setOpen: (b: boolean) => void;
 };
 
-export const Component: FC<Props> = ({
-  message, open, setOpen, onClickOK,
-}) => (
+export const Component: FC<Props> = ({ message, open, setOpen, onClickOK }) => (
   <Transition.Root show={open} as={Fragment}>
     <Dialog as="div" className="relative z-10" onClose={setOpen}>
       <Transition.Child
@@ -63,15 +61,8 @@ export const Component: FC<Props> = ({
   </Transition.Root>
 );
 
-const Container: FC<Props> = ({
-  message, onClickOK, open, setOpen,
-}) => (
-  <Component
-    message={message}
-    open={open}
-    setOpen={setOpen}
-    onClickOK={onClickOK}
-  />
+const Container: FC<Props> = ({ message, onClickOK, open, setOpen }) => (
+  <Component message={message} open={open} setOpen={setOpen} onClickOK={onClickOK} />
 );
 
 export default Container;

@@ -14,19 +14,21 @@ import { getRoom } from '../graphql/queries';
 import { myState } from '../states/me';
 import { usersState } from '../states/users';
 
-const queryGetRoom = async (roomId: string) => API.graphql({
-  query: getRoom,
-  variables: {
-    room_id: roomId,
-  } as GetRoomQueryVariables,
-}) as GraphQLResult<GetRoomQuery>;
+const queryGetRoom = async (roomId: string) =>
+  API.graphql({
+    query: getRoom,
+    variables: {
+      room_id: roomId,
+    } as GetRoomQueryVariables,
+  }) as GraphQLResult<GetRoomQuery>;
 
-const mutateJoin = async (roomId: string) => API.graphql({
-  query: join,
-  variables: {
-    room_id: roomId,
-  } as JoinMutationVariables,
-}) as GraphQLResult<JoinMutation>;
+const mutateJoin = async (roomId: string) =>
+  API.graphql({
+    query: join,
+    variables: {
+      room_id: roomId,
+    } as JoinMutationVariables,
+  }) as GraphQLResult<JoinMutation>;
 
 const useJoin = () => {
   const router = useRouter();
@@ -59,11 +61,12 @@ const useJoin = () => {
           return;
         }
 
-        const users = room.data?.getRoom.items.map((item) => ({
-          userId: item.user_id,
-          status: item.status,
-          pickedCard: item.picked_card ?? '',
-        })) || [];
+        const users =
+          room.data?.getRoom.items.map((item) => ({
+            userId: item.user_id,
+            status: item.status,
+            pickedCard: item.picked_card ?? '',
+          })) || [];
 
         setUsers(users);
       } catch (e) {

@@ -12,8 +12,6 @@ export const Component: FC<Props> = ({ children }) => (
   </>
 );
 
-const Container: FC<Props> = ({ children }) => (
-  <Component>{children}</Component>
-);
+const Container: FC<Props> = ({ children }) => <Component>{children}</Component>;
 
 export default Container;

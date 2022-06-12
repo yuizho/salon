@@ -31,13 +31,7 @@ active:border
 active:border-slate-300
 `;
 
-const Card: FC<Props> = ({
-  value,
-  shown,
-  choosable,
-  chosen,
-  onClick = null,
-}) => {
+const Card: FC<Props> = ({ value, shown, choosable, chosen, onClick = null }) => {
   const handleClick = () => {
     if (choosable && onClick !== null) {
       onClick(value);

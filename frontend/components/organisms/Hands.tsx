@@ -3,11 +3,7 @@ import { API } from 'aws-amplify';
 import { FC } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { pick } from '../../graphql/mutations';
-import {
-  PickMutation,
-  PickMutationVariables,
-  Status,
-} from '../../graphql/schema';
+import { PickMutation, PickMutationVariables, Status } from '../../graphql/schema';
 import { myState } from '../../states/me';
 import { usersState } from '../../states/users';
 import Card from '../atoms/Card';
@@ -20,11 +16,7 @@ type ComponentProps = Props & {
   onClick: (pickedCard: string) => Promise<boolean>;
 };
 
-const mutatePick = async (
-  roomId: string,
-  userId: string,
-  pickedCard: string,
-) => {
+const mutatePick = async (roomId: string, userId: string, pickedCard: string) => {
   try {
     const result = (await API.graphql({
       query: pick,
@@ -50,14 +42,7 @@ export const Component: FC<ComponentProps> = ({ values, onClick }) => (
 `}
   >
     {values.map((v) => (
-      <Card
-        key={v}
-        value={v}
-        shown
-        choosable
-        onClick={onClick}
-        chosen={false}
-      />
+      <Card key={v} value={v} shown choosable onClick={onClick} chosen={false} />
     ))}
   </div>
 );
@@ -85,9 +70,7 @@ const Container: FC<Props> = ({ values }) => {
     return mutatePick(roomId, userId, pickedCard);
   };
 
-  return (
-    <Component values={values} onClick={onClickCard(me.roomId, me.userId)} />
-  );
+  return <Component values={values} onClick={onClickCard(me.roomId, me.userId)} />;
 };
 
 export default Container;

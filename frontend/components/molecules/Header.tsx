@@ -20,13 +20,7 @@ const Container: FC = () => {
   const [error, setError] = useState(false);
   const [message] = useState('error hoge');
 
-  return (
-    <Component
-      message={message}
-      error={error}
-      onClose={() => setError(false)}
-    />
-  );
+  return <Component message={message} error={error} onClose={() => setError(false)} />;
 };
 
 export default Container;

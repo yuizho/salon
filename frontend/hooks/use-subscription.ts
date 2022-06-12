@@ -14,12 +14,13 @@ type SubscriptionValue = {
   };
 };
 
-const setupSubscription = (roomId: string) => API.graphql({
-  query: onUpdateUser,
-  variables: {
-    room_id: roomId,
-  },
-}) as Observable<SubscriptionValue>;
+const setupSubscription = (roomId: string) =>
+  API.graphql({
+    query: onUpdateUser,
+    variables: {
+      room_id: roomId,
+    },
+  }) as Observable<SubscriptionValue>;
 
 const useSubscription = () => {
   const router = useRouter();

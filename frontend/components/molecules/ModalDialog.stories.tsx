@@ -7,14 +7,7 @@ export default {
 } as Meta;
 
 const Template: Story = ({ message, open, setOpen, onClickOK }) => {
-  return (
-    <Component
-      message={message}
-      open={open}
-      setOpen={setOpen}
-      onClickOK={onClickOK}
-    />
-  );
+  return <Component message={message} open={open} setOpen={setOpen} onClickOK={onClickOK} />;
 };
 
 export const Default = Template.bind({});
