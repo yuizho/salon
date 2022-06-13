@@ -15,6 +15,7 @@ import { myState } from '../states/me';
 import { usersState } from '../states/users';
 import { appState } from '../states/app';
 import { NETWORK_ERROR } from '../graphql/error-message';
+import { roomState } from '../states/room';
 
 const queryGetRoom = (roomId: string) =>
   API.graphql({
@@ -37,6 +38,7 @@ const useJoin = () => {
 
   const [, setMe] = useRecoilState(myState);
   const [, setUsers] = useRecoilState(usersState);
+  const [, setRoom] = useRecoilState(roomState);
   const setApp = useSetRecoilState(appState);
 
   useEffect(() => {
@@ -69,6 +71,7 @@ const useJoin = () => {
           return;
         }
 
+        setRoom({ expirationUnixTimestamp: room.data?.getRoom.expiration_unix_timestamp ?? 0 });
 
         const users =
           room.data?.getRoom.items.map((item) => ({
@@ -93,7 +96,7 @@ const useJoin = () => {
 
     // cleanup
     return () => {};
-  }, [router, setMe, setUsers, setApp]);
+  }, [router, setMe, setUsers, setRoom, setApp]);
 };
 
 export default useJoin;

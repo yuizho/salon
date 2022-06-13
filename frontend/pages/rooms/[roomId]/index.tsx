@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Hands from '../../../components/organisms/Hands';
 import PokerTable from '../../../components/organisms/PokerTable';
 import Frame from '../../../components/templates/Frame';
+import useExpirationCheck from '../../../hooks/use-expiraion-check';
 import useJoin from '../../../hooks/use-join';
 import useLeave from '../../../hooks/use-leave';
 import useSubscription from '../../../hooks/use-subscription';
@@ -10,6 +11,7 @@ const Rooms: FC = (): JSX.Element => {
   useJoin();
   useSubscription();
   useLeave();
+  useExpirationCheck();
 
   return (
     <Frame>
