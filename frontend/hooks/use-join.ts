@@ -14,8 +14,9 @@ import { getRoom } from '../graphql/queries';
 import { myState } from '../states/me';
 import { usersState } from '../states/users';
 import { appState } from '../states/app';
+import { NETWORK_ERROR } from '../graphql/error-message';
 
-const queryGetRoom = async (roomId: string) =>
+const queryGetRoom = (roomId: string) =>
   API.graphql({
     query: getRoom,
     variables: {
@@ -23,7 +24,7 @@ const queryGetRoom = async (roomId: string) =>
     } as GetRoomQueryVariables,
   }) as GraphQLResult<GetRoomQuery>;
 
-const mutateJoin = async (roomId: string) =>
+const mutateJoin = (roomId: string) =>
   API.graphql({
     query: join,
     variables: {
@@ -53,14 +54,17 @@ const useJoin = () => {
           userId: joinned.data?.join.user_id ?? '',
         });
       } catch (e) {
-        console.error(e);
+        setApp((app) => ({
+          ...app,
+          loading: false,
+          errorMessage: NETWORK_ERROR,
+        }));
         return;
       }
 
       try {
         const room = await queryGetRoom(roomId);
         if (!room.data?.getRoom.is_opened) {
-          // TODO: store error state
           router.push('/');
           return;
         }
@@ -74,7 +78,11 @@ const useJoin = () => {
 
         setUsers(users);
       } catch (e) {
-        console.error(e);
+        setApp((app) => ({
+          ...app,
+          loading: false,
+          errorMessage: NETWORK_ERROR,
+        }));
       }
     };
 

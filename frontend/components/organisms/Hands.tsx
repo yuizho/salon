@@ -2,6 +2,7 @@ import { GraphQLResult } from '@aws-amplify/api';
 import { API } from 'aws-amplify';
 import { FC } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import { NETWORK_ERROR } from '../../graphql/error-message';
 import { pick } from '../../graphql/mutations';
 import { PickMutation, PickMutationVariables, Status } from '../../graphql/schema';
 import { appState } from '../../states/app';
@@ -17,24 +18,15 @@ type ComponentProps = Props & {
   onClick: (pickedCard: string) => Promise<boolean>;
 };
 
-const mutatePick = async (roomId: string, userId: string, pickedCard: string) => {
-  try {
-    const result = (await API.graphql({
-      query: pick,
-      variables: {
-        room_id: roomId,
-        user_id: userId,
-        picked_card: pickedCard,
-      } as PickMutationVariables,
-    })) as GraphQLResult<PickMutation>;
-
-    return result.data?.pick.user_id === userId ?? false;
-  } catch (e) {
-    // TODO: error handling
-    console.error(e);
-    return false;
-  }
-};
+const mutatePick = (roomId: string, userId: string, pickedCard: string) =>
+  API.graphql({
+    query: pick,
+    variables: {
+      room_id: roomId,
+      user_id: userId,
+      picked_card: pickedCard,
+    } as PickMutationVariables,
+  }) as GraphQLResult<PickMutation>;
 
 export const Component: FC<ComponentProps> = ({ values, onClick }) => (
   <div
@@ -53,7 +45,7 @@ const Container: FC<Props> = ({ values }) => {
   const setUsers = useSetRecoilState(usersState);
   const setApp = useSetRecoilState(appState);
 
-  const onClickCard = (roomId: string, userId: string) => (pickedCard: string) => {
+  const onClickCard = (roomId: string, userId: string) => async (pickedCard: string) => {
     setApp((app) => ({ ...app, loading: true }));
 
     // update user state before sending request to GraphQL API
@@ -71,7 +63,17 @@ const Container: FC<Props> = ({ values }) => {
       return users;
     });
 
-    return mutatePick(roomId, userId, pickedCard);
+    try {
+      const result = await mutatePick(roomId, userId, pickedCard);
+      return result.data?.pick.user_id === userId ?? false;
+    } catch (e) {
+      setApp((app) => ({
+        ...app,
+        loading: false,
+        errorMessage: NETWORK_ERROR,
+      }));
+      return false;
+    }
   };
 
   return <Component values={values} onClick={onClickCard(me.roomId, me.userId)} />;

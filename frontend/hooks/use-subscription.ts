@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { Observable } from 'zen-observable-ts';
+import { NETWORK_ERROR } from '../graphql/error-message';
 import { OnUpdateUserSubscription } from '../graphql/schema';
 import { onUpdateUser } from '../graphql/subscriptions';
 import { appState } from '../states/app';
@@ -56,7 +57,14 @@ const useSubscription = () => {
         }
         setApp((app) => ({ ...app, loading: false }));
       },
-      error: ({ error }) => console.warn(error),
+      error: ({ error }) => {
+        console.warn(error);
+        setApp((app) => ({
+          ...app,
+          loading: false,
+          errorMessage: NETWORK_ERROR,
+        }));
+      },
     });
 
     return () => {

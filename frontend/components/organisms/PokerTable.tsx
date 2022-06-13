@@ -12,6 +12,7 @@ import { refreshTable } from '../../graphql/mutations';
 import ModalDialog from '../molecules/ModalDialog';
 import Message from '../atoms/Message';
 import { appState } from '../../states/app';
+import { NETWORK_ERROR } from '../../graphql/error-message';
 
 type ComponentProps = {
   me: Me;
@@ -23,8 +24,7 @@ type ComponentProps = {
   message: string;
 };
 
-// TODO: error handling
-const mutateRefreshTable = async (roomId: string, userId: string) =>
+const mutateRefreshTable = (roomId: string, userId: string) =>
   API.graphql({
     query: refreshTable,
     variables: {
@@ -89,7 +89,15 @@ const Container: FC = () => {
 
   const refresh = async () => {
     setApp((app) => ({ ...app, loading: true }));
-    await mutateRefreshTable(me.roomId, me.userId);
+    try {
+      await mutateRefreshTable(me.roomId, me.userId);
+    } catch (e) {
+      setApp((app) => ({
+        ...app,
+        loading: false,
+        errorMessage: NETWORK_ERROR,
+      }));
+    }
   };
 
   return (

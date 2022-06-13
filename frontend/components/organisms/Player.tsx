@@ -8,6 +8,7 @@ import User from '../atoms/User';
 import ModalDialog from '../molecules/ModalDialog';
 import { myState } from '../../states/me';
 import { appState } from '../../states/app';
+import { NETWORK_ERROR } from '../../graphql/error-message';
 
 type Props = {
   userId: string;
@@ -23,8 +24,7 @@ type ComponentProps = Props & {
   setOpenKickDialog: (b: boolean) => void;
 };
 
-// TODO: error handling
-const mutateKick = async (roomId: string, userId: string, kickedUserId: string) =>
+const mutateKick = (roomId: string, userId: string, kickedUserId: string) =>
   API.graphql({
     query: kick,
     variables: {
@@ -78,7 +78,15 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
 
   const kickThisUser = async () => {
     setApp((app) => ({ ...app, loading: true }));
-    await mutateKick(myRecoilState.roomId, myRecoilState.userId, userId);
+    try {
+      await mutateKick(myRecoilState.roomId, myRecoilState.userId, userId);
+    } catch (e) {
+      setApp((app) => ({
+        ...app,
+        loading: false,
+        errorMessage: NETWORK_ERROR,
+      }));
+    }
   };
 
   return (
