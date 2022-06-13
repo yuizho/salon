@@ -65,9 +65,10 @@ const useJoin = () => {
       try {
         const room = await queryGetRoom(roomId);
         if (!room.data?.getRoom.is_opened) {
-          router.push('/');
+          router.push('/404');
           return;
         }
+
 
         const users =
           room.data?.getRoom.items.map((item) => ({
