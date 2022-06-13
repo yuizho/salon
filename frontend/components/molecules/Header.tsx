@@ -1,26 +1,27 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useRecoilState } from 'recoil';
+import { appState } from '../../states/app';
 import ErrorAlert from '../atoms/ErrorAlert';
 import NavBar from '../atoms/NavBar';
 
 type ComponentProps = {
-  message: string;
-  error: boolean;
+  message: string | null;
   onClose: () => void;
 };
 
-export const Component: FC<ComponentProps> = ({ message, error, onClose }) => (
+export const Component: FC<ComponentProps> = ({ message, onClose }) => (
   <>
     <NavBar />
-    <ErrorAlert message={message} error={error} onClose={onClose} />
+    <ErrorAlert message={message} onClose={onClose} />
   </>
 );
 
 const Container: FC = () => {
-  // TODO: use recoil states
-  const [error, setError] = useState(false);
-  const [message] = useState('error hoge');
+  const [app, setApp] = useRecoilState(appState);
 
-  return <Component message={message} error={error} onClose={() => setError(false)} />;
+  return (
+    <Component message={app.errorMessage} onClose={() => setApp({ ...app, errorMessage: null })} />
+  );
 };
 
 export default Container;

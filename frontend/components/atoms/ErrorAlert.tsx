@@ -1,14 +1,13 @@
 import { FC } from 'react';
 
 type Props = {
-  message: string;
-  error: boolean;
+  message: string | null;
   onClose: () => void;
 };
 
-export const Component: FC<Props> = ({ message, error, onClose }) => (
+export const Component: FC<Props> = ({ message, onClose }) => (
   <div>
-    {error && (
+    {message && (
       <div
         className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
         role="alert"
@@ -31,8 +30,8 @@ export const Component: FC<Props> = ({ message, error, onClose }) => (
   </div>
 );
 
-const Container: FC<Props> = ({ message, error, onClose }) => (
-  <Component message={message} error={error} onClose={onClose} />
+const Container: FC<Props> = ({ message, onClose }) => (
+  <Component message={message} onClose={onClose} />
 );
 
 export default Container;
