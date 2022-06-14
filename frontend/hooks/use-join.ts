@@ -45,7 +45,10 @@ const useJoin = () => {
     const execute = async () => {
       const roomId = router.query.roomId as string;
 
-      // TODO: check roomId
+      if (!/^[0-9a-zA-Z]+$/.test(roomId) || roomId.length > 30) {
+        router.push('/404');
+        return;
+      }
 
       setApp((app) => ({ ...app, loading: true }));
 
