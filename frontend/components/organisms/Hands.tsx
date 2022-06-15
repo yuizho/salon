@@ -18,15 +18,17 @@ type ComponentProps = Props & {
   onClick: (pickedCard: string) => Promise<boolean>;
 };
 
-const mutatePick = (roomId: string, userId: string, pickedCard: string) =>
-  API.graphql({
+const mutatePick = async (roomId: string, userId: string, pickedCard: string) => {
+  const result = (await API.graphql({
     query: pick,
     variables: {
       room_id: roomId,
       user_id: userId,
       picked_card: pickedCard,
     } as PickMutationVariables,
-  }) as GraphQLResult<PickMutation>;
+  })) as GraphQLResult<PickMutation>;
+  return result;
+};
 
 export const Component: FC<ComponentProps> = ({ values, onClick }) => (
   <div

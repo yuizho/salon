@@ -24,15 +24,17 @@ type ComponentProps = Props & {
   setOpenKickDialog: (b: boolean) => void;
 };
 
-const mutateKick = (roomId: string, userId: string, kickedUserId: string) =>
-  API.graphql({
+const mutateKick = async (roomId: string, userId: string, kickedUserId: string) => {
+  const result = (await API.graphql({
     query: kick,
     variables: {
       room_id: roomId,
       user_id: userId,
       kicked_user_id: kickedUserId,
     } as RefreshTableMutationVariables,
-  }) as GraphQLResult<KickMutation>;
+  })) as GraphQLResult<KickMutation>;
+  return result;
+};
 
 export const Component: FC<ComponentProps> = ({
   userId,

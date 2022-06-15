@@ -13,10 +13,12 @@ type Props = {
   onClick: () => void;
 };
 
-const mutateOpenRoom = () =>
-  API.graphql({
+const mutateOpenRoom = async () => {
+  const result = (await API.graphql({
     query: openRoom,
-  }) as GraphQLResult<OpenRoomMutation>;
+  })) as GraphQLResult<OpenRoomMutation>;
+  return result;
+};
 
 export const Component: FC<Props> = ({ onClick }) => (
   <div className="flex flex-col space-y-6 border rounded p-8 ">

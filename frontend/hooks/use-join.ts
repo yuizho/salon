@@ -19,12 +19,12 @@ import { NETWORK_ERROR } from '../graphql/error-message';
 import { roomState } from '../states/room';
 
 const queryGetRoom = async (roomId: string) => {
-  const result = API.graphql({
+  const result = (await API.graphql({
     query: getRoom,
     variables: {
       room_id: roomId,
     } as GetRoomQueryVariables,
-  }) as GraphQLResult<GetRoomQuery>;
+  })) as GraphQLResult<GetRoomQuery>;
   return result;
 };
 

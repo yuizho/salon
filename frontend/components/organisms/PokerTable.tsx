@@ -24,14 +24,16 @@ type ComponentProps = {
   message: string;
 };
 
-const mutateRefreshTable = (roomId: string, userId: string) =>
-  API.graphql({
+const mutateRefreshTable = async (roomId: string, userId: string) => {
+  const result = (await API.graphql({
     query: refreshTable,
     variables: {
       room_id: roomId,
       user_id: userId,
     } as RefreshTableMutationVariables,
-  }) as GraphQLResult<RefreshTableMutation>;
+  })) as GraphQLResult<RefreshTableMutation>;
+  return result;
+};
 
 const getMessageByPokerState = (state: PokerState) => {
   if (state === 'CHOOSING') {

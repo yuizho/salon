@@ -6,14 +6,16 @@ import { LeaveMutation, LeaveMutationVariables } from '../graphql/schema';
 import { leave } from '../graphql/mutations';
 import { myState } from '../states/me';
 
-const mutateLeave = async (roomId: string, userId: string) =>
-  API.graphql({
+const mutateLeave = async (roomId: string, userId: string) => {
+  const result = (await API.graphql({
     query: leave,
     variables: {
       room_id: roomId,
       user_id: userId,
     } as LeaveMutationVariables,
-  }) as GraphQLResult<LeaveMutation>;
+  })) as GraphQLResult<LeaveMutation>;
+  return result;
+};
 
 const useLeave = () => {
   const [me] = useRecoilState(myState);
