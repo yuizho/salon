@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -17,26 +18,44 @@ import { appState } from '../states/app';
 import { NETWORK_ERROR } from '../graphql/error-message';
 import { roomState } from '../states/room';
 
-const queryGetRoom = (roomId: string) =>
-  API.graphql({
+const queryGetRoom = async (roomId: string) => {
+  const result = API.graphql({
     query: getRoom,
     variables: {
       room_id: roomId,
     } as GetRoomQueryVariables,
   }) as GraphQLResult<GetRoomQuery>;
+  return result;
+};
 
-const mutateJoin = (roomId: string) =>
-  API.graphql({
+const mutateJoin = async (roomId: string) => {
+  const result = (await API.graphql({
     query: join,
     variables: {
       room_id: roomId,
     } as JoinMutationVariables,
-  }) as GraphQLResult<JoinMutation>;
+  })) as GraphQLResult<JoinMutation>;
+  return result;
+};
+
+const getRoomWithRetry = async (roomId: string) => {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const i of [1, 2, 3, 4]) {
+    const room = await queryGetRoom(roomId);
+    if (room.data?.getRoom.is_opened) {
+      return room;
+    }
+    // eslint-disable-next-line no-promise-executor-return
+    await new Promise((resolve) => setTimeout(resolve, 1000 * i));
+  }
+  const room = await queryGetRoom(roomId);
+  return room;
+};
 
 const useJoin = () => {
   const router = useRouter();
 
-  const [, setMe] = useRecoilState(myState);
+  const [me, setMe] = useRecoilState(myState);
   const [, setUsers] = useRecoilState(usersState);
   const [, setRoom] = useRecoilState(roomState);
   const setApp = useSetRecoilState(appState);
@@ -50,25 +69,33 @@ const useJoin = () => {
         return;
       }
 
-      setApp((app) => ({ ...app, loading: true }));
-
-      try {
-        const joinned = await mutateJoin(roomId);
-        setMe({
-          roomId,
-          userId: joinned.data?.join.user_id ?? '',
-        });
-      } catch (e) {
-        setApp((app) => ({
-          ...app,
-          loading: false,
-          errorMessage: NETWORK_ERROR,
-        }));
-        return;
+      const isCalledByCreatingRoomOperation = !!me.userId;
+      if (!isCalledByCreatingRoomOperation) {
+        setApp((app) => ({ ...app, loading: true }));
+        try {
+          const joinned = await mutateJoin(roomId);
+          setMe({
+            roomId,
+            userId: joinned.data?.join.user_id ?? '',
+          });
+        } catch (e) {
+          setApp((app) => ({
+            ...app,
+            loading: false,
+            errorMessage: NETWORK_ERROR,
+          }));
+          return;
+        }
       }
 
       try {
-        const room = await queryGetRoom(roomId);
+        let room;
+        if (isCalledByCreatingRoomOperation) {
+          //  the room data might not be saved in database yet.
+          room = await getRoomWithRetry(roomId);
+        } else {
+          room = await queryGetRoom(roomId);
+        }
         if (!room.data?.getRoom.is_opened) {
           router.push('/404');
           return;
@@ -99,7 +126,7 @@ const useJoin = () => {
 
     // cleanup
     return () => {};
-  }, [router, setMe, setUsers, setRoom, setApp]);
+  }, [router, me, setMe, setUsers, setRoom, setApp]);
 };
 
 export default useJoin;
