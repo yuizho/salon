@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RoomForm snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flex flex-col space-y-6 border rounded p-8 "
+  >
+    <p
+      class="text-slate-600"
+    >
+      プランニングポーカーを開始するには部屋を作成してください。 作成した部屋のURLを共有することで、部屋にメンバーを追加できます！
+    </p>
+    <button
+      class="
+      py-2 px-4
+      font-semibold
+      border-slate-400
+      text-slate-600
+      border
+      rounded
+      shadow-md
+      bg-white
+      w-full
+      sm:w-auto
+      sm:text-sm
+      hover:border-2
+      active:shadow-none
+      active:border
+      active:border-slate-300
+    "
+      type="button"
+    >
+      部屋を作成する
+    </button>
+  </div>
+</DocumentFragment>
+`;
