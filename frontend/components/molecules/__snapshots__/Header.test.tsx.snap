@@ -3,16 +3,17 @@
 exports[`Header snapshot 1`] = `
 <DocumentFragment>
   <nav
-    class="flex items-center justify-between flex-wrap p-4 border-b"
+    class="flex ustify-between flex-wrap py-4 px-6 border-b"
   >
     <div
       class="flex items-center flex-shrink-0 text-slate-800"
     >
-      <span
-        class="font-semibold text-2xl tracking-tight"
+      <a
+        class="font-bold text-2xl tracking-tight"
+        href="/"
       >
         Salon
-      </span>
+      </a>
     </div>
   </nav>
   <div />
