@@ -69,9 +69,14 @@ active:border-slate-300
         </div>
       </div>
     </div>
-    <div>
+    <div
+      class="relative"
+    >
       <div
-        class="
+        class="relative"
+      >
+        <div
+          class="
             
 flex
 items-center justify-center
@@ -85,8 +90,9 @@ bg-white
             
             
           "
-        style="background-image: url(/intersecting-circles.svg);"
-      />
+          style="background-image: url(/intersecting-circles.svg);"
+        />
+      </div>
     </div>
   </div>
 </DocumentFragment>

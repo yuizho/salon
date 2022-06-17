@@ -6,14 +6,16 @@ exports[`PokerTable snapshot 1`] = `
     class="flex flex-col space-y-6 border rounded p-8 animate-pulse"
   >
     <div
-      class="border-t border-b border-slate-400 text-slate-600 px-4 py-3"
-      role="alert"
+      hidden=""
     >
-      <p
-        class="text-sm"
+      <div
+        class="border-t border-b border-slate-400 text-slate-600 px-4 py-3"
+        role="alert"
       >
-        　
-      </p>
+        <p
+          class="text-sm"
+        />
+      </div>
     </div>
     <div
       class="

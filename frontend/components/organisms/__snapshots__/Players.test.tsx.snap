@@ -78,9 +78,14 @@ exports[`Players snapshot 1`] = `
           </div>
         </div>
       </div>
-      <div>
+      <div
+        class="relative"
+      >
         <div
-          class="
+          class="relative"
+        >
+          <div
+            class="
       
 flex
 items-center justify-center
@@ -95,8 +100,9 @@ bg-white
       
       font-bold text-2xl
     "
-        >
-          XL
+          >
+            XL
+          </div>
         </div>
       </div>
     </div>
@@ -167,9 +173,14 @@ active:border-slate-300
           </div>
         </div>
       </div>
-      <div>
+      <div
+        class="relative"
+      >
         <div
-          class="
+          class="relative"
+        >
+          <div
+            class="
       
 flex
 items-center justify-center
@@ -184,8 +195,9 @@ bg-white
       
       font-bold text-2xl
     "
-        >
-          S
+          >
+            S
+          </div>
         </div>
       </div>
     </div>
@@ -256,9 +268,14 @@ active:border-slate-300
           </div>
         </div>
       </div>
-      <div>
+      <div
+        class="relative"
+      >
         <div
-          class="
+          class="relative"
+        >
+          <div
+            class="
       
 flex
 items-center justify-center
@@ -273,8 +290,9 @@ bg-white
       
       font-bold text-2xl
     "
-        >
-          M
+          >
+            M
+          </div>
         </div>
       </div>
     </div>

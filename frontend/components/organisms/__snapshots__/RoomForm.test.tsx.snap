@@ -15,8 +15,12 @@ exports[`RoomForm snapshot 1`] = `
     >
       部屋を作成したら、URLを共有してメンバーを招待しましょう！
     </p>
-    <button
-      class="
+    <div
+      class="relative w-full"
+    >
+      <button
+        class="
+      relative
       py-2 px-4
       font-semibold
       border-slate-400
@@ -26,17 +30,16 @@ exports[`RoomForm snapshot 1`] = `
       shadow-md
       bg-white
       w-full
-      sm:w-auto
-      sm:text-sm
       hover:border-2
       active:shadow-none
       active:border
       active:border-slate-300
     "
-      type="button"
-    >
-      部屋を作成する
-    </button>
+        type="button"
+      >
+        部屋を作成する
+      </button>
+    </div>
   </div>
 </DocumentFragment>
 `;
