@@ -34,7 +34,7 @@ export const pokerState = selector({
     const app = get(appState);
 
     let state: PokerState;
-    if (app.loading) {
+    if (app.loading || users.length === 0) {
       state = 'LOADING';
     } else if (isKicked(users, me.userId)) {
       state = 'KICKED';

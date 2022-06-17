@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import API, { GraphQLResult } from '@aws-amplify/api';
 import { RefreshTableMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
-import { Poker, PokerState, pokerState } from '../../states/poker';
+import { Poker, PokerState, pokerState as pokerRecoilState } from '../../states/poker';
 import { User, usersState } from '../../states/users';
 import { Me, myState } from '../../states/me';
 import Button from '../atoms/Button';
@@ -22,6 +22,7 @@ type ComponentProps = {
   openResetDialog: boolean;
   setOpenResetDialog: (b: boolean) => void;
   message: string;
+  pokerState: PokerState;
 };
 
 const mutateRefreshTable = async (roomId: string, userId: string) => {
@@ -48,7 +49,7 @@ const getMessageByPokerState = (state: PokerState) => {
   if (state === 'KICKED') {
     return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
   }
-  return 'Loading……';
+  return '　';
 };
 
 export const Component: FC<ComponentProps> = ({
@@ -59,8 +60,13 @@ export const Component: FC<ComponentProps> = ({
   openResetDialog,
   setOpenResetDialog,
   message,
+  pokerState,
 }) => (
-  <div className="flex flex-col space-y-6 border rounded p-8">
+  <div
+    className={`flex flex-col space-y-6 border rounded p-8 ${
+      pokerState === 'LOADING' && 'animate-pulse'
+    }`}
+  >
     <Message message={message} />
     <Players
       myUserId={me.userId}
@@ -85,7 +91,7 @@ export const Component: FC<ComponentProps> = ({
 const Container: FC = () => {
   const [me] = useRecoilState(myState);
   const [users] = useRecoilState(usersState);
-  const poker = useRecoilValue(pokerState);
+  const poker = useRecoilValue(pokerRecoilState);
   const [openResetDialog, setOpenResetDialog] = useState(false);
   const setApp = useSetRecoilState(appState);
 
@@ -110,7 +116,8 @@ const Container: FC = () => {
       onReset={() => refresh()}
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
-      message={getMessageByPokerState(poker.state)}
+      message={getMessageByPokerState(poker.state)} // TODO: redundant param
+      pokerState={poker.state}
     />
   );
 };
