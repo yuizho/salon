@@ -21,7 +21,6 @@ type ComponentProps = {
   onReset: () => void;
   openResetDialog: boolean;
   setOpenResetDialog: (b: boolean) => void;
-  message: string;
   pokerState: PokerState;
 };
 
@@ -37,19 +36,10 @@ const mutateRefreshTable = async (roomId: string, userId: string) => {
 };
 
 const getMessageByPokerState = (state: PokerState) => {
-  if (state === 'CHOOSING') {
-    return 'カードを選択してください。';
-  }
-  if (state === 'WAITING_OTHERS') {
-    return '他のユーザがカードを選択中です……';
-  }
-  if (state === 'EVERYONE_CHOSEN') {
-    return '全員がカードを選択しました。次のプランニングポーカーを始めるにはResetボタンを押してください。';
-  }
   if (state === 'KICKED') {
     return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
   }
-  return '　';
+  return '';
 };
 
 export const Component: FC<ComponentProps> = ({
@@ -59,35 +49,40 @@ export const Component: FC<ComponentProps> = ({
   onReset,
   openResetDialog,
   setOpenResetDialog,
-  message,
   pokerState,
-}) => (
-  <div
-    className={`flex flex-col space-y-6 border rounded p-8 ${
-      pokerState === 'LOADING' && 'animate-pulse'
-    }`}
-  >
-    <Message message={message} />
-    <Players
-      myUserId={me.userId}
-      players={users.filter((u) => u.status !== Status.LEAVED)}
-      shown={poker.state === 'EVERYONE_CHOSEN'}
-    />
-    <Button
-      text="Reset"
-      onClick={() => {
-        setOpenResetDialog(true);
-      }}
-      glow={poker.state === 'EVERYONE_CHOSEN'}
-    />
-    <ModalDialog
-      message="全員カードを未選択の状態にリセットします。よろしいですか？"
-      onClickOK={onReset}
-      open={openResetDialog}
-      setOpen={setOpenResetDialog}
-    />
-  </div>
-);
+}) => {
+  const message = getMessageByPokerState(poker.state);
+
+  return (
+    <div
+      className={`flex flex-col space-y-6 border rounded p-8 ${
+        pokerState === 'LOADING' && 'animate-pulse'
+      }`}
+    >
+      <div hidden={!message}>
+        <Message message={message} />
+      </div>
+      <Players
+        myUserId={me.userId}
+        players={users.filter((u) => u.status !== Status.LEAVED)}
+        shown={poker.state === 'EVERYONE_CHOSEN'}
+      />
+      <Button
+        text="Reset"
+        onClick={() => {
+          setOpenResetDialog(true);
+        }}
+        glow={poker.state === 'EVERYONE_CHOSEN'}
+      />
+      <ModalDialog
+        message="全員カードを未選択の状態にリセットします。よろしいですか？"
+        onClickOK={onReset}
+        open={openResetDialog}
+        setOpen={setOpenResetDialog}
+      />
+    </div>
+  );
+};
 
 const Container: FC = () => {
   const [me] = useRecoilState(myState);
@@ -117,7 +112,6 @@ const Container: FC = () => {
       onReset={() => refresh()}
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
-      message={getMessageByPokerState(poker.state)} // TODO: redundant param
       pokerState={poker.state}
     />
   );
