@@ -39,6 +39,9 @@ const getMessageByPokerState = (state: PokerState) => {
   if (state === 'KICKED') {
     return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
   }
+  if (state === 'ALONE') {
+    return 'この部屋のURLを共有して、メンバーを招待しましょう！';
+  }
   return '';
 };
 

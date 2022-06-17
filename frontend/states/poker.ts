@@ -8,7 +8,13 @@ export type Poker = {
   state: PokerState;
 };
 
-export type PokerState = 'LOADING' | 'KICKED' | 'EVERYONE_CHOSEN' | 'CHOOSING' | 'WAITING_OTHERS';
+export type PokerState =
+  | 'LOADING'
+  | 'KICKED'
+  | 'ALONE'
+  | 'EVERYONE_CHOSEN'
+  | 'CHOOSING'
+  | 'WAITING_OTHERS';
 
 const isKicked = (users: Array<User>, myUserId: string) => {
   const active = users
@@ -17,6 +23,9 @@ const isKicked = (users: Array<User>, myUserId: string) => {
 
   return !active;
 };
+
+const isAlone = (users: Array<User>, myUserId: string) =>
+  users.filter((user) => user.status !== Status.LEAVED).every((user) => user.userId === myUserId);
 
 const isEveryoneChosen = (users: Array<User>) =>
   users
@@ -38,6 +47,8 @@ export const pokerState = selector({
       state = 'LOADING';
     } else if (isKicked(users, me.userId)) {
       state = 'KICKED';
+    } else if (isAlone(users, me.userId)) {
+      state = 'ALONE';
     } else if (isEveryoneChosen(users)) {
       state = 'EVERYONE_CHOSEN';
     } else if (isChoosing(users, me.userId)) {
