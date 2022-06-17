@@ -7,8 +7,8 @@ type Props = {
   shown: boolean;
   choosable: boolean;
   chosen: boolean;
-  // eslint-disable-next-line react/require-default-props
-  onClick?: (pickedCard: string) => Promise<boolean> | null;
+  glow?: boolean;
+  onClick?: (pickedCard: string) => Promise<boolean>;
 };
 
 const baseClassNames = `
@@ -31,7 +31,7 @@ active:border
 active:border-slate-300
 `;
 
-const Card: FC<Props> = ({ value, shown, choosable, chosen, onClick = null }) => {
+const Card: FC<Props> = ({ value, shown, choosable, chosen, glow = false, onClick = null }) => {
   const handleClick = () => {
     if (choosable && onClick !== null) {
       onClick(value);
@@ -39,32 +39,35 @@ const Card: FC<Props> = ({ value, shown, choosable, chosen, onClick = null }) =>
   };
 
   return (
-    <div>
-      {shown ? (
-        <div
-          key={value}
-          className={`
+    <div className="relative">
+      {glow && <div className="w-16 h-20 absolute bg-cyan-300 blur rounded-lg  animate-pulse" />}
+      <div className="relative">
+        {shown ? (
+          <div
+            key={value}
+            className={`
       ${baseClassNames}
       ${choosable ? chooableClassNames : ''}
       ${chosen && !shown ? 'animate-bounce' : ''}
       font-bold text-2xl
     `}
-          onClick={handleClick}
-        >
-          {value}
-        </div>
-      ) : (
-        <div
-          key={value}
-          className={`
+            onClick={handleClick}
+          >
+            {value}
+          </div>
+        ) : (
+          <div
+            key={value}
+            className={`
             ${baseClassNames}
             ${choosable ? chooableClassNames : ''}
             ${chosen && !shown ? 'animate-bounce' : ''}
           `}
-          style={{ backgroundImage: 'url(/intersecting-circles.svg)' }}
-          onClick={handleClick}
-        />
-      )}
+            style={{ backgroundImage: 'url(/intersecting-circles.svg)' }}
+            onClick={handleClick}
+          />
+        )}
+      </div>
     </div>
   );
 };

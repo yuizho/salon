@@ -5,12 +5,13 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ text, onClick }) => {
-  return <Component text={text} onClick={onClick} />;
+const Template: Story = ({ text, onClick, glow }) => {
+  return <Component text={text} onClick={onClick} glow={glow} />;
 };
 
 export const Default = Template.bind({});
 Default.args = {
   text: 'OK',
   onClick: () => alert('clicked!!'),
+  glow: false,
 };

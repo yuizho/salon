@@ -6,8 +6,8 @@ export default {
   component: Card,
 } as Meta;
 
-const Template: Story = ({ value, shown, choosable, chosen }) => (
-  <Card value={value} shown={shown} choosable={choosable} chosen={chosen} />
+const Template: Story = ({ value, shown, choosable, chosen, glow }) => (
+  <Card value={value} shown={shown} choosable={choosable} chosen={chosen} glow={glow} />
 );
 
 export const Shown = Template.bind({});
@@ -16,6 +16,7 @@ Shown.args = {
   shown: true,
   choosable: true,
   chosen: false,
+  glow: false,
 };
 
 export const Hidden = Template.bind({});
@@ -24,4 +25,5 @@ Hidden.args = {
   shown: false,
   choosable: true,
   chosen: false,
+  glow: false,
 };
