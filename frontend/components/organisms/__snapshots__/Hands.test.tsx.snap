@@ -7,9 +7,14 @@ exports[`Hands snapshot 1`] = `
   flex flex-wrap gap-1
 "
   >
-    <div>
+    <div
+      class="relative"
+    >
       <div
-        class="
+        class="relative"
+      >
+        <div
+          class="
       
 flex
 items-center justify-center
@@ -31,13 +36,19 @@ active:border-slate-300
       
       font-bold text-2xl
     "
-      >
-        1
+        >
+          1
+        </div>
       </div>
     </div>
-    <div>
+    <div
+      class="relative"
+    >
       <div
-        class="
+        class="relative"
+      >
+        <div
+          class="
       
 flex
 items-center justify-center
@@ -59,13 +70,19 @@ active:border-slate-300
       
       font-bold text-2xl
     "
-      >
-        2
+        >
+          2
+        </div>
       </div>
     </div>
-    <div>
+    <div
+      class="relative"
+    >
       <div
-        class="
+        class="relative"
+      >
+        <div
+          class="
       
 flex
 items-center justify-center
@@ -87,8 +104,9 @@ active:border-slate-300
       
       font-bold text-2xl
     "
-      >
-        3
+        >
+          3
+        </div>
       </div>
     </div>
   </div>

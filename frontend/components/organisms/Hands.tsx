@@ -1,12 +1,13 @@
 import { GraphQLResult } from '@aws-amplify/api';
 import { API } from 'aws-amplify';
 import { FC } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { pick } from '../../graphql/mutations';
 import { PickMutation, PickMutationVariables, Status } from '../../graphql/schema';
 import { appState } from '../../states/app';
 import { myState } from '../../states/me';
+import { pokerState } from '../../states/poker';
 import { usersState } from '../../states/users';
 import Card from '../atoms/Card';
 
@@ -15,6 +16,7 @@ type Props = {
 };
 
 type ComponentProps = Props & {
+  glow?: boolean;
   onClick: (pickedCard: string) => Promise<boolean>;
 };
 
@@ -30,14 +32,14 @@ const mutatePick = async (roomId: string, userId: string, pickedCard: string) =>
   return result;
 };
 
-export const Component: FC<ComponentProps> = ({ values, onClick }) => (
+export const Component: FC<ComponentProps> = ({ values, glow, onClick }) => (
   <div
     className={`
   flex flex-wrap gap-1
 `}
   >
     {values.map((v) => (
-      <Card key={v} value={v} shown choosable onClick={onClick} chosen={false} />
+      <Card key={v} value={v} shown choosable onClick={onClick} chosen={false} glow={glow} />
     ))}
   </div>
 );
@@ -45,6 +47,7 @@ export const Component: FC<ComponentProps> = ({ values, onClick }) => (
 const Container: FC<Props> = ({ values }) => {
   const [me] = useRecoilState(myState);
   const setUsers = useSetRecoilState(usersState);
+  const poker = useRecoilValue(pokerState);
   const setApp = useSetRecoilState(appState);
 
   const onClickCard = (roomId: string, userId: string) => async (pickedCard: string) => {
@@ -78,7 +81,13 @@ const Container: FC<Props> = ({ values }) => {
     }
   };
 
-  return <Component values={values} onClick={onClickCard(me.roomId, me.userId)} />;
+  return (
+    <Component
+      values={values}
+      glow={poker.state === 'CHOOSING'}
+      onClick={onClickCard(me.roomId, me.userId)}
+    />
+  );
 };
 
 export default Container;
