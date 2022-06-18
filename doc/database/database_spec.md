@@ -1,3 +1,7 @@
+# Amazon DynamoDBのテーブル設計
+
+参考: https://speakerdeck.com/_kensh/dynamodb-design-practice
+
 ## Usecase List
 
 | Entity    | Use Case           |
