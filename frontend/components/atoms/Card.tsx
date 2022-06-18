@@ -14,7 +14,7 @@ type Props = {
 const baseClassNames = `
 flex
 items-center justify-center
-w-16 h-20
+w-14 h-20
 border-slate-400
 rounded border
 text-slate-600
