@@ -25,7 +25,6 @@ export const Component: FC<Props> = ({ onClick }) => (
     <p className="text-slate-600">
       プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約30分間有効です。
     </p>
-    <p className="text-slate-600">部屋を作成したら、URLを共有してメンバーを招待しましょう！</p>
     <Button text="部屋を作成する" onClick={onClick} />
   </div>
 );

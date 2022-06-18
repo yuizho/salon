@@ -10,11 +10,6 @@ exports[`RoomForm snapshot 1`] = `
     >
       プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約30分間有効です。
     </p>
-    <p
-      class="text-slate-600"
-    >
-      部屋を作成したら、URLを共有してメンバーを招待しましょう！
-    </p>
     <div
       class="relative w-full"
     >
