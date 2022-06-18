@@ -1,7 +1,7 @@
 @startuml
 agent room
 collections user
-collections poker
+agent poker
 
 room -- poker
 room -- user
