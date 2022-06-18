@@ -2,7 +2,7 @@
     "private": true,
     "workspaces": ["frontend", "backend"],
     "scripts": {
-        "prepare": "husky install && yarn husky add .husky/pre-commit 'yarn pre-commit'",
+        "prepare": "husky install",
         "pre-commit": "lint-staged"
     },
     "devDependencies": {
