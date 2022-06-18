@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { FC } from 'react';
+import { RiUserFill, RiUserLine } from 'react-icons/ri';
 
 type Props = {
   me: boolean;
@@ -38,45 +39,16 @@ export const Component: FC<Props> = ({ me, onClick }) => (
       className={`
         flex
         items-center justify-center
-        h-16
-        w-16
+        h-14
+        w-14
         rounded-full
         border
         bg-white
         ${me ? 'border-slate-400' : clickableUsesr}
       `}
     >
-      <div className="relative">
-        <svg
-          className="h-10 w-10 text-slate-600"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          strokeWidth="2"
-          stroke="currentColor"
-          fill="none"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" />
-          <circle cx="12" cy="7" r="4" />
-          <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-        </svg>
-        {me ? (
-          <div
-            className={`
-          absolute
-          bottom-8
-          left-1/2 -translate-x-1/2
-          select-none
-          text-slate-600
-          text-md
-          font-semibold
-        `}
-          >
-            you
-          </div>
-        ) : (
-          ''
-        )}
+      <div className="relative text-slate-600">
+        <div className="text-3xl">{me ? <RiUserFill /> : <RiUserLine />}</div>
       </div>
     </div>
   </div>

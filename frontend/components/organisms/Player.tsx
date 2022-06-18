@@ -41,7 +41,7 @@ export const Component: FC<ComponentProps> = ({
       items-center
       gap-2
       p-2
-      w-24
+      w-20
   `}
   >
     <User
