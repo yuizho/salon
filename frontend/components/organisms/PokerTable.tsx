@@ -1,18 +1,17 @@
 import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import API, { GraphQLResult } from '@aws-amplify/api';
-import { RefreshTableMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
+import { Status } from '../../graphql/schema';
 import { Poker, PokerState, pokerState as pokerRecoilState } from '../../states/poker';
 import { User, usersState } from '../../states/users';
 import { Me, myState } from '../../states/me';
 import Button from '../atoms/Button';
 
 import Players from './Players';
-import { refreshTable } from '../../graphql/mutations';
 import ModalDialog from '../molecules/ModalDialog';
 import Message from '../atoms/Message';
 import { appState } from '../../states/app';
 import { NETWORK_ERROR } from '../../graphql/error-message';
+import refresh from '../../graphql/clients/refresh';
 
 type ComponentProps = {
   me: Me;
@@ -22,17 +21,6 @@ type ComponentProps = {
   openResetDialog: boolean;
   setOpenResetDialog: (b: boolean) => void;
   pokerState: PokerState;
-};
-
-const mutateRefreshTable = async (roomId: string, userId: string) => {
-  const result = (await API.graphql({
-    query: refreshTable,
-    variables: {
-      room_id: roomId,
-      user_id: userId,
-    } as RefreshTableMutationVariables,
-  })) as GraphQLResult<RefreshTableMutation>;
-  return result;
 };
 
 const getMessageByPokerState = (state: PokerState) => {
@@ -94,10 +82,10 @@ const Container: FC = () => {
   const [openResetDialog, setOpenResetDialog] = useState(false);
   const setApp = useSetRecoilState(appState);
 
-  const refresh = async () => {
+  const refreshPoker = async () => {
     setApp((app) => ({ ...app, loading: true }));
     try {
-      await mutateRefreshTable(me.roomId, me.userId);
+      await refresh(me.roomId, me.userId);
     } catch (e) {
       setApp((app) => ({
         ...app,
@@ -112,7 +100,7 @@ const Container: FC = () => {
       me={me}
       users={users}
       poker={poker}
-      onReset={() => refresh()}
+      onReset={() => refreshPoker()}
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
       pokerState={poker.state}

@@ -1,14 +1,13 @@
 import { FC, useState } from 'react';
-import API, { GraphQLResult } from '@aws-amplify/api';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { kick } from '../../graphql/mutations';
-import { KickMutation, RefreshTableMutationVariables, Status } from '../../graphql/schema';
+import { Status } from '../../graphql/schema';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
 import ModalDialog from '../molecules/ModalDialog';
 import { myState } from '../../states/me';
 import { appState } from '../../states/app';
 import { NETWORK_ERROR } from '../../graphql/error-message';
+import kick from '../../graphql/clients/kick';
 
 type Props = {
   userId: string;
@@ -22,18 +21,6 @@ type ComponentProps = Props & {
   onKick: () => void;
   openKickDialog: boolean;
   setOpenKickDialog: (b: boolean) => void;
-};
-
-const mutateKick = async (roomId: string, userId: string, kickedUserId: string) => {
-  const result = (await API.graphql({
-    query: kick,
-    variables: {
-      room_id: roomId,
-      user_id: userId,
-      kicked_user_id: kickedUserId,
-    } as RefreshTableMutationVariables,
-  })) as GraphQLResult<KickMutation>;
-  return result;
 };
 
 export const Component: FC<ComponentProps> = ({
@@ -81,7 +68,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const kickThisUser = async () => {
     setApp((app) => ({ ...app, loading: true }));
     try {
-      await mutateKick(myRecoilState.roomId, myRecoilState.userId, userId);
+      await kick(myRecoilState.roomId, myRecoilState.userId, userId);
     } catch (e) {
       setApp((app) => ({
         ...app,

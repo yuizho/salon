@@ -1,10 +1,8 @@
-import { GraphQLResult } from '@aws-amplify/api';
-import { API } from 'aws-amplify';
 import { FC } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import pick from '../../graphql/clients/pick';
 import { NETWORK_ERROR } from '../../graphql/error-message';
-import { pick } from '../../graphql/mutations';
-import { PickMutation, PickMutationVariables, Status } from '../../graphql/schema';
+import { Status } from '../../graphql/schema';
 import { appState } from '../../states/app';
 import { myState } from '../../states/me';
 import { pokerState } from '../../states/poker';
@@ -18,18 +16,6 @@ type Props = {
 type ComponentProps = Props & {
   glow?: boolean;
   onClick: (pickedCard: string) => Promise<boolean>;
-};
-
-const mutatePick = async (roomId: string, userId: string, pickedCard: string) => {
-  const result = (await API.graphql({
-    query: pick,
-    variables: {
-      room_id: roomId,
-      user_id: userId,
-      picked_card: pickedCard,
-    } as PickMutationVariables,
-  })) as GraphQLResult<PickMutation>;
-  return result;
 };
 
 export const Component: FC<ComponentProps> = ({ values, glow, onClick }) => (
@@ -69,7 +55,7 @@ const Container: FC<Props> = ({ values }) => {
     });
 
     try {
-      const result = await mutatePick(roomId, userId, pickedCard);
+      const result = await pick(roomId, userId, pickedCard);
       return result.data?.pick.user_id === userId ?? false;
     } catch (e) {
       setApp((app) => ({

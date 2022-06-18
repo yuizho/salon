@@ -1,28 +1,10 @@
-import { API } from 'aws-amplify';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Observable } from 'zen-observable-ts';
+import roomSubscription, { SubscriptionValue } from '../graphql/clients/room-subscription';
 import { NETWORK_ERROR } from '../graphql/error-message';
-import { OnUpdateUserSubscription } from '../graphql/schema';
-import { onUpdateUser } from '../graphql/subscriptions';
 import { appState } from '../states/app';
 import { usersState } from '../states/users';
-
-type SubscriptionValue = {
-  value: {
-    data: OnUpdateUserSubscription;
-  };
-};
-
-const setupSubscription = (roomId: string) =>
-  API.graphql({
-    query: onUpdateUser,
-    variables: {
-      room_id: roomId,
-    },
-  }) as Observable<SubscriptionValue>;
 
 const useSubscription = () => {
   const router = useRouter();
@@ -40,7 +22,7 @@ const useSubscription = () => {
       return () => {};
     }
 
-    const subscription = setupSubscription(roomId).subscribe({
+    const subscription = roomSubscription(roomId).subscribe({
       next: ({ value }: SubscriptionValue) => {
         const item = value.data.onUpdateUser;
         if (item) {
