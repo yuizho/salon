@@ -1,15 +1,15 @@
 @startuml
-rectangle exit {
+rectangle leave {
     :user:
-    user -- (exit)
+    user -- (leave)
 
-    note right of (exit)
+    note right of (leave)
     ユーザが途中で退出したくなった場合、
     簡単な操作で退出できる
     end note
 
-    (disable user)<<usecase>>
-    (exit)--(disable user)
+    (leave room)<<usecase>>
+    (leave)--(leave room)
 }
 
 rectangle reenter {
@@ -20,7 +20,21 @@ rectangle reenter {
     一度退出したユーザが再度部屋に入ることができる
     end note
 
-    (reenable user)<<usecase>>
-    (reenter)--(reenable user)
+    (reenter room)<<usecase>>
+    (reenter)--(reenter room)
+}
+
+rectangle kick {
+    :userA:
+    userA-- (kick)
+    :userB:
+    userB--(kick)
+
+    note right of (kick)
+    任意のユーザを退出させることができる
+    end note
+
+    (kick user)<<usecase>>
+    (kick)--(kick user)
 }
 @enduml
