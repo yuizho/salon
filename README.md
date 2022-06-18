@@ -27,7 +27,7 @@ yarn workspace salon-frontend dev
 
 ## Documents
 ### ADR
-- https://github.com/yuizho/salon/issues/1
+- [開発前・開発初期に設計について検討したこと(ADR) #1](https://github.com/yuizho/salon/issues/1)
 
 ### Product
 - [RDRAドキュメント](doc/product/rdra.md)
