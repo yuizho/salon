@@ -33,10 +33,11 @@ yarn workspace salon-frontend dev
 - WIP
 
 ### Archtecture
-- WIP
+![archtecture](doc/architecture/backend.svg)
+
 
 ### Database
-- [Amazon DynamoDBのテーブル設計](https://github.com/yuizho/salon/blob/main/doc/database/database_spec.md)
+- [Amazon DynamoDBのテーブル設計](doc/database/database_spec.md)
 
 ## Thanks
 - [Hero Patterns](https://heropatterns.com/)
