@@ -3,9 +3,7 @@
 exports[`Hands snapshot 1`] = `
 <DocumentFragment>
   <div
-    class="
-  flex flex-wrap gap-1
-"
+    class="flex flex-wrap justify-center gap-2"
   >
     <div
       class="relative"

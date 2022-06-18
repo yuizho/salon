@@ -19,11 +19,7 @@ type ComponentProps = Props & {
 };
 
 export const Component: FC<ComponentProps> = ({ values, glow, onClick }) => (
-  <div
-    className={`
-  flex flex-wrap gap-1
-`}
-  >
+  <div className="flex flex-wrap justify-center gap-2">
     {values.map((v) => (
       <Card key={v} value={v} shown choosable onClick={onClick} chosen={false} glow={glow} />
     ))}
