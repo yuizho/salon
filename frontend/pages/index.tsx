@@ -8,16 +8,6 @@ const Home: FC = (): JSX.Element => (
     <main className="flex flex-col gap-5">
       <RoomForm />
       <div>
-        <h2 className="text-slate-700 font-semibold">プランニングポーカーとは</h2>
-        <Link
-          href="https://en.wikipedia.org/wiki/Planning_poker"
-          newWindow
-          className="text-slate-600 text-sm px-1 underline"
-        >
-          https://en.wikipedia.org/wiki/Planning_poker
-        </Link>{' '}
-      </div>
-      <div>
         <h2 className="text-slate-700 font-semibold px-1">免責事項</h2>
         <div className="text-slate-600 text-sm px-6">
           <ul className="list-disc">
