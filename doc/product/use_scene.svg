@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="351px" preserveAspectRatio="none" style="width:912px;height:351px;background:#FFFFFF;" version="1.1" viewBox="0 0 912 351" width="912px" zoomAndPan="magnify"><defs/><g><!--MD5=[d98dabde9de7e192804a79aad1759111]
+cluster exit--><g id="cluster_exit"><rect height="338" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;fill:none;" width="386" x="7" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="31" x="184.5" y="21.9951">exit</text></g><!--MD5=[cdddffd45c791c29e679b5f535918997]
+cluster reenter--><g id="cluster_reenter"><rect height="337.5" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;fill:none;" width="489" x="417" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="59" x="632" y="21.9951">reenter</text></g><!--MD5=[8fc3522a43f8c7199df5e09e5bb0188e]
+entity user--><g id="elem_user"><ellipse cx="55" cy="50.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M55,58.5 L55,85.5 M42,66.5 L68,66.5 M55,85.5 L42,100.5 M55,85.5 L68,100.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="30" x="40" y="114.9951">user</text></g><g id="elem_exit"><ellipse cx="54.7843" cy="198.0236" fill="#F1F1F1" rx="31.2843" ry="14.5236" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="40.7843" y="200.8703">exit</text></g><g id="elem_GMN337628"><path d="M121.5,178 L121.5,194 L86.8281,198 L121.5,202 L121.5,218.2656 A0,0 0 0 0 121.5,218.2656 L376.5,218.2656 A0,0 0 0 0 376.5,218.2656 L376.5,188 L366.5,178 L121.5,178 A0,0 0 0 0 121.5,178 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M366.5,178 L366.5,188 L376.5,188 L366.5,178 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="234" x="127.5" y="195.0669">ユーザが途中で退出したくなった場合、</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="143" x="127.5" y="210.1997">簡単な操作で退出できる</text></g><g id="elem_disable user"><ellipse cx="93.0079" cy="303.5159" fill="#F1F1F1" rx="70.0079" ry="25.5159" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="76" x="49.7579" y="299.115">«usecase»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="45.2579" y="315.4119">disable user</text></g><!--MD5=[7d9a324aa2179074e5d7a1e217b89663]
+entity user2--><g id="elem_user2"><ellipse cx="484" cy="50.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M484,58.5 L484,85.5 M471,66.5 L497,66.5 M484,85.5 L471,100.5 M484,85.5 L497,100.5 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="38" x="465" y="114.9951">user2</text></g><g id="elem_reenter"><ellipse cx="484.1079" cy="198.2016" fill="#F1F1F1" rx="51.1079" ry="14.7016" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="453.6079" y="201.9492">reenter</text></g><g id="elem_GMN337637"><path d="M570,185.5 L570,194 L535.41,198 L570,202 L570,210.6328 A0,0 0 0 0 570,210.6328 L890,210.6328 A0,0 0 0 0 890,210.6328 L890,195.5 L880,185.5 L570,185.5 A0,0 0 0 0 570,185.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M880,185.5 L880,195.5 L890,195.5 L880,185.5 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="299" x="576" y="202.5669">一度退出したユーザが再度部屋に入ることができる</text></g><g id="elem_reenable user"><ellipse cx="510.9336" cy="303.5552" fill="#F1F1F1" rx="77.4336" ry="25.0552" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="76" x="466.8301" y="298.5854">«usecase»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="455.8301" y="314.8823">reenable user</text></g><!--MD5=[c2dade99dde700e56d96c53da46ada88]
+link user to exit--><g id="link_user_exit"><path d="M55,118.022 C55,140.301 55,167.351 55,183.316 " fill="none" id="user-exit" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[f84f4b5e6ad18c567446e5ef5cf45795]
+link exit to disable user--><g id="link_exit_disable user"><path d="M59.9678,212.531 C66.0434,229.079 76.4441,257.407 83.9539,277.8612 " fill="none" id="exit-disable user" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[3638b8acae2b3968a917889d6575289a]
+link user2 to reenter--><g id="link_user2_reenter"><path d="M484,118.022 C484,140.301 484,167.351 484,183.316 " fill="none" id="user2-reenter" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[628a4d5f9c80565a35c6b4e4a59b1ca7]
+link reenter to reenable user--><g id="link_reenter_reenable user"><path d="M487.53,212.531 C491.875,229.188 499.335,257.783 504.678,278.2665 " fill="none" id="reenter-reenable user" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[c7c73826151f5c4f6f5fac3aeafd6d0f]
+@startuml
+rectangle exit {
+    :user:
+    user - - (exit)
+
+    note right of (exit)
+    ユーザが途中で退出したくなった場合、
+    簡単な操作で退出できる
+    end note
+
+    (disable user)<<usecase>>
+    (exit)- -(disable user)
+}
+
+rectangle reenter {
+    :user2:
+    user2 - - (reenter)
+
+    note right of (reenter)
+    一度退出したユーザが再度部屋に入ることができる
+    end note
+
+    (reenable user)<<usecase>>
+    (reenter)- -(reenable user)
+}
+@enduml
+
+PlantUML version 1.2022.6beta5(Unknown compile time)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
