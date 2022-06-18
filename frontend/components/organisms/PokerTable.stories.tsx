@@ -1,5 +1,6 @@
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { useState } from 'react';
+import { pokerState } from '../../states/poker';
 import { Component } from './PokerTable';
 
 export default {
@@ -7,7 +8,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ me, users, poker, onReset, message }) => {
+const Template: Story = ({ me, users, poker, onReset, pokerState }) => {
   const [openResetDialog, setOpenResetDialog] = useState(false);
 
   return (
@@ -18,7 +19,7 @@ const Template: Story = ({ me, users, poker, onReset, message }) => {
       onReset={onReset}
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
-      message={message}
+      pokerState={pokerState}
     />
   );
 };
@@ -38,5 +39,5 @@ Default.args = {
   ],
   poker: { shown: false },
   onReset: () => alert('reset button is clicked!!'),
-  message: '他のユーザが選択中です……',
+  pokerState: 'CHOOSING',
 };
