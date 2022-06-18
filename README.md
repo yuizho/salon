@@ -25,10 +25,21 @@ yarn workspace salon-backend cdk deploy
 yarn workspace salon-frontend dev
 ```
 
-## Thanks
+## Documents
+### ADR
+- https://github.com/yuizho/salon/issues/1
 
-- Hero Patterns
-  - https://heropatterns.com/
+### Product
+- WIP
+
+### Archtecture
+- WIP
+
+### Database
+- [Amazon DynamoDBのテーブル設計](https://github.com/yuizho/salon/blob/main/doc/database/database_spec.md)
+
+## Thanks
+- [Hero Patterns](https://heropatterns.com/)
 
 ## License
 MIT
