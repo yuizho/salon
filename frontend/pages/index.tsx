@@ -5,9 +5,9 @@ import Frame from '../components/templates/Frame';
 
 const Home: FC = (): JSX.Element => (
   <Frame>
-    <main className="flex flex-col gap-5">
+    <main className="flex flex-col space-y-6">
       <RoomForm />
-      <div>
+      <div className="flex flex-col space-y-3">
         <h2 className="text-slate-700 font-semibold px-1">免責事項</h2>
         <div className="text-slate-600 text-sm px-6">
           <ul className="list-disc">

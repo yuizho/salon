@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const Component: FC<Props> = ({ onClick }) => (
-  <div className="flex flex-col space-y-6 border rounded p-8 ">
+  <div className="flex flex-col space-y-3 border rounded p-8 ">
     <p className="text-slate-700 text-xl font-semibold">
       Salonはログイン不要の無料Webプランニングポーカーサービスです
     </p>
