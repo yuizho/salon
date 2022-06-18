@@ -30,7 +30,7 @@ yarn workspace salon-frontend dev
 - https://github.com/yuizho/salon/issues/1
 
 ### Product
-- WIP
+- [RDRAドキュメント](doc/product/rdra.md)
 
 ### Archtecture
 ![archtecture](doc/architecture/backend.svg)
