@@ -6,9 +6,6 @@ import Frame from '../components/templates/Frame';
 const Home: FC = (): JSX.Element => (
   <Frame>
     <main className="flex flex-col gap-5">
-      <p className="text-slate-700 text-lg font-semibold px-1">
-        Salonはログイン不要の無料Webプランニングポーカーサービスです
-      </p>
       <RoomForm />
 
       <h2 className="text-slate-700 font-semibold px-1">免責事項</h2>
