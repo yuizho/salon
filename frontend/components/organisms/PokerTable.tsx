@@ -64,6 +64,7 @@ export const Component: FC<ComponentProps> = ({
           setOpenResetDialog(true);
         }}
         glow={poker.state === 'EVERYONE_CHOSEN'}
+        clickable={poker.state !== 'KICKED'}
       />
       <ModalDialog
         message="全員カードを未選択の状態にリセットします。よろしいですか？"

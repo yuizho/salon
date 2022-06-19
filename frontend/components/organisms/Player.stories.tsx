@@ -8,7 +8,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ userId, status, value, shown, me, onKick }) => {
+const Template: Story = ({ userId, status, value, shown, enable, me, onKick }) => {
   const [openKickDialog, setOpenKickDialog] = useState(false);
 
   return (
@@ -18,6 +18,7 @@ const Template: Story = ({ userId, status, value, shown, me, onKick }) => {
       value={value}
       shown={shown}
       me={me}
+      enable={enable}
       onKick={onKick}
       openKickDialog={openKickDialog}
       setOpenKickDialog={setOpenKickDialog}
@@ -32,5 +33,6 @@ Default.args = {
   value: 'XL',
   me: true,
   shown: false,
+  enable: true,
   onKick: () => alert('kicked!!!!'),
 };

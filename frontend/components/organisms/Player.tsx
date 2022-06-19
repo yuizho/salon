@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Status } from '../../graphql/schema';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
@@ -8,6 +8,7 @@ import { myState } from '../../states/me';
 import { appState } from '../../states/app';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import kick from '../../graphql/clients/kick';
+import { pokerState } from '../../states/poker';
 
 type Props = {
   userId: string;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 type ComponentProps = Props & {
+  enable: boolean;
   onKick: () => void;
   openKickDialog: boolean;
   setOpenKickDialog: (b: boolean) => void;
@@ -29,13 +31,17 @@ export const Component: FC<ComponentProps> = ({
   value,
   shown,
   me,
+  enable,
   onKick,
   openKickDialog,
   setOpenKickDialog,
-}) => (
-  <div
-    key={userId}
-    className={`
+}) => {
+  const kickable = enable && !me;
+
+  return (
+    <div
+      key={userId}
+      className={`
       flex
       flex-col
       items-center
@@ -43,27 +49,29 @@ export const Component: FC<ComponentProps> = ({
       p-2
       w-20
   `}
-  >
-    <User
-      me={me}
-      onClick={() => {
-        setOpenKickDialog(true);
-      }}
-      clickable={!me}
-    />
-    <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
-    <ModalDialog
-      message="選択したユーザを部屋から退出させます。よろしいですか？"
-      onClickOK={onKick}
-      open={openKickDialog}
-      setOpen={setOpenKickDialog}
-    />
-  </div>
-);
+    >
+      <User
+        me={me}
+        onClick={() => {
+          setOpenKickDialog(true);
+        }}
+        clickable={kickable}
+      />
+      <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
+      <ModalDialog
+        message="選択したユーザを部屋から退出させます。よろしいですか？"
+        onClickOK={onKick}
+        open={openKickDialog}
+        setOpen={setOpenKickDialog}
+      />
+    </div>
+  );
+};
 
 const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const [myRecoilState] = useRecoilState(myState);
   const [openKickDialog, setOpenKickDialog] = useState(false);
+  const poker = useRecoilValue(pokerState);
   const setApp = useSetRecoilState(appState);
 
   const kickThisUser = async () => {
@@ -86,6 +94,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
       value={value}
       shown={shown}
       me={me}
+      enable={poker.state !== 'KICKED'}
       onKick={() => kickThisUser()}
       openKickDialog={openKickDialog}
       setOpenKickDialog={setOpenKickDialog}

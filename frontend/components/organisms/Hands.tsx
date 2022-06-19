@@ -14,14 +14,23 @@ type Props = {
 };
 
 type ComponentProps = Props & {
-  glow?: boolean;
+  glow: boolean;
+  choosable: boolean;
   onClick: (pickedCard: string) => Promise<boolean>;
 };
 
-export const Component: FC<ComponentProps> = ({ values, glow, onClick }) => (
+export const Component: FC<ComponentProps> = ({ values, glow, choosable, onClick }) => (
   <div className="flex flex-wrap justify-center gap-2">
     {values.map((v) => (
-      <Card key={v} value={v} shown choosable onClick={onClick} chosen={false} glow={glow} />
+      <Card
+        key={v}
+        value={v}
+        shown
+        choosable={choosable}
+        onClick={onClick}
+        chosen={false}
+        glow={glow}
+      />
     ))}
   </div>
 );
@@ -67,6 +76,7 @@ const Container: FC<Props> = ({ values }) => {
     <Component
       values={values}
       glow={poker.state === 'CHOOSING'}
+      choosable={poker.state !== 'KICKED'}
       onClick={onClickCard(me.roomId, me.userId)}
     />
   );
