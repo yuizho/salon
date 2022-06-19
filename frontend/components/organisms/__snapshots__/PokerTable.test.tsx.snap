@@ -34,13 +34,9 @@ exports[`PokerTable snapshot 1`] = `
       text-slate-600
       border
       rounded
-      shadow-md
       bg-white
       w-full
-      hover:border-2
-      active:shadow-none
-      active:border
-      active:border-slate-300
+      shadow-md hover:border-2 active:shadow-none active:border active:border-slate-300
     "
         type="button"
       >

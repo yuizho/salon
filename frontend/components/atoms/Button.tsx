@@ -2,11 +2,12 @@ import { FC } from 'react';
 
 type Props = {
   text: string;
-  onClick: () => void;
   glow?: boolean;
+  clickable?: boolean;
+  onClick: () => void;
 };
 
-export const Component: FC<Props> = ({ text, onClick, glow }) => (
+export const Component: FC<Props> = ({ text, glow, clickable, onClick }) => (
   <div className="relative w-full">
     {glow && <div className="absolute inset-0 bg-cyan-300 blur rounded-lg  animate-pulse" />}
     <button
@@ -19,23 +20,23 @@ export const Component: FC<Props> = ({ text, onClick, glow }) => (
       text-slate-600
       border
       rounded
-      shadow-md
       bg-white
       w-full
-      hover:border-2
-      active:shadow-none
-      active:border
-      active:border-slate-300
+      ${
+        clickable
+          ? 'shadow-md hover:border-2 active:shadow-none active:border active:border-slate-300'
+          : 'cursor-default'
+      }
     `}
-      onClick={onClick}
+      onClick={clickable ? onClick : () => {}}
     >
       {text}
     </button>
   </div>
 );
 
-const Container: FC<Props> = ({ text, onClick, glow = false }) => (
-  <Component text={text} onClick={onClick} glow={glow} />
+const Container: FC<Props> = ({ text, glow = false, clickable = true, onClick }) => (
+  <Component text={text} glow={glow} clickable={clickable} onClick={onClick} />
 );
 
 export default Container;
