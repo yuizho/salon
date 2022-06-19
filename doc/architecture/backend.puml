@@ -6,6 +6,7 @@
 !include <awslib/ApplicationIntegration/AppSync>
 !include <awslib/Compute/Lambda>
 !include <awslib/Database/DynamoDB>
+!include <awslib/SecurityIdentityAndCompliance/WAF>
 
 left to right direction
 
@@ -18,15 +19,17 @@ Lambda(mutateUser, "Mutate User", "push room data")
 AppSync(pokerMutation, "User mutation", "room")
 AppSync(pokerSubscription, "User subscription", "room")
 AppSync(roomQuery, "Room query", "room")
+WAF(waf, "WAF", "")
 
-users -right--> operationMutation
+users --> waf
+waf -> operationMutation
 operationMutation --> operationTable: dynamo resolver
 operationTable .right.> rmu: dynamo stream
 rmu --> roomTable: update room table
 roomTable .up.> mutateUser: dynamo stream
 mutateUser -left-> pokerMutation
 pokerMutation -> pokerSubscription: none resolver
-pokerSubscription <--> users
-users <--> roomQuery
-roomQuery <--> roomTable: dynamo resolver
+pokerSubscription --> users
+waf -down-> roomQuery
+roomQuery --> roomTable: dynamo resolver
 @enduml
