@@ -1,17 +1,9 @@
-import {
-  Stack,
-  StackProps,
-  RemovalPolicy,
-  CfnOutput,
-  Expiration,
-  Duration,
-} from 'aws-cdk-lib';
+import { Stack, StackProps, RemovalPolicy, CfnOutput, Expiration, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import * as db from 'aws-cdk-lib/aws-dynamodb';
 import * as lambdaGo from '@aws-cdk/aws-lambda-go-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as ssm from 'aws-cdk-lib/aws-ssm';
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as waf from 'aws-cdk-lib/aws-wafv2';
@@ -67,10 +59,7 @@ export class RoomStack extends Stack {
       },
     });
     // Set up table as a Datasource and grant access
-    const operationDataSource = roomAPI.addDynamoDbDataSource(
-      'operation',
-      operationTable,
-    );
+    const operationDataSource = roomAPI.addDynamoDbDataSource('operation', operationTable);
     operationDataSource.createResolver({
       typeName: 'Mutation',
       fieldName: 'openRoom',
@@ -141,16 +130,6 @@ export class RoomStack extends Stack {
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
 
-    // ================= SSM =================
-    const roomApiUrl = new ssm.StringParameter(this, 'room-api-url', {
-      parameterName: '/salon/appsync/room-api-url',
-      stringValue: roomAPI.graphqlUrl,
-    });
-    const roomApiKey = new ssm.StringParameter(this, 'room-api-key', {
-      parameterName: '/salon/appsync/room-api-key',
-      stringValue: roomAPI.apiKey!,
-    });
-
     // ================= Lambda =================
     const roomRMUFunction = new lambdaGo.GoFunction(this, 'room-rmu', {
       functionName: 'RoomRMU',
@@ -171,7 +150,7 @@ export class RoomStack extends Stack {
       functionName: 'MutateUser',
       entry: 'lambda/mutate-user',
       environment: {
-        ROOM_API_URL: roomApiUrl.stringValue,
+        ROOM_API_URL: roomAPI.graphqlUrl,
         REGION: this.region,
       },
       timeout: Duration.seconds(10),
@@ -217,19 +196,15 @@ export class RoomStack extends Stack {
         },
       ],
     });
-    const webAclAssociation = new waf.CfnWebACLAssociation(
-      this,
-      'webAclAssociation',
-      {
-        resourceArn: roomAPI.arn,
-        webAclArn: apiWebAcl.attrArn,
-      },
-    );
+    const webAclAssociation = new waf.CfnWebACLAssociation(this, 'webAclAssociation', {
+      resourceArn: roomAPI.arn,
+      webAclArn: apiWebAcl.attrArn,
+    });
 
     // ================= Stack Outpu =================
     new CfnOutput(this, 'STACK_REGION', { value: this.region });
-    new CfnOutput(this, 'ROOM_API_URL', { value: roomApiUrl.stringValue });
-    new CfnOutput(this, 'ROOM_API_KEY', { value: roomApiKey.stringValue });
+    new CfnOutput(this, 'ROOM_API_URL', { value: roomAPI.graphqlUrl });
+    new CfnOutput(this, 'ROOM_API_KEY', { value: roomAPI.apiKey! });
     new CfnOutput(this, 'ACLRef', { value: apiWebAcl.ref });
     new CfnOutput(this, 'ACLAPIAssoc', { value: webAclAssociation.ref });
   }
