@@ -186,7 +186,17 @@ export class RoomStack extends Stack {
           action: { block: {} },
           priority: 1,
           statement: {
-            rateBasedStatement: { aggregateKeyType: 'IP', limit: 300 },
+            rateBasedStatement: {
+              aggregateKeyType: 'IP',
+              limit: 300,
+              scopeDownStatement: {
+                regexMatchStatement: {
+                  fieldToMatch: { singleHeader: { name: 'x-api-key' } },
+                  regexString: `^${roomAPI.apiKey!}$`,
+                  textTransformations: [{ priority: 0, type: 'COMPRESS_WHITE_SPACE' }],
+                },
+              },
+            },
           },
           visibilityConfig: {
             cloudWatchMetricsEnabled: true,
