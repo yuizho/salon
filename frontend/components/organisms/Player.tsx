@@ -49,6 +49,7 @@ export const Component: FC<ComponentProps> = ({
       onClick={() => {
         setOpenKickDialog(true);
       }}
+      clickable={!me}
     />
     <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
     <ModalDialog

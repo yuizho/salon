@@ -6,10 +6,13 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ me, onClick }) => <Component me={me} onClick={onClick} />;
+const Template: Story = ({ me, clickable, onClick }) => (
+  <Component me={me} clickable={clickable} onClick={onClick} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
   me: true,
+  clickable: true,
   onClick: () => alert('clicked!!!'),
 };

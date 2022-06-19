@@ -5,6 +5,7 @@ import { RiUserFill, RiUserLine } from 'react-icons/ri';
 
 type Props = {
   me: boolean;
+  clickable: boolean;
   onClick: () => void;
 };
 
@@ -19,7 +20,7 @@ active:border
 active:border-slate-300
 `;
 
-export const Component: FC<Props> = ({ me, onClick }) => (
+export const Component: FC<Props> = ({ me, clickable, onClick }) => (
   <div
     className={`
       flex
@@ -28,11 +29,11 @@ export const Component: FC<Props> = ({ me, onClick }) => (
       w-20
     `}
     onClick={
-      me
-        ? () => {}
-        : () => {
+      clickable
+        ? () => {
             onClick();
           }
+        : () => {}
     }
   >
     <div
@@ -44,7 +45,7 @@ export const Component: FC<Props> = ({ me, onClick }) => (
         rounded-full
         border
         bg-white
-        ${me ? 'border-slate-400' : clickableUsesr}
+        ${clickable ? clickableUsesr : 'border-slate-400'}
       `}
     >
       <div className="relative text-slate-600">
@@ -54,6 +55,8 @@ export const Component: FC<Props> = ({ me, onClick }) => (
   </div>
 );
 
-const Container: FC<Props> = ({ me, onClick }) => <Component me={me} onClick={onClick} />;
+const Container: FC<Props> = ({ me, clickable, onClick }) => (
+  <Component me={me} clickable={clickable} onClick={onClick} />
+);
 
 export default Container;
