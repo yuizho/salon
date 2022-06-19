@@ -8,14 +8,7 @@ exports[`Players snapshot 1`] = `
   "
   >
     <div
-      class="
-      flex
-      flex-col
-      items-center
-      gap-2
-      p-2
-      w-20
-  "
+      class="flex flex-col items-center gap-2 p-2 w-20"
     >
       <div
         class="
@@ -95,14 +88,7 @@ bg-white
       </div>
     </div>
     <div
-      class="
-      flex
-      flex-col
-      items-center
-      gap-2
-      p-2
-      w-20
-  "
+      class="flex flex-col items-center gap-2 p-2 w-20"
     >
       <div
         class="
@@ -191,14 +177,7 @@ bg-white
       </div>
     </div>
     <div
-      class="
-      flex
-      flex-col
-      items-center
-      gap-2
-      p-2
-      w-20
-  "
+      class="flex flex-col items-center gap-2 p-2 w-20"
     >
       <div
         class="

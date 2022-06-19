@@ -19,7 +19,7 @@ type Props = {
 };
 
 type ComponentProps = Props & {
-  enable: boolean;
+  kickable: boolean;
   onKick: () => void;
   openKickDialog: boolean;
   setOpenKickDialog: (b: boolean) => void;
@@ -31,42 +31,28 @@ export const Component: FC<ComponentProps> = ({
   value,
   shown,
   me,
-  enable,
+  kickable,
   onKick,
   openKickDialog,
   setOpenKickDialog,
-}) => {
-  const kickable = enable && !me;
-
-  return (
-    <div
-      key={userId}
-      className={`
-      flex
-      flex-col
-      items-center
-      gap-2
-      p-2
-      w-20
-  `}
-    >
-      <User
-        me={me}
-        onClick={() => {
-          setOpenKickDialog(true);
-        }}
-        clickable={kickable}
-      />
-      <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
-      <ModalDialog
-        message="選択したユーザを部屋から退出させます。よろしいですか？"
-        onClickOK={onKick}
-        open={openKickDialog}
-        setOpen={setOpenKickDialog}
-      />
-    </div>
-  );
-};
+}) => (
+  <div key={userId} className="flex flex-col items-center gap-2 p-2 w-20">
+    <User
+      me={me}
+      onClick={() => {
+        setOpenKickDialog(true);
+      }}
+      clickable={kickable}
+    />
+    <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
+    <ModalDialog
+      message="選択したユーザを部屋から退出させます。よろしいですか？"
+      onClickOK={onKick}
+      open={openKickDialog}
+      setOpen={setOpenKickDialog}
+    />
+  </div>
+);
 
 const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const [myRecoilState] = useRecoilState(myState);
@@ -94,7 +80,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
       value={value}
       shown={shown}
       me={me}
-      enable={poker.state !== 'KICKED'}
+      kickable={poker.state !== 'KICKED' && !me}
       onKick={() => kickThisUser()}
       openKickDialog={openKickDialog}
       setOpenKickDialog={setOpenKickDialog}
