@@ -188,7 +188,7 @@ export class RoomStack extends Stack {
           statement: {
             rateBasedStatement: {
               aggregateKeyType: 'IP',
-              limit: 300,
+              limit: 100,
               scopeDownStatement: {
                 regexMatchStatement: {
                   fieldToMatch: { singleHeader: { name: 'x-api-key' } },
