@@ -50,6 +50,10 @@ func (repos *TestRepos) UpdateActiveUserOperatedAt(context context.Context, room
 	return nil
 }
 
+func (repos *TestRepos) AuthUser(context context.Context, roomId string, userId string, userToken string) error {
+	return nil
+}
+
 func TestRefleshPoker(t *testing.T) {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["event_id"] = events.NewStringAttribute("9999")
@@ -58,6 +62,7 @@ func TestRefleshPoker(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("REFRESH_TABLE")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	err := NewRoomService(&TestRepos{}).SaveRoom(
 		lambdacontext.NewContext(
@@ -83,6 +88,7 @@ func TestUnexpectedUserIdPassedToRefleshPoker(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("REFRESH_TABLE")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	err := NewRoomService(&TestRepos{}).SaveRoom(
 		lambdacontext.NewContext(

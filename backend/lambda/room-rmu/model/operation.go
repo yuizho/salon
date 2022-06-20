@@ -41,6 +41,7 @@ type Operation struct {
 	OperatedAt   string `dynamodbav:"operated_at" json:"operated_at"`
 	PickedCard   string `dynamodbav:"picked_card" json:"picked_card"`
 	KickedUserId string `dynamodbav:"kicked_user_id" json:"kicked_user_id"`
+	UserToken    string `dynamodbav:"user_token" json:"user_token"`
 }
 
 func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, error) {
@@ -98,6 +99,13 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		pickedCard = attrs["picked_card"].String()
 	}
 
+	if attrs["user_token"].IsNull() {
+		return nil, errors.New("no user_token")
+	}
+	if m, _ := regexp.MatchString(`^[0-9a-zA-Z\-]+$`, attrs["user_token"].String()); !m {
+		return nil, errors.New("invalid user_token")
+	}
+
 	return &Operation{
 		EventId:      attrs["event_id"].String(),
 		RoomId:       attrs["room_id"].String(),
@@ -106,5 +114,6 @@ func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, e
 		OperatedAt:   attrs["operated_at"].String(),
 		PickedCard:   pickedCard,
 		KickedUserId: kickedUserId,
+		UserToken:    attrs["user_token"].String(),
 	}, nil
 }

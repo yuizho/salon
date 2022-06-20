@@ -10,6 +10,7 @@ func TestCreateRoomOpTypeJoined(t *testing.T) {
 		OpType:     Join,
 		UserId:     "2",
 		OperatedAt: "2022-10-10T13:50:40Z",
+		UserToken:  "xxxx",
 	})
 	if err != nil {
 		t.Fatalf("failed to create operation")
@@ -30,6 +31,9 @@ func TestCreateRoomOpTypeJoined(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
+	if actual.UserToken != "xxxx" {
+		t.Fatalf("unexpected UserToken: %s", actual.UserToken)
+	}
 }
 
 func TestCreateRoomOpTypeleaved(t *testing.T) {
@@ -38,6 +42,7 @@ func TestCreateRoomOpTypeleaved(t *testing.T) {
 		OpType:     Leave,
 		UserId:     "2",
 		OperatedAt: "2022-10-10T13:50:40Z",
+		UserToken:  "xxxx",
 	})
 	if err != nil {
 		t.Fatalf("failed to create operation")
@@ -58,6 +63,9 @@ func TestCreateRoomOpTypeleaved(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
+	if actual.UserToken != "xxxx" {
+		t.Fatalf("unexpected UserToken: %s", actual.UserToken)
+	}
 }
 
 func TestCreateRoomOpTypePicked(t *testing.T) {
@@ -67,6 +75,7 @@ func TestCreateRoomOpTypePicked(t *testing.T) {
 		UserId:     "2",
 		OperatedAt: "2022-10-10T13:50:40Z",
 		PickedCard: "5",
+		UserToken:  "xxxx",
 	})
 	if err != nil {
 		t.Fatalf("failed to create operation")
@@ -86,5 +95,8 @@ func TestCreateRoomOpTypePicked(t *testing.T) {
 	}
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
+	}
+	if actual.UserToken != "xxxx" {
+		t.Fatalf("unexpected UserToken: %s", actual.UserToken)
 	}
 }

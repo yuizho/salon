@@ -40,11 +40,11 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 	case model.Join:
 		return service.addUserToRoom(context, operation)
 	case model.Leave, model.Pick:
-		return service.updateUserState(context, operation)
+		return service.updateUserStateWithAuth(context, operation)
 	case model.RefreshTable:
-		return service.refreshPokerTable(context, operation)
+		return service.refreshPokerTableWithAuth(context, operation)
 	case model.Kick:
-		return service.kickUser(context, operation)
+		return service.kickUserWithAuth(context, operation)
 	default:
 		return fmt.Errorf("unreachable error")
 	}
@@ -106,23 +106,31 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 	return service.repository.SaveUser(context, user, expirationUnixTimestamp)
 }
 
-func (service *RoomService) updateUserState(context context.Context, operation *model.Operation) error {
+func (service *RoomService) updateUserStateWithAuth(context context.Context, operation *model.Operation) error {
 	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
 	}
 
-	reqId, err := util.GetAWSRequestId(context)
+	err = service.repository.AuthUser(context, user.RoomId, user.UserId, user.UserToken)
 	if err != nil {
 		return err
 	}
 
-	logger.Infof("%s Room to update user state %#v", reqId, user)
-
-	return service.repository.UpdateActiveUser(context, user)
+	return service.updateUserState(context, user)
 }
 
-func (service *RoomService) refreshPokerTable(context context.Context, operation *model.Operation) error {
+func (service *RoomService) refreshPokerTableWithAuth(context context.Context, operation *model.Operation) error {
+	user, err := model.CreateUser(operation)
+	if err != nil {
+		return err
+	}
+
+	err = service.repository.AuthUser(context, user.RoomId, user.UserId, user.UserToken)
+	if err != nil {
+		return err
+	}
+
 	rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
 	if err != nil {
 		return err
@@ -156,7 +164,17 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	return nil
 }
 
-func (service *RoomService) kickUser(context context.Context, operation *model.Operation) error {
+func (service *RoomService) kickUserWithAuth(context context.Context, operation *model.Operation) error {
+	user, err := model.CreateUser(operation)
+	if err != nil {
+		return err
+	}
+
+	err = service.repository.AuthUser(context, user.RoomId, user.UserId, user.UserToken)
+	if err != nil {
+		return err
+	}
+
 	rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
 	if err != nil {
 		return err
@@ -173,13 +191,24 @@ func (service *RoomService) kickUser(context context.Context, operation *model.O
 
 	logger.Infof("%s Room to kick %s by %s", reqId, operation.KickedUserId, operation.UserId)
 
-	return service.updateUserState(context, &model.Operation{
-		EventId:    operation.EventId,
+	return service.updateUserState(context, &model.User{
 		RoomId:     operation.RoomId,
-		OpType:     model.OpType("LEAVE"),
 		UserId:     operation.KickedUserId,
+		Status:     model.StatusLeaved,
+		PickedCard: "",
 		OperatedAt: operation.OperatedAt,
 	})
+}
+
+func (service *RoomService) updateUserState(context context.Context, user *model.User) error {
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("%s Room to update user state %#v", reqId, user)
+
+	return service.repository.UpdateActiveUser(context, user)
 }
 
 func isProperUser(rooms *[]model.User, userId string) bool {

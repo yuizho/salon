@@ -7,6 +7,9 @@ import (
 )
 
 type DynamoDBPutAPI interface {
+	GetItem(ctx context.Context,
+		params *dynamodb.GetItemInput,
+		optFns ...func(*dynamodb.Options)) (*dynamodb.GetItemOutput, error)
 	PutItem(ctx context.Context,
 		params *dynamodb.PutItemInput,
 		optFns ...func(*dynamodb.Options)) (*dynamodb.PutItemOutput, error)
@@ -16,6 +19,10 @@ type DynamoDBPutAPI interface {
 	UpdateItem(ctx context.Context,
 		params *dynamodb.UpdateItemInput,
 		optFns ...func(*dynamodb.Options)) (*dynamodb.UpdateItemOutput, error)
+}
+
+func GetItem(c context.Context, api DynamoDBPutAPI, input *dynamodb.GetItemInput) (*dynamodb.GetItemOutput, error) {
+	return api.GetItem(c, input)
 }
 
 func PutItem(c context.Context, api DynamoDBPutAPI, input *dynamodb.PutItemInput) (*dynamodb.PutItemOutput, error) {

@@ -11,6 +11,7 @@ type RoomRepository interface {
 	FindActiveUsers(context context.Context, roomId string) (*[]User, error)
 	UpdateActiveUser(context context.Context, room *User) error
 	ExistRoom(context context.Context, roomId string) (bool, error)
+	AuthUser(context context.Context, roomId string, userId string, userToken string) error
 }
 
 type Status string
@@ -41,6 +42,7 @@ type User struct {
 	Status     Status `dynamodbav:"status" json:"status"`
 	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
 	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
+	UserToken  string `dynamodbav:"user_token" json:"user_token"`
 }
 
 func (user *User) RefreshPokerTable(operatedAt string) error {
