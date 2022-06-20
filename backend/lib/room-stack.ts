@@ -17,7 +17,7 @@ export class RoomStack extends Stack {
     // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
     const operationTable = new db.Table(this, 'OperationTable', {
       tableName: 'operation',
-      removalPolicy: RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.RETAIN,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: 'event_id', type: db.AttributeType.STRING },
       // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.StreamViewType.html
@@ -25,7 +25,7 @@ export class RoomStack extends Stack {
     });
     const roomTable = new db.Table(this, 'RoomTable', {
       tableName: 'room',
-      removalPolicy: RemovalPolicy.DESTROY,
+      removalPolicy: RemovalPolicy.RETAIN,
       billingMode: db.BillingMode.PAY_PER_REQUEST,
       partitionKey: { name: 'room_id', type: db.AttributeType.STRING },
       sortKey: { name: 'item_key', type: db.AttributeType.STRING },
