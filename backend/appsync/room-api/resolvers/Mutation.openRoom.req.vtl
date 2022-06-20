@@ -8,6 +8,7 @@
         "room_id": $util.dynamodb.toDynamoDBJson($util.autoUlid()),
         "user_id": $util.dynamodb.toDynamoDBJson($util.autoUlid()),
         "op_type": $util.dynamodb.toDynamoDBJson("OPEN_ROOM"),
+        "user_token": $util.dynamodb.toDynamoDBJson($util.autoId()),
         "operated_at": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601()),
     },
     "condition": {
