@@ -11,10 +11,10 @@
 #if($util.isNullOrEmpty($ctx.args.user_id))
   $util.error("null or empty", "user_id")
 #end
-#if($ctx.args.user_id.length() > 40)
+#if($ctx.args.user_id.length() > 30)
   $util.error("unexpected length (too long)", "user_id")
 #end
-#if(!$util.matches("^[0-9a-zA-Z\-]+$", $ctx.args.user_token))
+#if(!$util.matches("^[0-9a-zA-Z]+$", $ctx.args.user_id))
   $util.error("unexpected pattern", "user_id")
 #end
 
