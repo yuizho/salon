@@ -33,7 +33,8 @@ const Container: FC = () => {
       const result = await openRoom();
       const roomId = result.data?.openRoom.room_id ?? '';
       const userId = result.data?.openRoom.user_id ?? '';
-      setMe({ roomId, userId });
+      const userToken = result.data?.openRoom.user_token ?? '';
+      setMe({ roomId, userId, userToken });
 
       router.push(`/rooms/${roomId}`);
     } catch (e) {

@@ -49,6 +49,7 @@ const useJoin = () => {
           setMe({
             roomId,
             userId: joinned.data?.join.user_id ?? '',
+            userToken: joinned.data?.join.user_token ?? '',
           });
         } catch (e) {
           setApp((app) => ({
