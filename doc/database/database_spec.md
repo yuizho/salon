@@ -4,21 +4,21 @@
 
 ## Usecase List
 
-| Entity    | Type   | UseCase            | conditions                                               |     |
-| --------- | ------ | ------------------ | -------------------------------------------------------- | --- |
-| Operation | put    | openRoom           |                                                          |     |
-| Operation | put    | join               | room_id                                                  |     |
-| Operation | put    | leave              | room_id, user_id, user_token                             |     |
-| Operation | put    | pick               | room_id, user_id, picked_card, user_token                |     |
-| Operation | put    | refreshPokerTable  | room_id, user_id, user_token                             |     |
-| Operation | put    | Kick               | room_id, user_id, kicked_user_id, user_token             |     |
-| Room      | query  | getRoomInformation | room_id                                                  |     |
-| Room      | put    | openRoom           |                                                          |     |
-| Room      | put    | join               |                                                          |     |
-| Room      | update | leave              | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |     |
-| Room      | update | pick               | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |     |
-| Room      | update | refreshPokerTable  | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |     |
-| Room      | update | Kick               | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |     |
+| Entity    | Type   | UseCase            | conditions                                               |
+| --------- | ------ | ------------------ | -------------------------------------------------------- |
+| Operation | put    | openRoom           |                                                          |
+| Operation | put    | join               | room_id                                                  |
+| Operation | put    | leave              | room_id, user_id, user_token                             |
+| Operation | put    | pick               | room_id, user_id, picked_card, user_token                |
+| Operation | put    | refreshPokerTable  | room_id, user_id, user_token                             |
+| Operation | put    | Kick               | room_id, user_id, kicked_user_id, user_token             |
+| Room      | query  | getRoomInformation | room_id                                                  |
+| Room      | put    | openRoom           |                                                          |
+| Room      | put    | join               |                                                          |
+| Room      | update | leave              | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |
+| Room      | update | pick               | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |
+| Room      | update | refreshPokerTable  | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |
+| Room      | update | Kick               | room_id, user_id, status <> 'LEAVED', item_type = 'USER' |
 
 ## Table Definition
 
