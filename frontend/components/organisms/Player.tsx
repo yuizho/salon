@@ -63,7 +63,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const kickThisUser = async () => {
     setApp((app) => ({ ...app, loading: true }));
     try {
-      await kick(myRecoilState.roomId, myRecoilState.userId, userId);
+      await kick(myRecoilState.roomId, myRecoilState.userId, myRecoilState.userToken, userId);
     } catch (e) {
       setApp((app) => ({
         ...app,

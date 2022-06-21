@@ -19,6 +19,7 @@ func CreateUser(operation *Operation) (*User, error) {
 		Status:     status,
 		PickedCard: pickedCard,
 		OperatedAt: operation.OperatedAt,
+		UserToken:  operation.UserToken,
 	}, nil
 }
 

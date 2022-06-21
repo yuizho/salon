@@ -37,16 +37,19 @@ func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) 
 	}, nil
 }
 func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.User) error {
-	// part of update is failed
-	if room.UserId == "2" {
-		return fmt.Errorf("some error")
-	}
 	return nil
 }
 func (repos *TestRepos) ExistRoom(context context.Context, roomId string) (bool, error) {
 	return true, nil
 }
 func (repos *TestRepos) UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error {
+	return nil
+}
+
+func (repos *TestRepos) AuthUser(context context.Context, roomId string, userId string, userToken string) error {
+	if userId == "3" {
+		return fmt.Errorf("some error")
+	}
 	return nil
 }
 
@@ -58,6 +61,7 @@ func TestRefleshPoker(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("REFRESH_TABLE")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	err := NewRoomService(&TestRepos{}).SaveRoom(
 		lambdacontext.NewContext(
@@ -83,6 +87,7 @@ func TestUnexpectedUserIdPassedToRefleshPoker(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("REFRESH_TABLE")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	err := NewRoomService(&TestRepos{}).SaveRoom(
 		lambdacontext.NewContext(

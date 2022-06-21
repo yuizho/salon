@@ -1,12 +1,21 @@
 ﻿type Mutation {
-  openRoom: Operation! @aws_api_key
-  join(room_id: String!): Operation! @aws_api_key
-  leave(room_id: String!, user_id: String!): Operation! @aws_api_key
-  pick(room_id: String!, user_id: String!, picked_card: String!): Operation!
+  openRoom: AddOperation! @aws_api_key
+  join(room_id: String!): AddOperation! @aws_api_key
+  leave(room_id: String!, user_id: String!, user_token: String!): UpdateOperation! @aws_api_key
+  pick(
+    room_id: String!
+    user_id: String!
+    picked_card: String!
+    user_token: String!
+  ): UpdateOperation! @aws_api_key
+  refreshTable(room_id: String!, user_id: String!, user_token: String!): UpdateOperation!
     @aws_api_key
-  refreshTable(room_id: String!, user_id: String!): Operation! @aws_api_key
-  kick(room_id: String!, user_id: String!, kicked_user_id: String!): Operation!
-    @aws_api_key
+  kick(
+    room_id: String!
+    user_id: String!
+    kicked_user_id: String!
+    user_token: String!
+  ): UpdateOperation! @aws_api_key
   updateUser(
     room_id: String!
     user_id: String!
@@ -21,19 +30,18 @@ type Query {
 }
 
 type Subscription {
-  onUpdateUser(room_id: String!): User
-    @aws_subscribe(mutations: ["updateUser"])
-    @aws_api_key
+  onUpdateUser(room_id: String!): User @aws_subscribe(mutations: ["updateUser"]) @aws_api_key
 }
 
-type Operation @aws_api_key {
-  event_id: String!
+type AddOperation @aws_api_key {
   room_id: String!
   user_id: String!
-  op_type: OperationType!
-  operated_at: String!
-  picked_card: String
-  kicked_user_id: String
+  user_token: String!
+}
+
+type UpdateOperation @aws_api_key {
+  room_id: String!
+  user_id: String!
 }
 
 enum OperationType {

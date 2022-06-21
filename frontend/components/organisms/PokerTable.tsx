@@ -86,7 +86,7 @@ const Container: FC = () => {
   const refreshPoker = async () => {
     setApp((app) => ({ ...app, loading: true }));
     try {
-      await refresh(me.roomId, me.userId);
+      await refresh(me.roomId, me.userId, me.userToken);
     } catch (e) {
       setApp((app) => ({
         ...app,

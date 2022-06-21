@@ -60,7 +60,7 @@ const Container: FC<Props> = ({ values }) => {
     });
 
     try {
-      const result = await pick(roomId, userId, pickedCard);
+      const result = await pick(roomId, userId, me.userToken, pickedCard);
       return result.data?.pick.user_id === userId ?? false;
     } catch (e) {
       setApp((app) => ({

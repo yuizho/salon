@@ -28,6 +28,16 @@
   $util.error("unexpected pattern", "picked_card")
 #end
 
+#if($util.isNullOrEmpty($ctx.args.user_token))
+  $util.error("null or empty", "user_token")
+#end
+#if($ctx.args.user_token.length() > 40)
+  $util.error("unexpected length (too long)", "user_token")
+#end
+#if(!$util.matches("^[0-9a-zA-Z\-]+$", $ctx.args.user_token))
+  $util.error("unexpected pattern", "user_token")
+#end
+
 {
     "version" : "2017-02-28",
     "operation" : "PutItem",
@@ -39,6 +49,7 @@
         "user_id": $util.dynamodb.toDynamoDBJson($ctx.args.user_id),
         "op_type": $util.dynamodb.toDynamoDBJson("PICK"),
         "picked_card": $util.dynamodb.toDynamoDBJson($ctx.args.picked_card),
+        "user_token": $util.dynamodb.toDynamoDBJson($ctx.args.user_token),
         "operated_at": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601()),
     },
     "condition": {

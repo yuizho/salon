@@ -14,6 +14,7 @@ func TestNewOperation(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	actual, err := NewOperation(input)
 	if err != nil {
@@ -38,6 +39,9 @@ func TestNewOperation(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
+	if actual.UserToken != "xxxx" {
+		t.Fatalf("unexpected UserToken: %s", actual.UserToken)
+	}
 }
 
 func TestNewOperationNoPickedCard(t *testing.T) {
@@ -48,6 +52,7 @@ func TestNewOperationNoPickedCard(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["picked_card"] = events.NewNullAttribute()
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	actual, err := NewOperation(input)
 	if err != nil {
@@ -72,6 +77,9 @@ func TestNewOperationNoPickedCard(t *testing.T) {
 	if actual.OperatedAt != "2022-10-10T13:50:40Z" {
 		t.Fatalf("unexpected OperatedAt: %s", actual.OperatedAt)
 	}
+	if actual.UserToken != "xxxx" {
+		t.Fatalf("unexpected UserToken: %s", actual.UserToken)
+	}
 }
 
 func TestNewOperationNoEventId(t *testing.T) {
@@ -81,6 +89,7 @@ func TestNewOperationNoEventId(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -96,6 +105,7 @@ func TestNewOperationInvalidEventId(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -110,6 +120,7 @@ func TestNewOperationNoRoomId(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -125,6 +136,7 @@ func TestNewOperationInvalidRoomId(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -139,6 +151,7 @@ func TestNewOperationNoUserId(t *testing.T) {
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -154,6 +167,7 @@ func TestNewOperationInvalidUserId(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -168,6 +182,7 @@ func TestNewOperationNoOpType(t *testing.T) {
 	input["user_id"] = events.NewStringAttribute("2")
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -183,6 +198,7 @@ func TestNewOperationInvalidOpType(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["op_type"] = events.NewStringAttribute("UNEXPECTED")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -198,6 +214,7 @@ func TestNewOperationInvalidPickedCard(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("_")
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -212,6 +229,7 @@ func TestNewOperationNoOperatedAt(t *testing.T) {
 	input["user_id"] = events.NewStringAttribute("2")
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["picked_card"] = events.NewStringAttribute("5")
+	input["user_token"] = events.NewStringAttribute("xxxx")
 
 	_, err := NewOperation(input)
 	if err == nil {
@@ -227,6 +245,38 @@ func TestNewOperationInvalidOperatedAt(t *testing.T) {
 	input["picked_card"] = events.NewStringAttribute("5")
 	input["op_type"] = events.NewStringAttribute("PICK")
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40XX")
+	input["user_token"] = events.NewStringAttribute("xxxx")
+
+	_, err := NewOperation(input)
+	if err == nil {
+		t.Fatalf("failed to validate operation")
+	}
+}
+
+func TestNewOperationNoUserToken(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["op_type"] = events.NewStringAttribute("PICK")
+	input["picked_card"] = events.NewStringAttribute("5")
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+
+	_, err := NewOperation(input)
+	if err == nil {
+		t.Fatalf("failed to validate operation")
+	}
+}
+
+func TestNewOperationInvalidUserToken(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
+	input["room_id"] = events.NewStringAttribute("1")
+	input["user_id"] = events.NewStringAttribute("2")
+	input["picked_card"] = events.NewStringAttribute("5")
+	input["op_type"] = events.NewStringAttribute("PICK")
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx&yyyy&aaa")
 
 	_, err := NewOperation(input)
 	if err == nil {

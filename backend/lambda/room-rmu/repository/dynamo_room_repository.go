@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -124,4 +125,34 @@ func (repos *DynamoRoomRepository) ExistRoom(context context.Context, roomId str
 	}
 
 	return len(result.Items) > 0, nil
+}
+
+func (repos *DynamoRoomRepository) AuthUser(context context.Context, roomId string, userId string, userToken string) error {
+	result, err := GetItem(context, repos.client, &dynamodb.GetItemInput{
+		TableName: aws.String("room"),
+		Key: map[string]types.AttributeValue{
+			"room_id":  &types.AttributeValueMemberS{Value: roomId},
+			"item_key": &types.AttributeValueMemberS{Value: userId},
+		},
+	})
+	if err != nil {
+		return err
+	}
+
+	if len(result.Item) == 0 {
+		return fmt.Errorf("invalid room_id: %s or user_id: %s", roomId, userId)
+	}
+
+	fetchedUser := model.User{}
+	attributevalue.UnmarshalMap(result.Item, &fetchedUser)
+
+	if !fetchedUser.IsActive() {
+		return fmt.Errorf("the user who attempts authentication is inactive. user_id: %s", userId)
+	}
+
+	if fetchedUser.UserToken != userToken {
+		return fmt.Errorf("invalid user_token: %s", userToken)
+	}
+
+	return nil
 }

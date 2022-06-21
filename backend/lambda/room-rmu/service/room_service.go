@@ -32,7 +32,7 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 		return err
 	}
 
-	logger.Infof("%s sent Operation %#v", reqId, operation)
+	logger.Infof("%s received operation (eventId: %s)", reqId, operation.EventId)
 
 	switch operation.OpType {
 	case model.OpenRoom:
@@ -40,11 +40,11 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 	case model.Join:
 		return service.addUserToRoom(context, operation)
 	case model.Leave, model.Pick:
-		return service.updateUserState(context, operation)
+		return service.updateUserStateWithAuth(context, operation)
 	case model.RefreshTable:
-		return service.refreshPokerTable(context, operation)
+		return service.refreshPokerTableWithAuth(context, operation)
 	case model.Kick:
-		return service.kickUser(context, operation)
+		return service.kickUserWithAuth(context, operation)
 	default:
 		return fmt.Errorf("unreachable error")
 	}
@@ -61,7 +61,7 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 		return err
 	}
 
-	logger.Infof("%s Room to save user state %#v", reqId, user)
+	logger.Infof("%s open room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
 	now := time.Now()
 	// in 30 min is room expiration
@@ -89,7 +89,7 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 		return err
 	}
 	if !isActiveRoom {
-		return fmt.Errorf("passed roomId is not active: %s", operation.RoomId)
+		return fmt.Errorf("passed roomId is not active (room_id: %s)", operation.RoomId)
 	}
 
 	reqId, err := util.GetAWSRequestId(context)
@@ -97,7 +97,7 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 		return err
 	}
 
-	logger.Infof("%s Room to save user state %#v", reqId, user)
+	logger.Infof("%s add user to room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
 	now := time.Now()
 	// in 30 min is room expiration
@@ -106,30 +106,29 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 	return service.repository.SaveUser(context, user, expirationUnixTimestamp)
 }
 
-func (service *RoomService) updateUserState(context context.Context, operation *model.Operation) error {
+func (service *RoomService) updateUserStateWithAuth(context context.Context, operation *model.Operation) error {
+	err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
+	if err != nil {
+		return err
+	}
+
 	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
 	}
 
-	reqId, err := util.GetAWSRequestId(context)
-	if err != nil {
-		return err
-	}
-
-	logger.Infof("%s Room to update user state %#v", reqId, user)
-
-	return service.repository.UpdateActiveUser(context, user)
+	return service.updateActiveUserState(context, user)
 }
 
-func (service *RoomService) refreshPokerTable(context context.Context, operation *model.Operation) error {
-	rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
+func (service *RoomService) refreshPokerTableWithAuth(context context.Context, operation *model.Operation) error {
+	err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
 	if err != nil {
 		return err
 	}
 
-	if !isProperUser(rooms, operation.UserId) {
-		return fmt.Errorf("passed user id is not active: %s", operation.UserId)
+	users, err := service.repository.FindActiveUsers(context, operation.RoomId)
+	if err != nil {
+		return err
 	}
 
 	reqId, err := util.GetAWSRequestId(context)
@@ -137,33 +136,26 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 		return err
 	}
 
-	logger.Infof("%s Rooms to update users status to CHOOSING %#v", reqId, rooms)
+	logger.Infof("%s refresh poker (room_id: %s)", reqId, operation.RoomId)
 
 	// BatchWriteItem cannot specify conditions on individual put and delete requests
 	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
 	// that's why call Updateitem here to each item to use condition expression.
-	for _, room := range *rooms {
-		err := room.RefreshPokerTable(operation.OperatedAt)
+	for _, user := range *users {
+		user.RefreshPokerTable(operation.OperatedAt)
+		err = service.updateActiveUserState(context, &user)
 		if err != nil {
 			return err
-		}
-		err = service.repository.UpdateActiveUser(context, &room)
-		if err != nil {
-			logger.Warningf("%s failed to UpdateActiveUserStatus %v", reqId, err)
 		}
 	}
 
 	return nil
 }
 
-func (service *RoomService) kickUser(context context.Context, operation *model.Operation) error {
-	rooms, err := service.repository.FindActiveUsers(context, operation.RoomId)
+func (service *RoomService) kickUserWithAuth(context context.Context, operation *model.Operation) error {
+	err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
 	if err != nil {
 		return err
-	}
-
-	if !isProperUser(rooms, operation.UserId) {
-		return fmt.Errorf("passed user id is not active: %s", operation.UserId)
 	}
 
 	reqId, err := util.GetAWSRequestId(context)
@@ -171,22 +163,25 @@ func (service *RoomService) kickUser(context context.Context, operation *model.O
 		return err
 	}
 
-	logger.Infof("%s Room to kick %s by %s", reqId, operation.KickedUserId, operation.UserId)
+	logger.Infof("%s kick user (kicked_user_id: %s, user_id: %s)", reqId, operation.KickedUserId, operation.UserId)
 
-	return service.updateUserState(context, &model.Operation{
-		EventId:    operation.EventId,
+	// user_token doesn't need to set, because the field in db will not be updated
+	return service.updateActiveUserState(context, &model.User{
 		RoomId:     operation.RoomId,
-		OpType:     model.OpType("LEAVE"),
 		UserId:     operation.KickedUserId,
+		Status:     model.StatusLeaved,
+		PickedCard: "",
 		OperatedAt: operation.OperatedAt,
 	})
 }
 
-func isProperUser(rooms *[]model.User, userId string) bool {
-	for _, room := range *rooms {
-		if room.UserId == userId {
-			return true
-		}
+func (service *RoomService) updateActiveUserState(context context.Context, user *model.User) error {
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
 	}
-	return false
+
+	logger.Infof("%s update user state (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
+
+	return service.repository.UpdateActiveUser(context, user)
 }

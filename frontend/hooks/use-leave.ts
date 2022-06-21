@@ -12,7 +12,7 @@ const useLeave = () => {
         event.preventDefault();
         (async () => {
           // TODO: error handling
-          await leave(me.roomId, me.userId);
+          await leave(me.roomId, me.userId, me.userToken);
           console.log('leaved!!!!!');
         })();
         console.log('window close is handled');

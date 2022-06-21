@@ -2,27 +2,18 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type Operation = {
-  __typename: "Operation",
-  event_id: string,
+export type AddOperation = {
+  __typename: "AddOperation",
   room_id: string,
   user_id: string,
-  op_type: OperationType,
-  operated_at: string,
-  picked_card?: string | null,
-  kicked_user_id?: string | null,
+  user_token: string,
 };
 
-export enum OperationType {
-  OPEN_ROOM = "OPEN_ROOM",
-  JOIN = "JOIN",
-  LEAVE = "LEAVE",
-  PICK = "PICK",
-  REFRESH_TABLE = "REFRESH_TABLE",
-  HEARTBEAT = "HEARTBEAT",
-  KICK = "KICK",
-}
-
+export type UpdateOperation = {
+  __typename: "UpdateOperation",
+  room_id: string,
+  user_id: string,
+};
 
 export enum Status {
   CHOOSING = "CHOOSING",
@@ -49,14 +40,10 @@ export type Room = {
 
 export type OpenRoomMutation = {
   openRoom:  {
-    __typename: "Operation",
-    event_id: string,
+    __typename: "AddOperation",
     room_id: string,
     user_id: string,
-    op_type: OperationType,
-    operated_at: string,
-    picked_card?: string | null,
-    kicked_user_id?: string | null,
+    user_token: string,
   },
 };
 
@@ -66,32 +53,24 @@ export type JoinMutationVariables = {
 
 export type JoinMutation = {
   join:  {
-    __typename: "Operation",
-    event_id: string,
+    __typename: "AddOperation",
     room_id: string,
     user_id: string,
-    op_type: OperationType,
-    operated_at: string,
-    picked_card?: string | null,
-    kicked_user_id?: string | null,
+    user_token: string,
   },
 };
 
 export type LeaveMutationVariables = {
   room_id: string,
   user_id: string,
+  user_token: string,
 };
 
 export type LeaveMutation = {
   leave:  {
-    __typename: "Operation",
-    event_id: string,
+    __typename: "UpdateOperation",
     room_id: string,
     user_id: string,
-    op_type: OperationType,
-    operated_at: string,
-    picked_card?: string | null,
-    kicked_user_id?: string | null,
   },
 };
 
@@ -99,36 +78,28 @@ export type PickMutationVariables = {
   room_id: string,
   user_id: string,
   picked_card: string,
+  user_token: string,
 };
 
 export type PickMutation = {
   pick:  {
-    __typename: "Operation",
-    event_id: string,
+    __typename: "UpdateOperation",
     room_id: string,
     user_id: string,
-    op_type: OperationType,
-    operated_at: string,
-    picked_card?: string | null,
-    kicked_user_id?: string | null,
   },
 };
 
 export type RefreshTableMutationVariables = {
   room_id: string,
   user_id: string,
+  user_token: string,
 };
 
 export type RefreshTableMutation = {
   refreshTable:  {
-    __typename: "Operation",
-    event_id: string,
+    __typename: "UpdateOperation",
     room_id: string,
     user_id: string,
-    op_type: OperationType,
-    operated_at: string,
-    picked_card?: string | null,
-    kicked_user_id?: string | null,
   },
 };
 
@@ -136,18 +107,14 @@ export type KickMutationVariables = {
   room_id: string,
   user_id: string,
   kicked_user_id: string,
+  user_token: string,
 };
 
 export type KickMutation = {
   kick:  {
-    __typename: "Operation",
-    event_id: string,
+    __typename: "UpdateOperation",
     room_id: string,
     user_id: string,
-    op_type: OperationType,
-    operated_at: string,
-    picked_card?: string | null,
-    kicked_user_id?: string | null,
   },
 };
 
