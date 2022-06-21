@@ -56,3 +56,7 @@ func (user *User) RefreshPokerTable(operatedAt string) error {
 	user.OperatedAt = operatedAt
 	return nil
 }
+
+func (user *User) IsActive() bool {
+	return user.Status != StatusLeaved
+}

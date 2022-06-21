@@ -37,10 +37,6 @@ func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) 
 	}, nil
 }
 func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.User) error {
-	// part of update is failed
-	if room.UserId == "2" {
-		return fmt.Errorf("some error")
-	}
 	return nil
 }
 func (repos *TestRepos) ExistRoom(context context.Context, roomId string) (bool, error) {
@@ -51,6 +47,9 @@ func (repos *TestRepos) UpdateActiveUserOperatedAt(context context.Context, room
 }
 
 func (repos *TestRepos) AuthUser(context context.Context, roomId string, userId string, userToken string) error {
+	if userId == "3" {
+		return fmt.Errorf("some error")
+	}
 	return nil
 }
 

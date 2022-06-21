@@ -146,6 +146,10 @@ func (repos *DynamoRoomRepository) AuthUser(context context.Context, roomId stri
 	fetchedUser := model.User{}
 	attributevalue.UnmarshalMap(result.Item, &fetchedUser)
 
+	if !fetchedUser.IsActive() {
+		return fmt.Errorf("the user who attempts authentication is inactive. user_id: %s", userId)
+	}
+
 	if fetchedUser.UserToken != userToken {
 		return fmt.Errorf("invalid user_token: %s", userToken)
 	}
