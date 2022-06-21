@@ -32,8 +32,7 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 		return err
 	}
 
-	// TODO: organize logs
-	logger.Infof("%s sent Operation %#v", reqId, operation)
+	logger.Infof("%s received operation (eventId: %s)", reqId, operation.EventId)
 
 	switch operation.OpType {
 	case model.OpenRoom:
@@ -62,7 +61,7 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 		return err
 	}
 
-	logger.Infof("%s Room to save user state %#v", reqId, user)
+	logger.Infof("%s open room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
 	now := time.Now()
 	// in 30 min is room expiration
@@ -90,7 +89,7 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 		return err
 	}
 	if !isActiveRoom {
-		return fmt.Errorf("passed roomId is not active: %s", operation.RoomId)
+		return fmt.Errorf("passed roomId is not active (room_id: %s)", operation.RoomId)
 	}
 
 	reqId, err := util.GetAWSRequestId(context)
@@ -98,7 +97,7 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 		return err
 	}
 
-	logger.Infof("%s Room to save user state %#v", reqId, user)
+	logger.Infof("%s add user to room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
 	now := time.Now()
 	// in 30 min is room expiration
@@ -132,6 +131,13 @@ func (service *RoomService) refreshPokerTableWithAuth(context context.Context, o
 		return err
 	}
 
+	reqId, err := util.GetAWSRequestId(context)
+	if err != nil {
+		return err
+	}
+
+	logger.Infof("%s refresh poker (room_id: %s)", reqId, operation.RoomId)
+
 	// BatchWriteItem cannot specify conditions on individual put and delete requests
 	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
 	// that's why call Updateitem here to each item to use condition expression.
@@ -157,7 +163,7 @@ func (service *RoomService) kickUserWithAuth(context context.Context, operation 
 		return err
 	}
 
-	logger.Infof("%s Room to kick %s by %s", reqId, operation.KickedUserId, operation.UserId)
+	logger.Infof("%s kick user (kicked_user_id: %s, user_id: %s)", reqId, operation.KickedUserId, operation.UserId)
 
 	// user_token doesn't need to set, because the field in db will not be updated
 	return service.updateActiveUserState(context, &model.User{
@@ -175,7 +181,7 @@ func (service *RoomService) updateActiveUserState(context context.Context, user 
 		return err
 	}
 
-	logger.Infof("%s Room to update user state %#v", reqId, user)
+	logger.Infof("%s update user state (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
 	return service.repository.UpdateActiveUser(context, user)
 }
