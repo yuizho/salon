@@ -23,6 +23,6 @@ Frontend周りは自分が使いやすいやつとか趣味とかで決めてる
 - Tailwind CSS
   - これは趣味
 - Amplify
-  - GraphQLのクライアントとしてはAmplifyを使ってみてる
+  - GraphQLのクライアントとして使ってみてる
   - Backend側でAppSync使ってるから以上の理由はあんまりないので、これは後で見直すかもしれない
   - Amplifyの機能でGraphQLのスキーマからTSのコードを自動生成してる
