@@ -12,3 +12,4 @@
 - 責任範囲を明確にしてユーザへのpush処理もシンプルに実装したいので、EventSoursing + CQRS採用する
   - そこまでレイテンシをシビアに管理しなくても大丈夫なので、お手軽さをとってDynamoDB StreamとLambdaで実装する
   - https://zenn.dev/j5ik2o/articles/368e0ab78f105f2a0fae
+- ユーザへのpush処理の実装の容易さから、フロントエンドとの通信はGraphQLを採用する (ほんで、サーバレスで行きたいのでAppSyncで)
