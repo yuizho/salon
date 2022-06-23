@@ -8,7 +8,7 @@ link choosing_card to leaved--><g id="link_choosing_card_leaved"><path d="M387.5
 link chosen_card to leaved--><g id="link_chosen_card_leaved"><path d="M204.203,366.4209 C221.286,378.41 243.178,392.2344 264.48,401.2969 C309.526,420.4616 364.948,431.8573 401.421,437.8409 " fill="none" id="chosen_card-to-leaved" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="406.662,438.6847,398.4117,433.3057,401.7255,437.8904,397.1409,441.2041,406.662,438.6847" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="160" x="265.48" y="397.3638">the user leaves or kicked</text></g><!--MD5=[63c4f054710b75856a745e0f85ecded1]
 link leaved to choosing_card--><g id="link_leaved_choosing_card"><path d="M474.026,439.4911 C515.625,432.7732 584.898,414.5852 616.48,366.2969 C628.643,347.6989 630.028,333.9119 616.48,316.2969 C589.366,281.0449 469.405,258.5629 392.517,247.4989 " fill="none" id="leaved-to-choosing_card" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="387.517,246.7859,395.8623,252.0161,392.4669,247.4916,396.9915,244.0962,387.517,246.7859" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="141" x="626.48" y="345.8638">the leaved user backs</text></g><!--MD5=[9b71c4725ac9801b7644efa3121aaaab]
 link *start to created--><g id="link_*start_created"><path d="M392,26.083 C392,39.432 392,66.215 392,97.801 " fill="none" id="*start-to-created" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="392,102.911,396,93.911,392,97.911,388,93.911,392,102.911" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="122" x="393" y="69.0669">create a new room</text></g><!--MD5=[45061375c9e8a3494a22c18a54018ff0]
-link created to closed--><g id="link_created_closed"><path d="M392,479.272 C392,506.7284 392,531.8715 392,550.1698 " fill="none" id="created-to-closed" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="392,555.6238,396,546.6238,392,550.6238,388,546.6238,392,555.6238" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="393" y="522.0669">expired the room</text></g><!--MD5=[626b9bc738b5f1c29a00a438238f80cf]
+link created to closed--><g id="link_created_closed"><path d="M392,479.272 C392,506.7284 392,531.8715 392,550.1698 " fill="none" id="created-to-closed" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="392,555.6238,396,546.6238,392,550.6238,388,546.6238,392,555.6238" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="125" x="393" y="522.0669">the room is expired</text></g><!--MD5=[f48fe2e607e7456ae2cb2c31fc16b4ef]
 @startuml
 [*] - -> created: create a new room
 state created {
@@ -22,10 +22,10 @@ state created {
     leaved - -> choosing_card: the leaved user backs
 }
 
-created - -> closed: expired the room
+created - -> closed: the room is expired
 @enduml
 
-PlantUML version 1.2022.6beta5(Unknown compile time)
+PlantUML version 1.2022.7beta1(Unknown compile time)
 (GPL source distribution)
 Java Runtime: Java(TM) SE Runtime Environment
 JVM: Java HotSpot(TM) 64-Bit Server VM

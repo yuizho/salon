@@ -12,6 +12,6 @@ state created {
     leaved --> choosing_card: the leaved user backs
 }
 
-created --> closed: expired the room
+created --> closed: the room is expired
 
 @enduml
