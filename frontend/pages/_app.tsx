@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Amplify } from 'aws-amplify';
 import { RecoilRoot } from 'recoil';
+import Head from 'next/head';
 
 Amplify.configure({
   aws_appsync_region: 'ap-northeast-1',
@@ -12,9 +13,15 @@ Amplify.configure({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <RecoilRoot>
-      <Component {...pageProps} />
-    </RecoilRoot>
+    <>
+      <Head>
+        <title>Salon</title>
+      </Head>
+
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
+    </>
   );
 }
 
