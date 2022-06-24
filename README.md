@@ -1,17 +1,19 @@
 # Salon
 
-Salonはログイン不要の無料Webプランニングポーカーサービスです
+Salon はログイン不要の無料 Web プランニングポーカーサービスです
 
 ## Getting Started
-本リポジトリは yarn workspaces を使ってmonorepoで管理しています
 
-### プロジェクト全体でinstall実行
+本リポジトリは yarn workspaces を使って monorepo で管理しています
+
+### プロジェクト全体で install 実行
+
 ```sh
 yarn install
 ```
 
+### backend を AWS へデプロイ
 
-### backendをAWSへデプロイ
 ```sh
 yarn workspace salon-backend cdk bootstrap
 ```
@@ -20,19 +22,23 @@ yarn workspace salon-backend cdk bootstrap
 yarn workspace salon-backend cdk deploy
 ```
 
-### frontendをローカル起動
+### frontend をローカル起動
+
 ```sh
 yarn workspace salon-frontend dev
 ```
 
 ## Documents
+
 - [開発前・開発初期に設計について検討したこと(ADR) #1](https://github.com/yuizho/salon/issues/1)
-- [RDRA(プロダクト要件整理)ドキュメント](doc/product/rdra.md)
+- [RDRA(プロダクト要件整理)](doc/product/rdra.md)
 - [Archtecture](doc/architecture/architecture.md)
-- [Amazon DynamoDBのテーブル設計](doc/database/database_spec.md)
+- [Amazon DynamoDB のテーブル設計](doc/database/database_spec.md)
 
 ## Thanks
+
 - [Hero Patterns](https://heropatterns.com/)
 
 ## License
+
 MIT
