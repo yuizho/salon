@@ -22,7 +22,11 @@ const Home: FC = (): JSX.Element => (
               できる範囲でサービスの維持に努めますが、当サービスで検出された不具合やそれが原因で発生した損害などについては一切責任を負いかねます。
             </li>
             <li>
-              当サービスは、サービスの改善に役立てる目的で Googleアナリティクスを利用しています。
+              当サービスは、サービスの改善に役立てる目的で{' '}
+              <Link href="https://sentry.io" newWindow className="underline">
+                Sentry
+              </Link>{' '}
+              を利用しています。
             </li>
           </ul>
         </div>
