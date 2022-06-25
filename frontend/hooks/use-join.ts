@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import * as Sentry from '@sentry/nextjs';
 import { myState } from '../states/me';
 import { usersState } from '../states/users';
 import { appState } from '../states/app';
@@ -52,6 +53,7 @@ const useJoin = () => {
             userToken: joinned.data?.join.user_token ?? '',
           });
         } catch (e) {
+          Sentry.captureException(e);
           setApp((app) => ({
             ...app,
             loading: false,
@@ -85,6 +87,7 @@ const useJoin = () => {
 
         setUsers(users);
       } catch (e) {
+        Sentry.captureException(e);
         setApp((app) => ({
           ...app,
           loading: false,

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import * as Sentry from '@sentry/nextjs';
 import pick from '../../graphql/clients/pick';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
@@ -63,6 +64,7 @@ const Container: FC<Props> = ({ values }) => {
       const result = await pick(roomId, userId, me.userToken, pickedCard);
       return result.data?.pick.user_id === userId ?? false;
     } catch (e) {
+      Sentry.captureException(e);
       setApp((app) => ({
         ...app,
         loading: false,

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
+import * as Sentry from '@sentry/nextjs';
 import leave from '../graphql/clients/leave';
 import { myState } from '../states/me';
 
@@ -11,18 +12,17 @@ const useLeave = () => {
       const handleWindowClose = (event: Event) => {
         event.preventDefault();
         (async () => {
-          // TODO: error handling
-          await leave(me.roomId, me.userId, me.userToken);
-          console.log('leaved!!!!!');
+          try {
+            await leave(me.roomId, me.userId, me.userToken);
+          } catch (e) {
+            Sentry.captureException(e);
+          }
         })();
-        console.log('window close is handled');
         return '';
       };
-      console.log('configured onbeforeunload');
       window.addEventListener('beforeunload', handleWindowClose);
 
       return () => {
-        console.log('deconfigured onbeforeunload');
         window.removeEventListener('beforeunload', handleWindowClose);
       };
     }
