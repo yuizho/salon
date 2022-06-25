@@ -30,7 +30,9 @@ yarn workspace salon-frontend dev
 
 ## Documents
 
-- [開発前・開発初期に設計について検討したこと(ADR) #1](https://github.com/yuizho/salon/issues/1)
+- ADR
+  - [開発前・開発初期に設計について検討したこと](https://github.com/yuizho/salon/issues/1)
+  - [Ph2 の開発時に設計について検討したこと ](https://github.com/yuizho/salon/issues/14)
 - [RDRA(プロダクト要件整理)](doc/product/rdra.md)
 - [Archtecture](doc/architecture/architecture.md)
 - [DynamoDB のテーブル設計](doc/database/database_spec.md)
