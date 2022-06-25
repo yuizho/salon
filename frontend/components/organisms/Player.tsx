@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import * as Sentry from '@sentry/nextjs';
 import { Status } from '../../graphql/schema';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
@@ -65,6 +66,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
     try {
       await kick(myRecoilState.roomId, myRecoilState.userId, myRecoilState.userToken, userId);
     } catch (e) {
+      Sentry.captureException(e);
       setApp((app) => ({
         ...app,
         loading: false,

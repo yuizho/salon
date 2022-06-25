@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import * as Sentry from '@sentry/nextjs';
 import { Status } from '../../graphql/schema';
 import { Poker, PokerState, pokerState as pokerRecoilState } from '../../states/poker';
 import { User, usersState } from '../../states/users';
 import { Me, myState } from '../../states/me';
 import Button from '../atoms/Button';
-
 import Players from './Players';
 import ModalDialog from '../molecules/ModalDialog';
 import Message from '../atoms/Message';
@@ -88,6 +88,7 @@ const Container: FC = () => {
     try {
       await refresh(me.roomId, me.userId, me.userToken);
     } catch (e) {
+      Sentry.captureException(e);
       setApp((app) => ({
         ...app,
         loading: false,

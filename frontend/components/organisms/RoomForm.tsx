@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
+import * as Sentry from '@sentry/nextjs';
 import openRoom from '../../graphql/clients/open-room';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { appState } from '../../states/app';
@@ -38,6 +39,7 @@ const Container: FC = () => {
 
       router.push(`/rooms/${roomId}`);
     } catch (e) {
+      Sentry.captureException(e);
       setApp((app) => ({
         ...app,
         loading: false,
