@@ -1,6 +1,7 @@
 # Salon
 
 Salon はログイン不要の無料 Web プランニングポーカーサービスです
+test
 
 ## Getting Started
 
