@@ -1,4 +1,4 @@
-# Amazon DynamoDB のテーブル設計
+# DynamoDB のテーブル設計
 
 参考: https://speakerdeck.com/_kensh/dynamodb-design-practice
 
@@ -23,7 +23,7 @@
 | Room      | query   | existRoom         | room_id = room_id, item_type = 'ROOM'                                         |
 | Room      | getItem | getUser           | room_id = room_id, item_key = user_id                                         |
 
-## Table Definition
+## Table Definition & Stored Data Image
 
 ### Operation
 
