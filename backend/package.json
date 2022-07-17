@@ -10,7 +10,8 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "lint": "eslint"
+    "lint": "eslint",
+    "deploy": "cdk deploy --require-approval never"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
