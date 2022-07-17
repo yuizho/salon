@@ -6,9 +6,19 @@ on:
     types: [completed]
     brancheds: [develop]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
-      - run: echo 'deploy backend resources to Stg'
+      - uses: actions/checkout@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{secrets.AWS_STG_ROLE_ARN}}
+          aws-region: ap-northeast-1
+      - run: yarn install
+      - run: yarn workspace salon-backend deploy
