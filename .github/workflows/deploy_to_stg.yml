@@ -1,0 +1,14 @@
+name: Deploy backend to Stg
+
+on:
+  workflow_run:
+    workflows: [Build backend]
+    types: [completed]
+    brancheds: [develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo 'deploy backend resources to Stg'
