@@ -1,12 +1,12 @@
-name: Build Lambda functions
+name: Build backend
 
 on:
   push:
     paths:
-      - "backend/lambda/**"
+      - 'backend/**'
 
 jobs:
-  build:
+  build_lambda:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
