@@ -44,7 +44,7 @@ type Operation struct {
 	UserToken    string `dynamodbav:"user_token" json:"user_token"`
 }
 
-func (operation *Operation) NotNeedsAuthentication() bool {
+func (operation Operation) NotNeedsAuthentication() bool {
 	return operation.OpType == OpenRoom || operation.OpType == Join
 }
 
