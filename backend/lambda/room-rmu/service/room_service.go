@@ -15,10 +15,11 @@ import (
 
 type RoomService struct {
 	repository model.RoomRepository
+	now        time.Time
 }
 
-func NewRoomService(repository model.RoomRepository) *RoomService {
-	return &RoomService{repository: repository}
+func NewRoomService(repository model.RoomRepository, now time.Time) *RoomService {
+	return &RoomService{repository: repository, now: now}
 }
 
 func (service *RoomService) SaveRoom(context context.Context, attrs map[string]events.DynamoDBAttributeValue) error {
@@ -75,17 +76,16 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 
 	logger.Infof("%s open room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
-	now := time.Now()
 	// in 30 min is room expiration
-	expirationUnixTimestamp := now.Unix() + (60 * 30)
+	expirationUnixTimestamp := service.now.Unix() + (60 * 30)
 
 	err = service.repository.SaveUser(context, user, expirationUnixTimestamp)
 	if err != nil {
 		return err
 	}
 
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(now.UnixNano())), 0)
-	itemKey := ulid.MustNew(ulid.Timestamp(now), entropy)
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(service.now.UnixNano())), 0)
+	itemKey := ulid.MustNew(ulid.Timestamp(service.now), entropy)
 
 	return service.repository.OpenRoom(context, operation.RoomId, itemKey.String(), expirationUnixTimestamp)
 }
