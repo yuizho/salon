@@ -144,8 +144,10 @@ func (service *RoomService) refreshPokerTable(context context.Context, operation
 	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
 	// that's why call Updateitem here to each item to use condition expression.
 	for _, user := range *users {
-		user.RefreshPokerTable(operation.OperatedAt)
-		err = service.updateActiveUserState(context, &user)
+		err = service.updateActiveUserState(
+			context,
+			user.RefreshPokerTable(operation.OperatedAt),
+		)
 		if err != nil {
 			return err
 		}

@@ -45,10 +45,14 @@ type User struct {
 	UserToken  string `dynamodbav:"user_token" json:"user_token"`
 }
 
-func (user *User) RefreshPokerTable(operatedAt string) {
-	user.PickedCard = ""
-	user.Status = StatusChoosing
-	user.OperatedAt = operatedAt
+func (user User) RefreshPokerTable(operatedAt string) *User {
+	return &User{
+		RoomId:     user.RoomId,
+		UserId:     user.UserId,
+		Status:     StatusChoosing,
+		PickedCard: "",
+		OperatedAt: operatedAt,
+	}
 }
 
 func (user *User) IsActive() bool {
