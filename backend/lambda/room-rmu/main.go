@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"io/ioutil"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -36,6 +37,7 @@ func handleError(fn lambdaHandlerFunc) lambdaHandlerFunc {
 func HandleRequest(ctx context.Context, request events.DynamoDBEvent) error {
 	roomService := service.NewRoomService(
 		repository.NewDynamoRoomRepository(client),
+		time.Now(),
 	)
 
 	for _, event := range request.Records {

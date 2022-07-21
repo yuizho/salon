@@ -44,6 +44,10 @@ type Operation struct {
 	UserToken    string `dynamodbav:"user_token" json:"user_token"`
 }
 
+func (operation Operation) NotNeedsAuthentication() bool {
+	return operation.OpType == OpenRoom || operation.OpType == Join
+}
+
 func NewOperation(attrs map[string]events.DynamoDBAttributeValue) (*Operation, error) {
 	// validation
 	if attrs["event_id"].IsNull() {

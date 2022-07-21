@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambdacontext"
@@ -63,7 +64,7 @@ func TestRefleshPoker(t *testing.T) {
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 	input["user_token"] = events.NewStringAttribute("xxxx")
 
-	err := NewRoomService(&TestRepos{}).SaveRoom(
+	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
 		lambdacontext.NewContext(
 			context.TODO(),
 			&lambdacontext.LambdaContext{
@@ -89,7 +90,7 @@ func TestUnexpectedUserIdPassedToRefleshPoker(t *testing.T) {
 	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
 	input["user_token"] = events.NewStringAttribute("xxxx")
 
-	err := NewRoomService(&TestRepos{}).SaveRoom(
+	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
 		lambdacontext.NewContext(
 			context.TODO(),
 			&lambdacontext.LambdaContext{
