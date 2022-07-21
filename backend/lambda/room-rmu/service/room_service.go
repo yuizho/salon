@@ -56,15 +56,10 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 }
 
 func (service *RoomService) authenticateIfNeeded(context context.Context, operation *model.Operation) error {
-	switch operation.OpType {
-	case model.Leave, model.Pick, model.RefreshTable, model.Kick:
-		err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
-		if err != nil {
-			return err
-		}
+	if operation.NotNeedsAuthentication() {
+		return nil
 	}
-
-	return nil
+	return service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
 }
 
 func (service *RoomService) openRoom(context context.Context, operation *model.Operation) error {
