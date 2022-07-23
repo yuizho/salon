@@ -3,25 +3,32 @@ package service
 import (
 	"context"
 	"fmt"
-	"math/rand"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/google/logger"
-	"github.com/oklog/ulid/v2"
 	"github.com/yuizho/salon/room/lambda/room-rmu/model"
 	"github.com/yuizho/salon/room/lambda/room-rmu/util"
 )
 
 type RoomService struct {
-	repository model.RoomRepository
+	repository       model.RoomRepository
+	itemKeyGenerator model.ItemKeyGenerator
+	roomExpiration   model.RoomExpiration
 }
 
-func NewRoomService(repository model.RoomRepository) *RoomService {
-	return &RoomService{repository: repository}
+func NewRoomService(
+	repository model.RoomRepository,
+	itemKeyGenerator model.ItemKeyGenerator,
+	roomExpiration model.RoomExpiration,
+) *RoomService {
+	return &RoomService{
+		repository:       repository,
+		itemKeyGenerator: itemKeyGenerator,
+		roomExpiration:   roomExpiration,
+	}
 }
 
-func (service *RoomService) SaveRoom(context context.Context, attrs map[string]events.DynamoDBAttributeValue) error {
+func (service RoomService) SaveRoom(context context.Context, attrs map[string]events.DynamoDBAttributeValue) error {
 	operation, err := model.NewOperation(attrs)
 	if err != nil {
 		return err
@@ -34,23 +41,35 @@ func (service *RoomService) SaveRoom(context context.Context, attrs map[string]e
 
 	logger.Infof("%s received operation (eventId: %s)", reqId, operation.EventId)
 
+	err = service.authenticateIfNeeded(context, operation)
+	if err != nil {
+		return err
+	}
+
 	switch operation.OpType {
 	case model.OpenRoom:
 		return service.openRoom(context, operation)
 	case model.Join:
 		return service.addUserToRoom(context, operation)
 	case model.Leave, model.Pick:
-		return service.updateUserStateWithAuth(context, operation)
+		return service.updateUserState(context, operation)
 	case model.RefreshTable:
-		return service.refreshPokerTableWithAuth(context, operation)
+		return service.refreshPoker(context, operation)
 	case model.Kick:
-		return service.kickUserWithAuth(context, operation)
+		return service.kickUser(context, operation)
 	default:
 		return fmt.Errorf("unreachable error")
 	}
 }
 
-func (service *RoomService) openRoom(context context.Context, operation *model.Operation) error {
+func (service RoomService) authenticateIfNeeded(context context.Context, operation *model.Operation) error {
+	if operation.NotNeedsAuthentication() {
+		return nil
+	}
+	return service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
+}
+
+func (service RoomService) openRoom(context context.Context, operation *model.Operation) error {
 	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
@@ -63,22 +82,26 @@ func (service *RoomService) openRoom(context context.Context, operation *model.O
 
 	logger.Infof("%s open room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
-	now := time.Now()
-	// in 30 min is room expiration
-	expirationUnixTimestamp := now.Unix() + (60 * 30)
+	expirationUnixTimestamp := service.roomExpiration.GetExpirationTimestamp()
 
-	err = service.repository.SaveUser(context, user, expirationUnixTimestamp)
+	err = service.repository.SaveUser(
+		context,
+		user,
+		expirationUnixTimestamp,
+	)
 	if err != nil {
 		return err
 	}
 
-	entropy := ulid.Monotonic(rand.New(rand.NewSource(now.UnixNano())), 0)
-	itemKey := ulid.MustNew(ulid.Timestamp(now), entropy)
-
-	return service.repository.OpenRoom(context, operation.RoomId, itemKey.String(), expirationUnixTimestamp)
+	return service.repository.OpenRoom(
+		context,
+		operation.RoomId,
+		service.itemKeyGenerator.GenerateItemKey(),
+		expirationUnixTimestamp,
+	)
 }
 
-func (service *RoomService) addUserToRoom(context context.Context, operation *model.Operation) error {
+func (service RoomService) addUserToRoom(context context.Context, operation *model.Operation) error {
 	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
@@ -99,19 +122,14 @@ func (service *RoomService) addUserToRoom(context context.Context, operation *mo
 
 	logger.Infof("%s add user to room (room_id: %s, user_id: %s)", reqId, user.RoomId, user.UserId)
 
-	now := time.Now()
-	// in 30 min is room expiration
-	expirationUnixTimestamp := now.Unix() + (60 * 30)
-
-	return service.repository.SaveUser(context, user, expirationUnixTimestamp)
+	return service.repository.SaveUser(
+		context,
+		user,
+		service.roomExpiration.GetExpirationTimestamp(),
+	)
 }
 
-func (service *RoomService) updateUserStateWithAuth(context context.Context, operation *model.Operation) error {
-	err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
-	if err != nil {
-		return err
-	}
-
+func (service RoomService) updateUserState(context context.Context, operation *model.Operation) error {
 	user, err := model.CreateUser(operation)
 	if err != nil {
 		return err
@@ -120,12 +138,7 @@ func (service *RoomService) updateUserStateWithAuth(context context.Context, ope
 	return service.updateActiveUserState(context, user)
 }
 
-func (service *RoomService) refreshPokerTableWithAuth(context context.Context, operation *model.Operation) error {
-	err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
-	if err != nil {
-		return err
-	}
-
+func (service RoomService) refreshPoker(context context.Context, operation *model.Operation) error {
 	users, err := service.repository.FindActiveUsers(context, operation.RoomId)
 	if err != nil {
 		return err
@@ -142,8 +155,10 @@ func (service *RoomService) refreshPokerTableWithAuth(context context.Context, o
 	// https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_BatchWriteItem.html
 	// that's why call Updateitem here to each item to use condition expression.
 	for _, user := range *users {
-		user.RefreshPokerTable(operation.OperatedAt)
-		err = service.updateActiveUserState(context, &user)
+		err = service.updateActiveUserState(
+			context,
+			user.Refresh(operation.OperatedAt),
+		)
 		if err != nil {
 			return err
 		}
@@ -152,12 +167,7 @@ func (service *RoomService) refreshPokerTableWithAuth(context context.Context, o
 	return nil
 }
 
-func (service *RoomService) kickUserWithAuth(context context.Context, operation *model.Operation) error {
-	err := service.repository.AuthUser(context, operation.RoomId, operation.UserId, operation.UserToken)
-	if err != nil {
-		return err
-	}
-
+func (service RoomService) kickUser(context context.Context, operation *model.Operation) error {
 	reqId, err := util.GetAWSRequestId(context)
 	if err != nil {
 		return err
@@ -175,7 +185,7 @@ func (service *RoomService) kickUserWithAuth(context context.Context, operation 
 	})
 }
 
-func (service *RoomService) updateActiveUserState(context context.Context, user *model.User) error {
+func (service RoomService) updateActiveUserState(context context.Context, user *model.User) error {
 	reqId, err := util.GetAWSRequestId(context)
 	if err != nil {
 		return err

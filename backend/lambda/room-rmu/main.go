@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/google/logger"
+	"github.com/yuizho/salon/room/lambda/room-rmu/model"
 	"github.com/yuizho/salon/room/lambda/room-rmu/repository"
 	"github.com/yuizho/salon/room/lambda/room-rmu/service"
 	"github.com/yuizho/salon/room/lambda/room-rmu/util"
@@ -36,6 +37,8 @@ func handleError(fn lambdaHandlerFunc) lambdaHandlerFunc {
 func HandleRequest(ctx context.Context, request events.DynamoDBEvent) error {
 	roomService := service.NewRoomService(
 		repository.NewDynamoRoomRepository(client),
+		model.UlIdItemKeyGenerator{},
+		model.UnixTimeRoomExpiration{},
 	)
 
 	for _, event := range request.Records {

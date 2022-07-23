@@ -206,16 +206,9 @@ export class RoomStack extends Stack {
         },
       ],
     });
-    const webAclAssociation = new waf.CfnWebACLAssociation(this, 'webAclAssociation', {
+    new waf.CfnWebACLAssociation(this, 'webAclAssociation', {
       resourceArn: roomAPI.arn,
       webAclArn: apiWebAcl.attrArn,
     });
-
-    // ================= Stack Outpu =================
-    new CfnOutput(this, 'STACK_REGION', { value: this.region });
-    new CfnOutput(this, 'ROOM_API_URL', { value: roomAPI.graphqlUrl });
-    new CfnOutput(this, 'ROOM_API_KEY', { value: roomAPI.apiKey! });
-    new CfnOutput(this, 'ACLRef', { value: apiWebAcl.ref });
-    new CfnOutput(this, 'ACLAPIAssoc', { value: webAclAssociation.ref });
   }
 }
