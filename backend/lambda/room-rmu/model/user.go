@@ -35,7 +35,7 @@ type User struct {
 	UserToken  string `dynamodbav:"user_token" json:"user_token"`
 }
 
-func (user User) RefreshPokerTable(operatedAt string) *User {
+func (user User) Refresh(operatedAt string) *User {
 	return &User{
 		RoomId:     user.RoomId,
 		UserId:     user.UserId,

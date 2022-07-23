@@ -11,7 +11,7 @@ func TestRefleshPokerTable(t *testing.T) {
 		Status:     StatusChosen,
 		PickedCard: "5",
 		OperatedAt: "2020-01-01 00:00:00",
-	}.RefreshPokerTable("2022-07-23 00:00:00")
+	}.Refresh("2022-07-23 00:00:00")
 
 	assertUser(
 		t,

@@ -157,7 +157,7 @@ func (service RoomService) refreshPokerTable(context context.Context, operation 
 	for _, user := range *users {
 		err = service.updateActiveUserState(
 			context,
-			user.RefreshPokerTable(operation.OperatedAt),
+			user.Refresh(operation.OperatedAt),
 		)
 		if err != nil {
 			return err
