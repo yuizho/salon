@@ -41,7 +41,7 @@ func (repos *DummyRepos) OpenRoom(context context.Context, roomId string, itemKe
 	}
 	return nil
 }
-func (repos *DummyRepos) SaveUser(context context.Context, room *model.User, expirationUnixTimestamp int64) error {
+func (repos *DummyRepos) SaveUser(context context.Context, user *model.User, expirationUnixTimestamp int64) error {
 	return nil
 }
 func (repos *DummyRepos) FindActiveUsers(context context.Context, roomId string) (*[]model.User, error) {
@@ -63,8 +63,8 @@ func (repos *DummyRepos) FindActiveUsers(context context.Context, roomId string)
 		},
 	}, nil
 }
-func (repos *DummyRepos) UpdateActiveUser(context context.Context, room *model.User) error {
-	if room.UserId == string(UnAuthenticatedUserId) {
+func (repos *DummyRepos) UpdateActiveUser(context context.Context, user *model.User) error {
+	if user.UserId == string(UnAuthenticatedUserId) {
 		return fmt.Errorf("UpdateActiveUser error")
 	}
 	return nil
