@@ -2,59 +2,42 @@ package model
 
 import (
 	"context"
-	"fmt"
+	"math/rand"
+	"time"
+
+	"github.com/oklog/ulid/v2"
 )
 
 type RoomRepository interface {
 	OpenRoom(context context.Context, roomId string, itemKey string, expirationUnixTimestamp int64) error
-	SaveUser(context context.Context, room *User, expirationUnixTimestamp int64) error
+	SaveUser(context context.Context, user *User, expirationUnixTimestamp int64) error
 	FindActiveUsers(context context.Context, roomId string) (*[]User, error)
-	UpdateActiveUser(context context.Context, room *User) error
+	UpdateActiveUser(context context.Context, user *User) error
 	ExistRoom(context context.Context, roomId string) (bool, error)
 	AuthUser(context context.Context, roomId string, userId string, userToken string) error
 }
 
-type Status string
-
-const (
-	StatusChoosing = Status("CHOOSING")
-	StatusChosen   = Status("CHOSEN")
-	StatusLeaved   = Status("LEAVED")
-)
-
-func NewStatus(s string) (Status, error) {
-	status := Status(s)
-	switch status {
-	case StatusChoosing, StatusChosen, StatusLeaved:
-		return status, nil
-	default:
-		return "", fmt.Errorf("unexpected status string: %s", s)
-	}
+type RoomExpiration interface {
+	GetExpirationTimestamp() int64
 }
 
-func (status Status) String() string {
-	return string(status)
+type UnixTimeRoomExpiration struct{}
+
+func (roomExpiration UnixTimeRoomExpiration) GetExpirationTimestamp() int64 {
+	now := time.Now()
+	// in 30 min is room expiration
+	return now.Unix() + (60 * 30)
 }
 
-type User struct {
-	RoomId     string `dynamodbav:"room_id" json:"room_id"`
-	UserId     string `dynamodbav:"item_key" json:"item_key"`
-	Status     Status `dynamodbav:"status" json:"status"`
-	PickedCard string `dynamodbav:"picked_card" json:"picked_card"`
-	OperatedAt string `dynamodbav:"operated_at" json:"operated_at"`
-	UserToken  string `dynamodbav:"user_token" json:"user_token"`
+type ItemKeyGenerator interface {
+	GenerateItemKey() string
 }
 
-func (user User) RefreshPokerTable(operatedAt string) *User {
-	return &User{
-		RoomId:     user.RoomId,
-		UserId:     user.UserId,
-		Status:     StatusChoosing,
-		PickedCard: "",
-		OperatedAt: operatedAt,
-	}
-}
+type UlIdItemKeyGenerator struct{}
 
-func (user *User) IsActive() bool {
-	return user.Status != StatusLeaved
+func (ItemKeyGenerator UlIdItemKeyGenerator) GenerateItemKey() string {
+	now := time.Now()
+	entropy := ulid.Monotonic(rand.New(rand.NewSource(now.UnixNano())), 0)
+	ulId := ulid.MustNew(ulid.Timestamp(now), entropy)
+	return ulId.String()
 }

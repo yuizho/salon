@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"io/ioutil"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/google/logger"
+	"github.com/yuizho/salon/room/lambda/room-rmu/model"
 	"github.com/yuizho/salon/room/lambda/room-rmu/repository"
 	"github.com/yuizho/salon/room/lambda/room-rmu/service"
 	"github.com/yuizho/salon/room/lambda/room-rmu/util"
@@ -37,7 +37,8 @@ func handleError(fn lambdaHandlerFunc) lambdaHandlerFunc {
 func HandleRequest(ctx context.Context, request events.DynamoDBEvent) error {
 	roomService := service.NewRoomService(
 		repository.NewDynamoRoomRepository(client),
-		time.Now(),
+		model.UlIdItemKeyGenerator{},
+		model.UnixTimeRoomExpiration{},
 	)
 
 	for _, event := range request.Records {
