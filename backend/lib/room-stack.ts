@@ -13,7 +13,6 @@ export class RoomStack extends Stack {
     super(scope, id, props);
 
     // ================= DynamoDB =================
-    // TODO: save operation logs to S3 by Dynamo DB Stream
     // https://docs.aws.amazon.com/cdk/api/v1/docs/@aws-cdk_aws-dynamodb.Table.html
     const operationTable = new db.Table(this, 'OperationTable', {
       tableName: 'operation',
