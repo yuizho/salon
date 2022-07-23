@@ -6,13 +6,15 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/google/logger"
 	"github.com/yuizho/salon/room/lambda/room-rmu/model"
 )
+
+const ROOM_ID = "123"
+const INACTIVE_ROOM_ID = "999"
 
 type UserId string
 
@@ -22,49 +24,80 @@ const (
 	UnAuthenticatedUserId = UserId("9")
 )
 
-type TestRepos struct {
-}
+const DUMMY_ITEM_KEY string = "dummy-item-key"
+const DUMMY_EXPIRATION_TIMESTAMP int64 = 100
 
-func (repos *TestRepos) OpenRoom(context context.Context, roomId string, itemKey string, expirationUnixTimestamp int64) error {
+type DummyRepos struct{}
+
+func (repos *DummyRepos) OpenRoom(context context.Context, roomId string, itemKey string, expirationUnixTimestamp int64) error {
+	if roomId != ROOM_ID {
+		return fmt.Errorf("room_id error")
+	}
+	if itemKey != DUMMY_ITEM_KEY {
+		return fmt.Errorf("item key error")
+	}
+	if expirationUnixTimestamp != DUMMY_EXPIRATION_TIMESTAMP {
+		return fmt.Errorf("expiration timestamp error")
+	}
 	return nil
 }
-func (repos *TestRepos) SaveUser(context context.Context, room *model.User, expirationUnixTimestamp int64) error {
+func (repos *DummyRepos) SaveUser(context context.Context, room *model.User, expirationUnixTimestamp int64) error {
 	return nil
 }
-func (repos *TestRepos) FindActiveUsers(context context.Context, roomId string) (*[]model.User, error) {
+func (repos *DummyRepos) FindActiveUsers(context context.Context, roomId string) (*[]model.User, error) {
+	if roomId != ROOM_ID {
+		return nil, fmt.Errorf("room_id error")
+	}
 	return &[]model.User{
 		{
-			RoomId:     "1",
+			RoomId:     ROOM_ID,
 			UserId:     string(KickedUserId),
 			Status:     model.Status("CHOOSING"),
 			OperatedAt: "2022-10-10T13:50:40Z",
 		},
 		{
-			RoomId:     "1",
+			RoomId:     ROOM_ID,
 			UserId:     string(ActiveUserId),
 			Status:     model.Status("CHOOSING"),
 			OperatedAt: "2022-10-10T13:50:40Z",
 		},
 	}, nil
 }
-func (repos *TestRepos) UpdateActiveUser(context context.Context, room *model.User) error {
+func (repos *DummyRepos) UpdateActiveUser(context context.Context, room *model.User) error {
 	if room.UserId == string(UnAuthenticatedUserId) {
-		fmt.Printf("room: %v", room)
 		return fmt.Errorf("UpdateActiveUser error")
 	}
 	return nil
 }
-func (repos *TestRepos) ExistRoom(context context.Context, roomId string) (bool, error) {
+func (repos *DummyRepos) ExistRoom(context context.Context, roomId string) (bool, error) {
+	if roomId != ROOM_ID {
+		return false, nil
+	}
 	return true, nil
 }
-func (repos *TestRepos) UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error {
+func (repos *DummyRepos) UpdateActiveUserOperatedAt(context context.Context, roomId string, userId string, operatedAt string) error {
+	if roomId != ROOM_ID {
+		return fmt.Errorf("room_id error")
+	}
 	return nil
 }
-func (repos *TestRepos) AuthUser(context context.Context, roomId string, userId string, userToken string) error {
+func (repos *DummyRepos) AuthUser(context context.Context, roomId string, userId string, userToken string) error {
 	if userId == string(UnAuthenticatedUserId) {
 		return fmt.Errorf("auth error")
 	}
 	return nil
+}
+
+type DummyRoomExpiration struct{}
+
+func (roomExpiration DummyRoomExpiration) GetExpirationTimestamp() int64 {
+	return DUMMY_EXPIRATION_TIMESTAMP
+}
+
+type DummyItemKeyGenerator struct{}
+
+func (itemKeyGenerator DummyItemKeyGenerator) GenerateItemKey() string {
+	return DUMMY_ITEM_KEY
 }
 
 func TestMain(m *testing.M) {
@@ -73,17 +106,57 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+func TestOpenRoom(t *testing.T) {
+	input := createActiveUser("OPEN_ROOM")
+
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
+		*input,
+	)
+
+	if err != nil {
+		t.Fatalf("failed to open_room: %v", err)
+	}
+}
+
+func TestJoin(t *testing.T) {
+	input := createActiveUser("JOIN")
+
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
+		*input,
+	)
+
+	if err != nil {
+		t.Fatalf("failed to open_room: %v", err)
+	}
+}
+
+func TestJoinToInactiveRoom(t *testing.T) {
+	input := make(map[string]events.DynamoDBAttributeValue)
+	input["event_id"] = events.NewStringAttribute("9999")
+	input["room_id"] = events.NewStringAttribute(INACTIVE_ROOM_ID)
+	input["user_id"] = events.NewStringAttribute(string(ActiveUserId))
+	input["op_type"] = events.NewStringAttribute("JOIN")
+	input["picked_card"] = events.NewNullAttribute()
+	input["operated_at"] = events.NewStringAttribute("2022-10-10T13:50:40Z")
+	input["user_token"] = events.NewStringAttribute("xxxx")
+
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
+		input,
+	)
+
+	if err == nil {
+		t.Fatalf("the room is inactive: %v", err)
+	}
+}
+
 func TestRefleshPoker(t *testing.T) {
 	input := createActiveUser("REFRESH_TABLE")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -95,14 +168,8 @@ func TestRefleshPoker(t *testing.T) {
 func TestPick(t *testing.T) {
 	input := createActiveUser("PICK")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -114,14 +181,8 @@ func TestPick(t *testing.T) {
 func TestLeave(t *testing.T) {
 	input := createActiveUser("LEAVE")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -133,14 +194,8 @@ func TestLeave(t *testing.T) {
 func TestKick(t *testing.T) {
 	input := createActiveUser("KICK")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -152,14 +207,8 @@ func TestKick(t *testing.T) {
 func TestUnAuthorizedUserPassedToRefleshPoker(t *testing.T) {
 	input := createUnAuthenticatedUser("REFRESH_TABLE")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -169,14 +218,8 @@ func TestUnAuthorizedUserPassedToRefleshPoker(t *testing.T) {
 func TestUnAuthorizedUserPassedToLeave(t *testing.T) {
 	input := createUnAuthenticatedUser("LEAVE")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -186,14 +229,8 @@ func TestUnAuthorizedUserPassedToLeave(t *testing.T) {
 func TestUnAuthorizedUserPassedToPick(t *testing.T) {
 	input := createUnAuthenticatedUser("PICK")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
@@ -203,24 +240,28 @@ func TestUnAuthorizedUserPassedToPick(t *testing.T) {
 func TestUnAuthorizedUserPassedToKick(t *testing.T) {
 	input := createUnAuthenticatedUser("KICK")
 
-	err := NewRoomService(&TestRepos{}, time.Now()).SaveRoom(
-		lambdacontext.NewContext(
-			context.TODO(),
-			&lambdacontext.LambdaContext{
-				AwsRequestID:       "1",
-				InvokedFunctionArn: "3",
-			},
-		),
+	err := NewRoomService(&DummyRepos{}, DummyItemKeyGenerator{}, DummyRoomExpiration{}).SaveRoom(
+		createContext(),
 		*input,
 	)
 
 	assertAuthError(t, err)
 }
 
+func createContext() context.Context {
+	return lambdacontext.NewContext(
+		context.TODO(),
+		&lambdacontext.LambdaContext{
+			AwsRequestID:       "1",
+			InvokedFunctionArn: "3",
+		},
+	)
+}
+
 func createActiveUser(opType string) *map[string]events.DynamoDBAttributeValue {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["event_id"] = events.NewStringAttribute("9999")
-	input["room_id"] = events.NewStringAttribute("1")
+	input["room_id"] = events.NewStringAttribute(ROOM_ID)
 	input["user_id"] = events.NewStringAttribute(string(ActiveUserId))
 	input["op_type"] = events.NewStringAttribute(opType)
 	input["picked_card"] = events.NewNullAttribute()
@@ -232,7 +273,7 @@ func createActiveUser(opType string) *map[string]events.DynamoDBAttributeValue {
 func createUnAuthenticatedUser(opType string) *map[string]events.DynamoDBAttributeValue {
 	input := make(map[string]events.DynamoDBAttributeValue)
 	input["event_id"] = events.NewStringAttribute("9999")
-	input["room_id"] = events.NewStringAttribute("1")
+	input["room_id"] = events.NewStringAttribute(ROOM_ID)
 	input["user_id"] = events.NewStringAttribute(string(UnAuthenticatedUserId))
 	input["op_type"] = events.NewStringAttribute(opType)
 	input["picked_card"] = events.NewNullAttribute()
