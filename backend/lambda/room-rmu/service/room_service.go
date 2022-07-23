@@ -54,7 +54,7 @@ func (service RoomService) SaveRoom(context context.Context, attrs map[string]ev
 	case model.Leave, model.Pick:
 		return service.updateUserState(context, operation)
 	case model.RefreshTable:
-		return service.refreshPokerTable(context, operation)
+		return service.refreshPoker(context, operation)
 	case model.Kick:
 		return service.kickUser(context, operation)
 	default:
@@ -138,7 +138,7 @@ func (service RoomService) updateUserState(context context.Context, operation *m
 	return service.updateActiveUserState(context, user)
 }
 
-func (service RoomService) refreshPokerTable(context context.Context, operation *model.Operation) error {
+func (service RoomService) refreshPoker(context context.Context, operation *model.Operation) error {
 	users, err := service.repository.FindActiveUsers(context, operation.RoomId)
 	if err != nil {
 		return err
