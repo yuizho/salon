@@ -46,3 +46,16 @@ jobs:
           aws-region: ap-northeast-1
       - run: yarn install
       - run: yarn workspace salon-backend deploy
+
+  deploy_to_prd:
+    needs: build_lambda
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{secrets.AWS_PRD_ROLE_ARN}}
+          aws-region: ap-northeast-1
+      - run: yarn install
+      - run: yarn workspace salon-backend deploy
