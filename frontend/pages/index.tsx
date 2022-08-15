@@ -43,6 +43,28 @@ const Home: FC = (): JSX.Element => (
             </ul>
           </div>
         </div>
+        <div className="flex flex-col space-y-3">
+          <h2 className="text-slate-700 font-semibold px-1">ライセンス</h2>
+          <div className="text-slate-600 text-sm px-6">
+            <ul className="list-disc">
+              <li>
+                当サービスは{' '}
+                <Link href="https://heropatterns.com/" newWindow className="underline">
+                  Hero Patterns
+                </Link>{' '}
+                で作成した画像を一部加工し、{' '}
+                <Link
+                  href="https://creativecommons.org/licenses/by/4.0/"
+                  newWindow
+                  className="underline"
+                >
+                  CC BY 4.0
+                </Link>{' '}
+                に基づいて利用しています
+              </li>
+            </ul>
+          </div>
+        </div>
       </main>
     </Frame>
   </>
