@@ -37,6 +37,10 @@ const Home: FC = (): JSX.Element => (
                 当サービスは、サービスの改善に役立てる目的で{' '}
                 <Link href="https://sentry.io" newWindow className="underline">
                   Sentry
+                </Link>
+                {', '}
+                <Link href="https://vercel.com/analytics" newWindow className="underline">
+                  Vercel Analytics
                 </Link>{' '}
                 を利用しています。
               </li>

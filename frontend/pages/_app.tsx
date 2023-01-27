@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { Amplify } from 'aws-amplify';
+import { Analytics } from '@vercel/analytics/react';
 import { RecoilRoot } from 'recoil';
 import Head from 'next/head';
 
@@ -21,6 +22,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RecoilRoot>
         <Component {...pageProps} />
       </RecoilRoot>
+
+      <Analytics />
     </>
   );
 }
