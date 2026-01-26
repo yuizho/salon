@@ -1,11 +1,11 @@
 import { Stack, StackProps, RemovalPolicy, CfnOutput, Expiration, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import * as appsync from '@aws-cdk/aws-appsync-alpha';
+import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as db from 'aws-cdk-lib/aws-dynamodb';
 import * as lambdaGo from '@aws-cdk/aws-lambda-go-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
-import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
+import { FieldLogLevel } from 'aws-cdk-lib/aws-appsync';
 import * as waf from 'aws-cdk-lib/aws-wafv2';
 
 export class RoomStack extends Stack {
@@ -35,7 +35,7 @@ export class RoomStack extends Stack {
     // ================= AppSync =================
     const roomAPI = new appsync.GraphqlApi(this, 'RoomAPI', {
       name: 'RoomAPI',
-      schema: appsync.Schema.fromAsset('../graphql/schema.graphql'),
+      schema: appsync.SchemaFile.fromAsset('../graphql/schema.graphql'),
       xrayEnabled: true,
       logConfig: {
         excludeVerboseContent: true,
@@ -59,7 +59,7 @@ export class RoomStack extends Stack {
     });
     // Set up table as a Datasource and grant access
     const operationDataSource = roomAPI.addDynamoDbDataSource('operation', operationTable);
-    operationDataSource.createResolver({
+    operationDataSource.createResolver('MutationOpenRoomResolver', {
       typeName: 'Mutation',
       fieldName: 'openRoom',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -67,7 +67,7 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    operationDataSource.createResolver({
+    operationDataSource.createResolver('MutationJoinResolver', {
       typeName: 'Mutation',
       fieldName: 'join',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -75,7 +75,7 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    operationDataSource.createResolver({
+    operationDataSource.createResolver('MutationLeaveResolver', {
       typeName: 'Mutation',
       fieldName: 'leave',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -83,7 +83,7 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    operationDataSource.createResolver({
+    operationDataSource.createResolver('MutationPickResolver', {
       typeName: 'Mutation',
       fieldName: 'pick',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -91,7 +91,7 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    operationDataSource.createResolver({
+    operationDataSource.createResolver('MutationRefreshTableResolver', {
       typeName: 'Mutation',
       fieldName: 'refreshTable',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -99,7 +99,7 @@ export class RoomStack extends Stack {
       ),
       responseMappingTemplate: appsync.MappingTemplate.dynamoDbResultItem(),
     });
-    operationDataSource.createResolver({
+    operationDataSource.createResolver('MutationKickResolver', {
       typeName: 'Mutation',
       fieldName: 'kick',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -110,7 +110,7 @@ export class RoomStack extends Stack {
     const roomDataSource = roomAPI.addDynamoDbDataSource('room', roomTable);
     const UserDataSource = roomAPI.addNoneDataSource('poker');
     // Define resolvers
-    roomDataSource.createResolver({
+    roomDataSource.createResolver('QueryGetRoomResolver', {
       typeName: 'Query',
       fieldName: 'getRoom',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(
@@ -120,7 +120,7 @@ export class RoomStack extends Stack {
         'appsync/room-api/resolvers/Query.getRoom.resp.vtl',
       ),
     });
-    UserDataSource.createResolver({
+    UserDataSource.createResolver('MutationUpdateUserResolver', {
       typeName: 'Mutation',
       fieldName: 'updateUser',
       requestMappingTemplate: appsync.MappingTemplate.fromFile(

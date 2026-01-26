@@ -18,13 +18,13 @@
 - [x] Verify build: `go build .`
 
 ## Backend: CDK (TypeScript)
-- [ ] Update `typescript` to latest stable (v5.x) in `backend/package.json`
-- [ ] Update `aws-cdk`, `aws-cdk-lib`, `constructs` to latest versions
-- [ ] Update alpha packages (`@aws-cdk/aws-appsync-alpha`, `@aws-cdk/aws-lambda-go-alpha`) to match `aws-cdk-lib` version
-- [ ] Update `jest`, `ts-jest`, `ts-node`
-- [ ] Fix any TypeScript compilation errors resulting from updates
-- [ ] Fix any CDK breaking changes (check `cdk synth`)
-- [ ] Run tests: `npm test`
+- [x] Update `typescript` to latest stable (v5.x) in `backend/package.json`
+- [x] Update `aws-cdk`, `aws-cdk-lib`, `constructs` to latest versions
+- [x] Update alpha packages (`@aws-cdk/aws-appsync-alpha`, `@aws-cdk/aws-lambda-go-alpha`) to match `aws-cdk-lib` version
+- [x] Update `jest`, `ts-jest`, `ts-node`
+- [x] Fix any TypeScript compilation errors resulting from updates
+- [x] Fix any CDK breaking changes (check `cdk synth`)
+- [x] Run tests: `npm test`
 
 ## Frontend (Next.js & React)
 - [ ] Update `react` and `react-dom` to latest
