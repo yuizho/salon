@@ -2,20 +2,20 @@
 
 ## Preparation
 - [x] Create steering document
-- [ ] Create a `chore/update-dependencies` branch
+- [x] Create a `chore/update-dependencies` branch
 
 ## Backend: Lambda (Go)
 ### `mutate-user`
-- [ ] Update `go.mod` go version to 1.21 (or latest supported by AWS Lambda)
-- [ ] Run `go get -u ./...` to update AWS SDK and other dependencies
-- [ ] Run `go mod tidy`
-- [ ] Verify build: `go build .`
+- [x] Update `go.mod` go version to 1.21 (or latest supported by AWS Lambda)
+- [x] Run `go get -u ./...` to update AWS SDK and other dependencies
+- [x] Run `go mod tidy`
+- [x] Verify build: `go build .`
 
 ### `room-rmu`
-- [ ] Update `go.mod` go version to 1.21 (or latest supported by AWS Lambda)
-- [ ] Run `go get -u ./...` to update AWS SDK and other dependencies
-- [ ] Run `go mod tidy`
-- [ ] Verify build: `go build .`
+- [x] Update `go.mod` go version to 1.21 (or latest supported by AWS Lambda)
+- [x] Run `go get -u ./...` to update AWS SDK and other dependencies
+- [x] Run `go mod tidy`
+- [x] Verify build: `go build .`
 
 ## Backend: CDK (TypeScript)
 - [ ] Update `typescript` to latest stable (v5.x) in `backend/package.json`
