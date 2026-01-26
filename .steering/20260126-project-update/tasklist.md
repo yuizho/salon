@@ -27,16 +27,16 @@
 - [x] Run tests: `npm test`
 
 ## Frontend (Next.js & React)
-- [ ] Update `react` and `react-dom` to latest
-- [ ] Update `next` to latest (Check migration guides for 12 -> 13 -> 14)
-- [ ] Update `aws-amplify` and `@aws-amplify/api` (Major version migration v4 -> v6 likely needed)
-- [ ] Update `tailwindcss` and `postcss`
-- [ ] Update `storybook` packages to latest
-- [ ] Update dev dependencies (`typescript`, `eslint`, etc.)
-- [ ] Fix breaking changes in code
-- [ ] Run linting: `npm run lint`
-- [ ] Run tests: `npm test`
-- [ ] Verify build: `npm run build`
+- [x] Update `react` and `react-dom` to latest
+- [x] Update `next` to latest (Check migration guides for 12 -> 13 -> 14)
+- [x] Update `aws-amplify` and `@aws-amplify/api` (Major version migration v4 -> v6 likely needed)
+- [x] Update `tailwindcss` and `postcss`
+- [x] Update `storybook` packages to latest
+- [x] Update dev dependencies (`typescript`, `eslint`, etc.)
+- [x] Fix breaking changes in code
+- [x] Run linting: `npm run lint`
+- [x] Run tests: `npm test`
+- [x] Verify build: `npm run build`
 
 ## Root & Tooling
 - [ ] Update root `eslint` related packages

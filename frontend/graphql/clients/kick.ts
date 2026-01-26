@@ -1,10 +1,11 @@
-import { API } from 'aws-amplify';
-import { GraphQLResult } from '@aws-amplify/api';
+import { generateClient } from 'aws-amplify/api';
 import { kick } from '../mutations';
 import { KickMutation, RefreshTableMutationVariables } from '../schema';
 
+const client = generateClient();
+
 export default async (roomId: string, userId: string, userToken: string, kickedUserId: string) => {
-  const result = (await API.graphql({
+  const result = await client.graphql({
     query: kick,
     variables: {
       room_id: roomId,
@@ -12,6 +13,6 @@ export default async (roomId: string, userId: string, userToken: string, kickedU
       user_token: userToken,
       kicked_user_id: kickedUserId,
     } as RefreshTableMutationVariables,
-  })) as GraphQLResult<KickMutation>;
-  return result;
+  });
+  return result as { data: KickMutation };
 };

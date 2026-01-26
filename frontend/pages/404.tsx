@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Frame from '../components/templates/Frame';
 
-const NotFound: FC = (): JSX.Element => (
+const NotFound: FC = () => (
   <Frame>
     <div className="space-y-6 border rounded p-8 text-slate-600">
       この部屋は有効期限を過ぎたのでクローズされました。新たにプランニングポーカーを始めるには{' '}

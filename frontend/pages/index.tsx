@@ -4,7 +4,7 @@ import Link from '../components/atoms/Link';
 import RoomForm from '../components/organisms/RoomForm';
 import Frame from '../components/templates/Frame';
 
-const Home: FC = (): JSX.Element => (
+const Home: FC = () => (
   <>
     <Head>
       <title>Salon</title>
