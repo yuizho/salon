@@ -18,8 +18,11 @@
         "prettier": "^3.8.1"
     },
     "lint-staged": {
-        "./**/*.{js,jsx,ts,tsx}": [
-            "yarn workspaces run lint . --fix"
+        "backend/**/*.{js,jsx,ts,tsx}": [
+            "yarn workspace salon-backend lint --fix"
+        ],
+        "frontend/**/*.{js,jsx,ts,tsx}": [
+            "prettier --write"
         ]
     }
 }
