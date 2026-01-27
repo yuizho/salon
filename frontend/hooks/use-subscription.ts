@@ -23,8 +23,8 @@ const useSubscription = () => {
     }
 
     const subscription = roomSubscription(roomId).subscribe({
-      next: ({ value }: SubscriptionValue) => {
-        const item = value.data.onUpdateUser;
+      next: ({ data }: SubscriptionValue) => {
+        const item = data.onUpdateUser;
         if (item) {
           setUsers((currentUsers) => {
             const users = [

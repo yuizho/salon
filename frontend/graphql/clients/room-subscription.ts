@@ -7,9 +7,7 @@ import { onUpdateUser } from '../subscriptions';
 const client = generateClient();
 
 export type SubscriptionValue = {
-  value: {
-    data: OnUpdateUserSubscription;
-  };
+  data: OnUpdateUserSubscription;
 };
 
 export default (roomId: string) =>
