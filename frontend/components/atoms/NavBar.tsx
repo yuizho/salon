@@ -12,10 +12,8 @@ export const Component: FC = () => (
       </a>
     </div>
     <div className="flex items-center flex-shrink-0 text-slate-600 text-xl">
-      <Link href="https://github.com/yuizho/salon">
-        <a target="_blank" rel="noopener noreferrer">
-          <BsGithub />
-        </a>
+      <Link href="https://github.com/yuizho/salon" target="_blank" rel="noopener noreferrer">
+        <BsGithub />
       </Link>
     </div>
   </nav>

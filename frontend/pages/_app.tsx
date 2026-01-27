@@ -6,10 +6,14 @@ import { RecoilRoot } from 'recoil';
 import Head from 'next/head';
 
 Amplify.configure({
-  aws_appsync_region: 'ap-northeast-1',
-  aws_appsync_graphqlEndpoint: process.env.NEXT_PUBLIC_APPSYNC_URL,
-  aws_appsync_authenticationType: 'API_KEY',
-  aws_appsync_apiKey: process.env.NEXT_PUBLIC_APPSYNC_API_KEY,
+  API: {
+    GraphQL: {
+      endpoint: process.env.NEXT_PUBLIC_APPSYNC_URL!,
+      region: 'ap-northeast-1',
+      defaultAuthMode: 'apiKey',
+      apiKey: process.env.NEXT_PUBLIC_APPSYNC_API_KEY!,
+    },
+  },
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
