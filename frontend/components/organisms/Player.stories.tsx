@@ -1,4 +1,4 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
 import { Status } from '../../graphql/schema';
 import { Component } from './Player';
@@ -8,7 +8,15 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ userId, status, value, shown, kickable, me, onKick }) => {
+const Template: StoryFn = ({
+  userId,
+  status,
+  value,
+  shown,
+  kickable,
+  me,
+  onKick,
+}) => {
   const [openKickDialog, setOpenKickDialog] = useState(false);
 
   return (

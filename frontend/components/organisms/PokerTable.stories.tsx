@@ -1,6 +1,5 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { useState } from 'react';
-import { pokerState } from '../../states/poker';
 import { Component } from './PokerTable';
 
 export default {
@@ -8,7 +7,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ me, users, poker, onReset, pokerState }) => {
+const Template: StoryFn = ({ me, users, poker, onReset, pokerState }) => {
   const [openResetDialog, setOpenResetDialog] = useState(false);
 
   return (

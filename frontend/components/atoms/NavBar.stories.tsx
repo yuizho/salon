@@ -1,11 +1,11 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './NavBar';
 export default {
   title: 'Atoms/NavBar',
   component: Component,
 } as Meta;
 
-const Template: Story = () => {
+const Template: StoryFn = () => {
   return <Component />;
 };
 

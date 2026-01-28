@@ -1,4 +1,4 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import Card from './Card';
 
 export default {
@@ -6,8 +6,14 @@ export default {
   component: Card,
 } as Meta;
 
-const Template: Story = ({ value, shown, choosable, chosen, glow }) => (
-  <Card value={value} shown={shown} choosable={choosable} chosen={chosen} glow={glow} />
+const Template: StoryFn = ({ value, shown, choosable, chosen, glow }) => (
+  <Card
+    value={value}
+    shown={shown}
+    choosable={choosable}
+    chosen={chosen}
+    glow={glow}
+  />
 );
 
 export const Shown = Template.bind({});

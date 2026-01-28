@@ -1,11 +1,11 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './ErrorAlert';
 export default {
   title: 'Atoms/ErrorAlert',
   component: Component,
 } as Meta;
 
-const Template: Story = ({ message, onClose }) => {
+const Template: StoryFn = ({ message, onClose }) => {
   return <Component message={message} onClose={onClose} />;
 };
 
