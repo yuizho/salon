@@ -1,11 +1,11 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './Link';
 export default {
   title: 'Atoms/Link',
   component: Component,
 } as Meta;
 
-const Template: Story = ({ href, className, newWindow, children }) => {
+const Template: StoryFn = ({ href, className, newWindow, children }) => {
   return (
     <Component href={href} className={className} newWindow={newWindow}>
       {children}

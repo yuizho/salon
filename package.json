@@ -1,20 +1,21 @@
 {
     "private": true,
-    "workspaces": ["frontend", "backend"],
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
     "scripts": {
-        "prepare": "husky install",
+        "prepare": "husky",
         "pre-commit": "lint-staged"
     },
     "devDependencies": {
-        "eslint": "8.16.0",
-        "eslint-config-airbnb": "^19.0.4",
-        "eslint-config-prettier": "^8.5.0",
-        "husky": "^8.0.1",
-        "lint-staged": "^12.4.2"
+        "husky": "^9.1.7",
+        "lint-staged": "^16.2.7",
+        "@biomejs/biome": "^1.9.4"
     },
     "lint-staged": {
-      "./**/*.{js,jsx,ts,tsx}": [
-        "yarn workspaces run lint . --fix"
-      ]
+        "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+            "biome check --write --no-errors-on-unmatched"
+        ]
     }
 }

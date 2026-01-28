@@ -1,4 +1,4 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './ModalDialog';
 
 export default {
@@ -6,8 +6,15 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ message, open, setOpen, onClickOK }) => {
-  return <Component message={message} open={open} setOpen={setOpen} onClickOK={onClickOK} />;
+const Template: StoryFn = ({ message, open, setOpen, onClickOK }) => {
+  return (
+    <Component
+      message={message}
+      open={open}
+      setOpen={setOpen}
+      onClickOK={onClickOK}
+    />
+  );
 };
 
 export const Default = Template.bind({});

@@ -1,4 +1,4 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './Players';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ myUserId, players, shown }) => (
+const Template: StoryFn = ({ myUserId, players, shown }) => (
   <Component myUserId={myUserId} players={players} shown={shown} />
 );
 

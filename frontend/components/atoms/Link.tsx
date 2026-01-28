@@ -9,14 +9,13 @@ type Props = {
 };
 
 export const Component: FC<Props> = ({ children, href, className, newWindow = false }) => (
-  <Link href={href}>
-    {newWindow ? (
-      <a target="_blank" rel="noopener noreferrer" className={className}>
-        {children}
-      </a>
-    ) : (
-      <a className={className}>{children}</a>
-    )}
+  <Link
+    href={href}
+    className={className}
+    target={newWindow ? '_blank' : undefined}
+    rel={newWindow ? 'noopener noreferrer' : undefined}
+  >
+    {children}
   </Link>
 );
 

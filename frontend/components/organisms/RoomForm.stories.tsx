@@ -1,4 +1,4 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './RoomForm';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ onClick }) => <Component onClick={onClick} />;
+const Template: StoryFn = ({ onClick }) => <Component onClick={onClick} />;
 
 export const Default = Template.bind({});
 Default.args = {

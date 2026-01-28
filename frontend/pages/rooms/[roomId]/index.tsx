@@ -8,7 +8,7 @@ import useJoin from '../../../hooks/use-join';
 import useLeave from '../../../hooks/use-leave';
 import useSubscription from '../../../hooks/use-subscription';
 
-const Rooms: FC = (): JSX.Element => {
+const Rooms: FC = () => {
   useJoin();
   useSubscription();
   useLeave();
