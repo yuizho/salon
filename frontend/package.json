@@ -18,7 +18,7 @@
     "@sentry/wizard": "^1.2.17",
     "@vercel/analytics": "^0.1.8",
     "aws-amplify": "^6.16.0",
-    "next": "^16.1.4",
+    "next": "^16.1.5",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",
