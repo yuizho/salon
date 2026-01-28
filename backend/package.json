@@ -10,7 +10,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "lint": "eslint",
+    "lint": "biome lint .",
     "deploy": "cdk deploy --require-approval never"
   },
   "devDependencies": {
@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@aws-cdk/aws-lambda-go-alpha": "^2.236.0-alpha.0",
-    "@typescript-eslint/eslint-plugin": "^5.26.0",
     "aws-cdk-lib": "^2.236.0",
     "constructs": "^10.4.5",
     "source-map-support": "^0.5.21"
