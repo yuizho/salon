@@ -45,6 +45,7 @@
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.7",
     "babel-loader": "^8.2.5",
+    "esbuild": "^0.27.2",
     "jest": "27.5.1",
     "postcss": "^8.4.14",
     "storybook": "^8.6.0",
