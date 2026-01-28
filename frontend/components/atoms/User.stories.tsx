@@ -1,4 +1,4 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import Component from './User';
 
 export default {
@@ -6,7 +6,7 @@ export default {
   component: Component,
 } as Meta;
 
-const Template: Story = ({ me, clickable, onClick }) => (
+const Template: StoryFn = ({ me, clickable, onClick }) => (
   <Component me={me} clickable={clickable} onClick={onClick} />
 );
 

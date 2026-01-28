@@ -1,11 +1,11 @@
-import { Story, Meta } from '@storybook/react/types-6-0';
+import { Meta, StoryFn } from '@storybook/react';
 import { Component } from './Message';
 export default {
   title: 'Atoms/Message',
   component: Component,
 } as Meta;
 
-const Template: Story = ({ message }) => {
+const Template: StoryFn = ({ message }) => {
   return <Component message={message} />;
 };
 
