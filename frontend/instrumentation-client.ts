@@ -1,5 +1,5 @@
-// This file configures the initialization of Sentry on the server.
-// The config you add here will be used whenever the server handles a request.
+// This file configures the initialization of Sentry on the browser.
+// The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
@@ -17,3 +17,5 @@ Sentry.init({
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
   // that it will also get attached to your source maps
 });
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
