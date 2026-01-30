@@ -1,7 +1,10 @@
-const path = require('path');
+const path = require('node:path');
 
 module.exports = {
-  stories: ['../components/**/*.stories.mdx', '../components/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: [
+    '../components/**/*.stories.mdx',
+    '../components/**/*.stories.@(js|jsx|ts|tsx)',
+  ],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -26,6 +29,7 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       'next/config': path.join(__dirname, './next-config-mock.js'),
+      'next/link': path.join(__dirname, './mocks/next-link.tsx'),
     };
     return config;
   },
