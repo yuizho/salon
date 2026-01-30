@@ -30,6 +30,7 @@ module.exports = {
       ...config.resolve.alias,
       'next/config': path.join(__dirname, './next-config-mock.js'),
       'next/link': path.join(__dirname, './mocks/next-link.tsx'),
+      'next/router': path.join(__dirname, './mocks/next-router.ts'),
     };
     return config;
   },
