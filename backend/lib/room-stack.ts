@@ -1,6 +1,7 @@
 import { Stack, StackProps, RemovalPolicy, CfnOutput, Expiration, Duration } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as appsync from 'aws-cdk-lib/aws-appsync';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import * as db from 'aws-cdk-lib/aws-dynamodb';
 import * as lambdaGo from '@aws-cdk/aws-lambda-go-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -35,7 +36,7 @@ export class RoomStack extends Stack {
     // ================= AppSync =================
     const roomAPI = new appsync.GraphqlApi(this, 'RoomAPI', {
       name: 'RoomAPI',
-      schema: appsync.SchemaFile.fromAsset('../graphql/schema.graphql'),
+      definition: appsync.Definition.fromFile('../graphql/schema.graphql'),
       xrayEnabled: true,
       logConfig: {
         excludeVerboseContent: true,
@@ -163,10 +164,11 @@ export class RoomStack extends Stack {
     );
     // configure IAM Role
     if (typeof mutateUserFunction.role !== 'undefined') {
-      roomAPI.grant(
-        mutateUserFunction.role,
-        appsync.IamResource.custom('types/Mutation/fields/updateUser'),
-        'appsync:GraphQL',
+      mutateUserFunction.addToRolePolicy(
+        new iam.PolicyStatement({
+          actions: ['appsync:GraphQL'],
+          resources: [roomAPI.arn + '/types/Mutation/fields/updateUser'],
+        }),
       );
     }
 
