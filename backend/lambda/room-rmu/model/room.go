@@ -25,8 +25,8 @@ type UnixTimeRoomExpiration struct{}
 
 func (roomExpiration UnixTimeRoomExpiration) GetExpirationTimestamp() int64 {
 	now := time.Now()
-	// in 2 hours is room expiration
-	return now.Unix() + (60 * 60 * 2)
+	// in 3 hours is room expiration
+	return now.Unix() + (60 * 60 * 3)
 }
 
 type ItemKeyGenerator interface {
