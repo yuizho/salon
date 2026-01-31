@@ -25,7 +25,9 @@ const isKicked = (users: Array<User>, myUserId: string) => {
 };
 
 const isAlone = (users: Array<User>, myUserId: string) =>
-  users.filter((user) => user.status !== Status.LEAVED).every((user) => user.userId === myUserId);
+  users
+    .filter((user) => user.status !== Status.LEAVED)
+    .every((user) => user.userId === myUserId);
 
 const isEveryoneChosen = (users: Array<User>) =>
   users
@@ -33,7 +35,9 @@ const isEveryoneChosen = (users: Array<User>) =>
     .every((user) => user.status === Status.CHOSEN);
 
 const isChoosing = (users: Array<User>, myUserId: string) =>
-  users.filter((user) => user.status === Status.CHOOSING).some((user) => user.userId === myUserId);
+  users
+    .filter((user) => user.status === Status.CHOOSING)
+    .some((user) => user.userId === myUserId);
 
 export const pokerState = selector({
   key: 'pokerState',

@@ -1,7 +1,7 @@
+import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
 import openRoom from '../../graphql/clients/open-room';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { appState } from '../../states/app';
@@ -13,14 +13,14 @@ type Props = {
 };
 
 export const Component: FC<Props> = ({ onClick }) => (
-  <div className="flex flex-col space-y-3 border rounded p-8 ">
-    <h1 className="text-slate-700 text-xl font-semibold">
+  <div className='flex flex-col space-y-3 border rounded p-8 '>
+    <h1 className='text-slate-700 text-xl font-semibold'>
       Salonはログイン不要の無料Webプランニングポーカーサービスです
     </h1>
-    <p className="text-slate-600">
+    <p className='text-slate-600'>
       プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約3時間有効です。
     </p>
-    <Button text="部屋を作成する" onClick={onClick} />
+    <Button text='部屋を作成する' onClick={onClick} />
   </div>
 );
 

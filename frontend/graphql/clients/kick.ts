@@ -4,7 +4,12 @@ import { KickMutation, RefreshTableMutationVariables } from '../schema';
 
 const client = generateClient();
 
-export default async (roomId: string, userId: string, userToken: string, kickedUserId: string) => {
+export default async (
+  roomId: string,
+  userId: string,
+  userToken: string,
+  kickedUserId: string,
+) => {
   const result = await client.graphql({
     query: kick,
     variables: {

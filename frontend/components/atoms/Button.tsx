@@ -8,10 +8,12 @@ type Props = {
 };
 
 export const Component: FC<Props> = ({ text, glow, clickable, onClick }) => (
-  <div className="relative w-full">
-    {glow && <div className="absolute inset-0 bg-cyan-300 blur rounded-lg  animate-pulse" />}
+  <div className='relative w-full'>
+    {glow && (
+      <div className='absolute inset-0 bg-cyan-300 blur rounded-lg  animate-pulse' />
+    )}
     <button
-      type="button"
+      type='button'
       className={`
       relative
       py-2 px-4
@@ -35,7 +37,12 @@ export const Component: FC<Props> = ({ text, glow, clickable, onClick }) => (
   </div>
 );
 
-const Container: FC<Props> = ({ text, glow = false, clickable = true, onClick }) => (
+const Container: FC<Props> = ({
+  text,
+  glow = false,
+  clickable = true,
+  onClick,
+}) => (
   <Component text={text} glow={glow} clickable={clickable} onClick={onClick} />
 );
 

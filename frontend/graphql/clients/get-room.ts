@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
-import { GetRoomQuery, GetRoomQueryVariables } from '../schema';
 import { getRoom } from '../queries';
+import { GetRoomQuery, GetRoomQueryVariables } from '../schema';
 
 const client = generateClient();
 

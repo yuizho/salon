@@ -8,7 +8,7 @@ describe('ModalDialog', () => {
     const { asFragment } = render(
       <RecoilRoot>
         <ModalDialog
-          message="メッセージ"
+          message='メッセージ'
           onClickOK={() => console.log('foo')}
           open={true}
           setOpen={() => console.log('bar')}

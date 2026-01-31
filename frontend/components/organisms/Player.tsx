@@ -1,15 +1,15 @@
+import * as Sentry from '@sentry/nextjs';
 import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
+import kick from '../../graphql/clients/kick';
+import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
+import { appState } from '../../states/app';
+import { myState } from '../../states/me';
+import { pokerState } from '../../states/poker';
 import Card from '../atoms/Card';
 import User from '../atoms/User';
 import ModalDialog from '../molecules/ModalDialog';
-import { myState } from '../../states/me';
-import { appState } from '../../states/app';
-import { NETWORK_ERROR } from '../../graphql/error-message';
-import kick from '../../graphql/clients/kick';
-import { pokerState } from '../../states/poker';
 
 type Props = {
   userId: string;
@@ -37,7 +37,7 @@ export const Component: FC<ComponentProps> = ({
   openKickDialog,
   setOpenKickDialog,
 }) => (
-  <div key={userId} className="flex flex-col items-center gap-2 p-2 w-20">
+  <div key={userId} className='flex flex-col items-center gap-2 p-2 w-20'>
     <User
       me={me}
       onClick={() => {
@@ -45,9 +45,14 @@ export const Component: FC<ComponentProps> = ({
       }}
       clickable={kickable}
     />
-    <Card value={value} shown={shown} choosable={false} chosen={status === Status.CHOSEN} />
+    <Card
+      value={value}
+      shown={shown}
+      choosable={false}
+      chosen={status === Status.CHOSEN}
+    />
     <ModalDialog
-      message="選択したユーザを部屋から退出させます。よろしいですか？"
+      message='選択したユーザを部屋から退出させます。よろしいですか？'
       onClickOK={onKick}
       open={openKickDialog}
       setOpen={setOpenKickDialog}
@@ -64,7 +69,12 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const kickThisUser = async () => {
     setApp((app) => ({ ...app, loading: true }));
     try {
-      await kick(myRecoilState.roomId, myRecoilState.userId, myRecoilState.userToken, userId);
+      await kick(
+        myRecoilState.roomId,
+        myRecoilState.userId,
+        myRecoilState.userToken,
+        userId,
+      );
     } catch (e) {
       Sentry.captureException(e);
       setApp((app) => ({

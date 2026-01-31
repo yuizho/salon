@@ -1,6 +1,6 @@
+import * as Sentry from '@sentry/nextjs';
 import { FC } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
 import pick from '../../graphql/clients/pick';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
@@ -20,8 +20,13 @@ type ComponentProps = Props & {
   onClick: (pickedCard: string) => Promise<boolean>;
 };
 
-export const Component: FC<ComponentProps> = ({ values, glow, choosable, onClick }) => (
-  <div className="flex flex-wrap justify-center gap-2">
+export const Component: FC<ComponentProps> = ({
+  values,
+  glow,
+  choosable,
+  onClick,
+}) => (
+  <div className='flex flex-wrap justify-center gap-2'>
     {values.map((v) => (
       <Card
         key={v}
@@ -42,37 +47,38 @@ const Container: FC<Props> = ({ values }) => {
   const poker = useRecoilValue(pokerState);
   const setApp = useSetRecoilState(appState);
 
-  const onClickCard = (roomId: string, userId: string) => async (pickedCard: string) => {
-    setApp((app) => ({ ...app, loading: true }));
+  const onClickCard =
+    (roomId: string, userId: string) => async (pickedCard: string) => {
+      setApp((app) => ({ ...app, loading: true }));
 
-    // update user state before sending request to GraphQL API
-    // to show the result of user operation as soon as possible.
-    setUsers((currentUsers) => {
-      const users = [
-        ...currentUsers.filter((u) => u.userId !== userId),
-        {
-          userId,
-          status: Status.CHOSEN,
-          pickedCard,
-        },
-      ];
-      users.sort((a, b) => (a.userId > b.userId ? 1 : -1));
-      return users;
-    });
+      // update user state before sending request to GraphQL API
+      // to show the result of user operation as soon as possible.
+      setUsers((currentUsers) => {
+        const users = [
+          ...currentUsers.filter((u) => u.userId !== userId),
+          {
+            userId,
+            status: Status.CHOSEN,
+            pickedCard,
+          },
+        ];
+        users.sort((a, b) => (a.userId > b.userId ? 1 : -1));
+        return users;
+      });
 
-    try {
-      const result = await pick(roomId, userId, me.userToken, pickedCard);
-      return result.data?.pick.user_id === userId;
-    } catch (e) {
-      Sentry.captureException(e);
-      setApp((app) => ({
-        ...app,
-        loading: false,
-        errorMessage: NETWORK_ERROR,
-      }));
-      return false;
-    }
-  };
+      try {
+        const result = await pick(roomId, userId, me.userToken, pickedCard);
+        return result.data?.pick.user_id === userId;
+      } catch (e) {
+        Sentry.captureException(e);
+        setApp((app) => ({
+          ...app,
+          loading: false,
+          errorMessage: NETWORK_ERROR,
+        }));
+        return false;
+      }
+    };
 
   return (
     <Component

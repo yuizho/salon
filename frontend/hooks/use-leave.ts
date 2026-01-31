@@ -1,6 +1,6 @@
+import * as Sentry from '@sentry/nextjs';
 import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
 import leave from '../graphql/clients/leave';
 import { myState } from '../states/me';
 

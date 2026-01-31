@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
-import roomSubscription, { SubscriptionValue } from '../graphql/clients/room-subscription';
+import roomSubscription, {
+  SubscriptionValue,
+} from '../graphql/clients/room-subscription';
 import { NETWORK_ERROR } from '../graphql/error-message';
 import { appState } from '../states/app';
 import { usersState } from '../states/users';
