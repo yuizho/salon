@@ -18,7 +18,7 @@ export const Component: FC<Props> = ({ onClick }) => (
       Salonはログイン不要の無料Webプランニングポーカーサービスです
     </p>
     <p className="text-slate-600">
-      プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約2時間有効です。
+      プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約3時間有効です。
     </p>
     <Button text="部屋を作成する" onClick={onClick} />
   </div>
