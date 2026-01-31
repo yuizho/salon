@@ -14,9 +14,9 @@ type Props = {
 
 export const Component: FC<Props> = ({ onClick }) => (
   <div className="flex flex-col space-y-3 border rounded p-8 ">
-    <p className="text-slate-700 text-xl font-semibold">
+    <h1 className="text-slate-700 text-xl font-semibold">
       Salonはログイン不要の無料Webプランニングポーカーサービスです
-    </p>
+    </h1>
     <p className="text-slate-600">
       プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約3時間有効です。
     </p>

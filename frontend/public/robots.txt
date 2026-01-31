@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /rooms/
+
+Sitemap: https://salon-ppoker.com/sitemap.xml
