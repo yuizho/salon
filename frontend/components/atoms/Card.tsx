@@ -31,7 +31,14 @@ active:border
 active:border-slate-300
 `;
 
-const Card: FC<Props> = ({ value, shown, choosable, chosen, glow = false, onClick = null }) => {
+const Card: FC<Props> = ({
+  value,
+  shown,
+  choosable,
+  chosen,
+  glow = false,
+  onClick = null,
+}) => {
   const handleClick = () => {
     if (choosable && onClick !== null) {
       onClick(value);
@@ -39,11 +46,14 @@ const Card: FC<Props> = ({ value, shown, choosable, chosen, glow = false, onClic
   };
 
   return (
-    <div className="relative">
-      {glow && <div className="w-16 h-20 absolute bg-cyan-300 blur rounded-lg  animate-pulse" />}
-      <div className="relative">
+    <div className='relative'>
+      {glow && (
+        <div className='w-16 h-20 absolute bg-cyan-300 blur rounded-lg  animate-pulse' />
+      )}
+      <div className='relative'>
         {shown ? (
-          <div
+          <button
+            type="button"
             key={value}
             className={`
       ${baseClassNames}
@@ -54,9 +64,10 @@ const Card: FC<Props> = ({ value, shown, choosable, chosen, glow = false, onClic
             onClick={handleClick}
           >
             {value}
-          </div>
+          </button>
         ) : (
-          <div
+          <button
+            type="button"
             key={value}
             className={`
             ${baseClassNames}

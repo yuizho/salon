@@ -8,7 +8,12 @@ type Props = {
   newWindow?: boolean;
 };
 
-export const Component: FC<Props> = ({ children, href, className, newWindow = false }) => (
+export const Component: FC<Props> = ({
+  children,
+  href,
+  className,
+  newWindow = false,
+}) => (
   <Link
     href={href}
     className={className}
@@ -19,7 +24,12 @@ export const Component: FC<Props> = ({ children, href, className, newWindow = fa
   </Link>
 );
 
-const Container: FC<Props> = ({ children, href, className, newWindow = false }) => (
+const Container: FC<Props> = ({
+  children,
+  href,
+  className,
+  newWindow = false,
+}) => (
   <Component href={href} className={className} newWindow={newWindow}>
     {children}
   </Component>

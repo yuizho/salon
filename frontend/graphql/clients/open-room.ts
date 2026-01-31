@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
-import { OpenRoomMutation } from '../schema';
 import { openRoom } from '../mutations';
+import { OpenRoomMutation } from '../schema';
 
 const client = generateClient();
 

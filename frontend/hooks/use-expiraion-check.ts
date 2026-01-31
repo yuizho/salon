@@ -14,7 +14,10 @@ const useExpirationCheck = () => {
 
     const timerId = setInterval(() => {
       const now = Math.trunc(Date.now() / 1000);
-      if (room.expirationUnixTimestamp > 0 && now > room.expirationUnixTimestamp) {
+      if (
+        room.expirationUnixTimestamp > 0 &&
+        now > room.expirationUnixTimestamp
+      ) {
         router.push('/404');
       }
     }, 2000);

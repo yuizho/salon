@@ -20,7 +20,10 @@ const Container: FC = () => {
   const [app, setApp] = useRecoilState(appState);
 
   return (
-    <Component message={app.errorMessage} onClose={() => setApp({ ...app, errorMessage: null })} />
+    <Component
+      message={app.errorMessage}
+      onClose={() => setApp({ ...app, errorMessage: null })}
+    />
   );
 };
 

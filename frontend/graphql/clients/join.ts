@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
-import { JoinMutation, JoinMutationVariables } from '../schema';
 import { join } from '../mutations';
+import { JoinMutation, JoinMutationVariables } from '../schema';
 
 const client = generateClient();
 

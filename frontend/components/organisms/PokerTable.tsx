@@ -1,17 +1,21 @@
+import * as Sentry from '@sentry/nextjs';
 import { FC, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
-import { Status } from '../../graphql/schema';
-import { Poker, PokerState, pokerState as pokerRecoilState } from '../../states/poker';
-import { User, usersState } from '../../states/users';
-import { Me, myState } from '../../states/me';
-import Button from '../atoms/Button';
-import Players from './Players';
-import ModalDialog from '../molecules/ModalDialog';
-import Message from '../atoms/Message';
-import { appState } from '../../states/app';
-import { NETWORK_ERROR } from '../../graphql/error-message';
 import refresh from '../../graphql/clients/refresh';
+import { NETWORK_ERROR } from '../../graphql/error-message';
+import { Status } from '../../graphql/schema';
+import { appState } from '../../states/app';
+import { Me, myState } from '../../states/me';
+import {
+  Poker,
+  PokerState,
+  pokerState as pokerRecoilState,
+} from '../../states/poker';
+import { User, usersState } from '../../states/users';
+import Button from '../atoms/Button';
+import Message from '../atoms/Message';
+import ModalDialog from '../molecules/ModalDialog';
+import Players from './Players';
 
 type ComponentProps = {
   me: Me;
@@ -59,7 +63,7 @@ export const Component: FC<ComponentProps> = ({
         shown={poker.state === 'EVERYONE_CHOSEN'}
       />
       <Button
-        text="Reset"
+        text='Reset'
         onClick={() => {
           setOpenResetDialog(true);
         }}
@@ -67,7 +71,7 @@ export const Component: FC<ComponentProps> = ({
         clickable={poker.state !== 'KICKED'}
       />
       <ModalDialog
-        message="全員カードを未選択の状態にリセットします。よろしいですか？"
+        message='全員カードを未選択の状態にリセットします。よろしいですか？'
         onClickOK={onReset}
         open={openResetDialog}
         setOpen={setOpenResetDialog}
