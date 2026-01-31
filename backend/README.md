@@ -2,6 +2,7 @@
 
 ## Deploy to AWS
 ```sh
+yarn workspace salon-backend cdk bootstrap
 yarn workspace salon-backend cdk deploy
 ```
 ## Undeploy
