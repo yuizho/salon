@@ -12,7 +12,7 @@ const Home: FC = () => (
         name="description"
         content="Salonはログイン不要の無料Webプランニングポーカーサービスです。登録なしですぐにチームの見積もりが開始できます。"
       />
-      <link rel="canonical" href="https://salon.yuizho.com/" />
+      <link rel="canonical" href="https://salon-ppoker.com/" />
 
       <meta property="og:title" content="Salon" />
       <meta property="og:site_name" content="Salon" />
@@ -20,8 +20,8 @@ const Home: FC = () => (
         property="og:description"
         content="Salonはログイン不要の無料Webプランニングポーカーサービスです"
       />
-      <meta property="og:image" content="https://salon.yuizho.com/og-image.png" />
-      <meta property="og:url" content="https://salon.yuizho.com/" />
+      <meta property="og:image" content="https://salon-ppoker.com/og-image.png" />
+      <meta property="og:url" content="https://salon-ppoker.com/" />
       <meta property="og:type" content="website" />
 
       <meta name="twitter:card" content="summary_large_image" />
@@ -30,7 +30,7 @@ const Home: FC = () => (
         name="twitter:description"
         content="Salonはログイン不要の無料Webプランニングポーカーサービスです"
       />
-      <meta name="twitter:image" content="https://salon.yuizho.com/og-image.png" />
+      <meta name="twitter:image" content="https://salon-ppoker.com/og-image.png" />
     </Head>
 
     <Frame>
