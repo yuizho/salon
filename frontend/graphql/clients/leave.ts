@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
-import { LeaveMutation, LeaveMutationVariables } from '../schema';
 import { leave } from '../mutations';
+import { LeaveMutation, LeaveMutationVariables } from '../schema';
 
 const client = generateClient();
 

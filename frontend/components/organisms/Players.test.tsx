@@ -9,7 +9,7 @@ describe('Players', () => {
     const { asFragment } = render(
       <RecoilRoot>
         <Players
-          myUserId="xxx"
+          myUserId='xxx'
           players={[
             { userId: 'xxx', status: Status.CHOSEN, pickedCard: 'XL' },
             { userId: 'yyy', status: Status.CHOSEN, pickedCard: 'S' },

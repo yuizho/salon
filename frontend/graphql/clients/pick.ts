@@ -4,7 +4,12 @@ import { PickMutation, PickMutationVariables } from '../schema';
 
 const client = generateClient();
 
-export default async (roomId: string, userId: string, userToken: string, pickedCard: string) => {
+export default async (
+  roomId: string,
+  userId: string,
+  userToken: string,
+  pickedCard: string,
+) => {
   const result = await client.graphql({
     query: pick,
     variables: {

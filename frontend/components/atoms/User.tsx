@@ -20,22 +20,8 @@ active:border
 active:border-slate-300
 `;
 
-export const Component: FC<Props> = ({ me, clickable, onClick }) => (
-  <div
-    className={`
-      flex
-      flex-col
-      items-center
-      w-20
-    `}
-    onClick={
-      clickable
-        ? () => {
-            onClick();
-          }
-        : () => {}
-    }
-  >
+export const Component: FC<Props> = ({ me, clickable, onClick }) => {
+  const content = (
     <div
       className={`
         flex
@@ -52,8 +38,34 @@ export const Component: FC<Props> = ({ me, clickable, onClick }) => (
         <div className="text-3xl">{me ? <RiUserFill /> : <RiUserLine />}</div>
       </div>
     </div>
-  </div>
-);
+  );
+
+  return clickable ? (
+    <button
+      type="button"
+      className={`
+      flex
+      flex-col
+      items-center
+      w-20
+    `}
+      onClick={onClick}
+    >
+      {content}
+    </button>
+  ) : (
+    <div
+      className={`
+      flex
+      flex-col
+      items-center
+      w-20
+    `}
+    >
+      {content}
+    </div>
+  );
+};
 
 const Container: FC<Props> = ({ me, clickable, onClick }) => (
   <Component me={me} clickable={clickable} onClick={onClick} />

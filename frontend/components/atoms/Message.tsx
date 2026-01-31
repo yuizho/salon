@@ -5,8 +5,11 @@ type Props = {
 };
 
 export const Component: FC<Props> = ({ message }) => (
-  <div className="border-t border-b border-slate-400 text-slate-600 px-4 py-3" role="alert">
-    <p className="text-sm">{message}</p>
+  <div
+    className='border-t border-b border-slate-400 text-slate-600 px-4 py-3'
+    role='alert'
+  >
+    <p className='text-sm'>{message}</p>
   </div>
 );
 

@@ -1,15 +1,15 @@
+import * as Sentry from '@sentry/nextjs';
 /* eslint-disable no-await-in-loop */
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import * as Sentry from '@sentry/nextjs';
-import { myState } from '../states/me';
-import { usersState } from '../states/users';
-import { appState } from '../states/app';
-import { NETWORK_ERROR } from '../graphql/error-message';
-import { roomState } from '../states/room';
 import getRoom from '../graphql/clients/get-room';
 import join from '../graphql/clients/join';
+import { NETWORK_ERROR } from '../graphql/error-message';
+import { appState } from '../states/app';
+import { myState } from '../states/me';
+import { roomState } from '../states/room';
+import { usersState } from '../states/users';
 
 const getRoomWithRetry = async (roomId: string) => {
   // eslint-disable-next-line no-restricted-syntax
@@ -64,19 +64,19 @@ const useJoin = () => {
       }
 
       try {
-        let room;
-        if (isCalledByCreatingRoomOperation) {
-          //  the room data might not be saved in database yet.
-          room = await getRoomWithRetry(roomId);
-        } else {
-          room = await getRoom(roomId);
-        }
+        const room = isCalledByCreatingRoomOperation
+          ? await getRoomWithRetry(roomId)
+          : await getRoom(roomId);
+
         if (!room.data?.getRoom.is_opened) {
           router.push('/404');
           return;
         }
 
-        setRoom({ expirationUnixTimestamp: room.data?.getRoom.expiration_unix_timestamp ?? 0 });
+        setRoom({
+          expirationUnixTimestamp:
+            room.data?.getRoom.expiration_unix_timestamp ?? 0,
+        });
 
         const users =
           room.data?.getRoom.items.map((item) => ({
