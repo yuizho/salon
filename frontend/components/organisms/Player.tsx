@@ -61,7 +61,7 @@ export const Component: FC<ComponentProps> = ({
 );
 
 const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
-  const myRecoilState = useAtomValue(myState);
+  const myStateValue = useAtomValue(myState);
   const [openKickDialog, setOpenKickDialog] = useState(false);
   const poker = useAtomValue(pokerState);
   const setApp = useSetAtom(appState);
@@ -70,9 +70,9 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
     setApp((app) => ({ ...app, loading: true }));
     try {
       await kick(
-        myRecoilState.roomId,
-        myRecoilState.userId,
-        myRecoilState.userToken,
+        myStateValue.roomId,
+        myStateValue.userId,
+        myStateValue.userToken,
         userId,
       );
     } catch (e) {

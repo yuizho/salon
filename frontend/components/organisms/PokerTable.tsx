@@ -9,7 +9,7 @@ import { Me, myState } from '../../states/me';
 import {
   Poker,
   PokerState,
-  pokerState as pokerRecoilState,
+  pokerState as pokerAtom,
 } from '../../states/poker';
 import { User, usersState } from '../../states/users';
 import Button from '../atoms/Button';
@@ -83,7 +83,7 @@ export const Component: FC<ComponentProps> = ({
 const Container: FC = () => {
   const me = useAtomValue(myState);
   const users = useAtomValue(usersState);
-  const poker = useAtomValue(pokerRecoilState);
+  const poker = useAtomValue(pokerAtom);
   const [openResetDialog, setOpenResetDialog] = useState(false);
   const setApp = useSetAtom(appState);
 
