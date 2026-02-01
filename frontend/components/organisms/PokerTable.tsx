@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import refresh from '../../graphql/clients/refresh';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
@@ -81,11 +81,11 @@ export const Component: FC<ComponentProps> = ({
 };
 
 const Container: FC = () => {
-  const [me] = useRecoilState(myState);
-  const [users] = useRecoilState(usersState);
-  const poker = useRecoilValue(pokerRecoilState);
+  const me = useAtomValue(myState);
+  const users = useAtomValue(usersState);
+  const poker = useAtomValue(pokerRecoilState);
   const [openResetDialog, setOpenResetDialog] = useState(false);
-  const setApp = useSetRecoilState(appState);
+  const setApp = useSetAtom(appState);
 
   const refreshPoker = async () => {
     setApp((app) => ({ ...app, loading: true }));

@@ -5,13 +5,14 @@ exports[`Player snapshot 1`] = `
   <div
     class="flex flex-col items-center gap-2 p-2 w-20"
   >
-    <div
+    <button
       class="
       flex
       flex-col
       items-center
       w-20
     "
+      type="button"
     >
       <div
         class="
@@ -56,14 +57,14 @@ active:border-slate-300
           </div>
         </div>
       </div>
-    </div>
+    </button>
     <div
       class="relative"
     >
       <div
         class="relative"
       >
-        <div
+        <button
           class="
             
 flex
@@ -79,6 +80,7 @@ bg-white
             
           "
           style="background-image: url(/intersecting-circles.svg);"
+          type="button"
         />
       </div>
     </div>

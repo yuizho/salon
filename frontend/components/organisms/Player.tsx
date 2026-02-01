@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import kick from '../../graphql/clients/kick';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
@@ -61,10 +61,10 @@ export const Component: FC<ComponentProps> = ({
 );
 
 const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
-  const [myRecoilState] = useRecoilState(myState);
+  const myRecoilState = useAtomValue(myState);
   const [openKickDialog, setOpenKickDialog] = useState(false);
-  const poker = useRecoilValue(pokerState);
-  const setApp = useSetRecoilState(appState);
+  const poker = useAtomValue(pokerState);
+  const setApp = useSetAtom(appState);
 
   const kickThisUser = async () => {
     setApp((app) => ({ ...app, loading: true }));

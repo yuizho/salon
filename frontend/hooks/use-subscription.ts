@@ -1,6 +1,6 @@
+import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
 import roomSubscription, {
   SubscriptionValue,
 } from '../graphql/clients/room-subscription';
@@ -10,8 +10,8 @@ import { usersState } from '../states/users';
 
 const useSubscription = () => {
   const router = useRouter();
-  const setUsers = useSetRecoilState(usersState);
-  const setApp = useSetRecoilState(appState);
+  const setUsers = useSetAtom(usersState);
+  const setApp = useSetAtom(appState);
 
   useEffect(() => {
     if (!router.isReady) {

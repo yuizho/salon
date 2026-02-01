@@ -1,11 +1,8 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
 export type App = {
   loading: boolean;
   errorMessage: string | null;
 };
 
-export const appState = atom({
-  key: 'appState',
-  default: { loading: false, errorMessage: null } as App,
-});
+export const appState = atom<App>({ loading: false, errorMessage: null });
