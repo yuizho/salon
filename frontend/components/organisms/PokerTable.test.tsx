@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'jotai';
 import { Status } from '../../graphql/schema';
 import PokerTable from './PokerTable';
 
 describe('PokerTable', () => {
   test('snapshot', () => {
     const { asFragment } = render(
-      <RecoilRoot>
+      <Provider>
         <PokerTable />
-      </RecoilRoot>,
+      </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
 export type Me = {
   roomId: string;
@@ -6,7 +6,4 @@ export type Me = {
   userToken: string;
 };
 
-export const myState = atom({
-  key: 'myState',
-  default: { roomId: '', userId: '', userToken: '' } as Me,
-});
+export const myState = atom<Me>({ roomId: '', userId: '', userToken: '' });

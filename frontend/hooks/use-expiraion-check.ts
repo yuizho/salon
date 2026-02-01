@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useAtom } from 'jotai';
 import { roomState } from '../states/room';
 
 const useExpirationCheck = () => {
   const router = useRouter();
-  const [room] = useRecoilState(roomState);
+  const [room] = useAtom(roomState);
 
   useEffect(() => {
     if (!router.isReady) {

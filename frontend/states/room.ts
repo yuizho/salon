@@ -1,10 +1,7 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 
 export type Room = {
   expirationUnixTimestamp: number;
 };
 
-export const roomState = atom({
-  key: 'roomState',
-  default: { expirationUnixTimestamp: 0 } as Room,
-});
+export const roomState = atom<Room>({ expirationUnixTimestamp: 0 });

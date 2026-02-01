@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom } from 'jotai';
 import { Status } from '../graphql/schema';
 
 export type User = {
@@ -7,7 +7,4 @@ export type User = {
   pickedCard: string;
 };
 
-export const usersState = atom({
-  key: 'usersState',
-  default: [] as Array<User>,
-});
+export const usersState = atom<Array<User>>([]);

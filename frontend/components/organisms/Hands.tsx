@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import * as Sentry from '@sentry/nextjs';
 import pick from '../../graphql/clients/pick';
 import { NETWORK_ERROR } from '../../graphql/error-message';
@@ -37,10 +37,10 @@ export const Component: FC<ComponentProps> = ({ values, glow, choosable, onClick
 );
 
 const Container: FC<Props> = ({ values }) => {
-  const [me] = useRecoilState(myState);
-  const setUsers = useSetRecoilState(usersState);
-  const poker = useRecoilValue(pokerState);
-  const setApp = useSetRecoilState(appState);
+  const [me] = useAtom(myState);
+  const setUsers = useSetAtom(usersState);
+  const poker = useAtomValue(pokerState);
+  const setApp = useSetAtom(appState);
 
   const onClickCard = (roomId: string, userId: string) => async (pickedCard: string) => {
     setApp((app) => ({ ...app, loading: true }));
