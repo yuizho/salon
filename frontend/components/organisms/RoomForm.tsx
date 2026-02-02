@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/nextjs';
+import { useAtom, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import openRoom from '../../graphql/clients/open-room';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { appState } from '../../states/app';
@@ -26,8 +26,8 @@ export const Component: FC<Props> = ({ onClick }) => (
 
 const Container: FC = () => {
   const router = useRouter();
-  const setApp = useSetRecoilState(appState);
-  const [, setMe] = useRecoilState(myState);
+  const setApp = useSetAtom(appState);
+  const [, setMe] = useAtom(myState);
 
   const createRoom = async () => {
     try {

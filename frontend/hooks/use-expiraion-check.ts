@@ -1,11 +1,11 @@
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 import { roomState } from '../states/room';
 
 const useExpirationCheck = () => {
   const router = useRouter();
-  const [room] = useRecoilState(roomState);
+  const room = useAtomValue(roomState);
 
   useEffect(() => {
     if (!router.isReady) {

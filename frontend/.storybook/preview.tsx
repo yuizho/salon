@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'jotai';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -13,8 +13,8 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <RecoilRoot>
+    <Provider>
       <Story />
-    </RecoilRoot>
+    </Provider>
   ),
 ];

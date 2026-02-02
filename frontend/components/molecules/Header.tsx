@@ -1,5 +1,5 @@
+import { useAtom } from 'jotai';
 import { FC } from 'react';
-import { useRecoilState } from 'recoil';
 import { appState } from '../../states/app';
 import ErrorAlert from '../atoms/ErrorAlert';
 import NavBar from '../atoms/NavBar';
@@ -17,7 +17,7 @@ export const Component: FC<ComponentProps> = ({ message, onClose }) => (
 );
 
 const Container: FC = () => {
-  const [app, setApp] = useRecoilState(appState);
+  const [app, setApp] = useAtom(appState);
 
   return (
     <Component

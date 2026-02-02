@@ -1,11 +1,11 @@
 import * as Sentry from '@sentry/nextjs';
+import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
 import leave from '../graphql/clients/leave';
 import { myState } from '../states/me';
 
 const useLeave = () => {
-  const [me] = useRecoilState(myState);
+  const me = useAtomValue(myState);
 
   useEffect(() => {
     if (me.userId) {

@@ -3,7 +3,6 @@ import { Analytics } from '@vercel/analytics/react';
 import { Amplify } from 'aws-amplify';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { RecoilRoot } from 'recoil';
 
 Amplify.configure({
   API: {
@@ -24,9 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
 
-      <RecoilRoot>
-        <Component {...pageProps} />
-      </RecoilRoot>
+      <Component {...pageProps} />
 
       <Analytics />
     </>
