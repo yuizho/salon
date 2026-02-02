@@ -1,13 +1,13 @@
 import { render } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'jotai';
 import Header from './Header';
 
 describe('Header', () => {
   test('snapshot', () => {
     const { asFragment } = render(
-      <RecoilRoot>
+      <Provider>
         <Header />
-      </RecoilRoot>,
+      </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

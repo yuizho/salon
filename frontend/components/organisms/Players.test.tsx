@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'jotai';
 import { Status } from '../../graphql/schema';
 
 import Players from './Players';
@@ -7,7 +7,7 @@ import Players from './Players';
 describe('Players', () => {
   test('snapshot', () => {
     const { asFragment } = render(
-      <RecoilRoot>
+      <Provider>
         <Players
           myUserId='xxx'
           players={[
@@ -17,7 +17,7 @@ describe('Players', () => {
           ]}
           shown={true}
         />
-      </RecoilRoot>,
+      </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });

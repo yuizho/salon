@@ -1,4 +1,4 @@
-import { selector } from 'recoil';
+import { atom } from 'jotai';
 import { Status } from '../graphql/schema';
 import { appState } from './app';
 import { myState } from './me';
@@ -39,28 +39,25 @@ const isChoosing = (users: Array<User>, myUserId: string) =>
     .filter((user) => user.status === Status.CHOOSING)
     .some((user) => user.userId === myUserId);
 
-export const pokerState = selector({
-  key: 'pokerState',
-  get: ({ get }) => {
-    const users = get(usersState);
-    const me = get(myState);
-    const app = get(appState);
+export const pokerState = atom<Poker>((get) => {
+  const users = get(usersState);
+  const me = get(myState);
+  const app = get(appState);
 
-    let state: PokerState;
-    if (app.loading || users.length === 0) {
-      state = 'LOADING';
-    } else if (isKicked(users, me.userId)) {
-      state = 'KICKED';
-    } else if (isAlone(users, me.userId)) {
-      state = 'ALONE';
-    } else if (isEveryoneChosen(users)) {
-      state = 'EVERYONE_CHOSEN';
-    } else if (isChoosing(users, me.userId)) {
-      state = 'CHOOSING';
-    } else {
-      state = 'WAITING_OTHERS';
-    }
+  let state: PokerState;
+  if (app.loading || users.length === 0) {
+    state = 'LOADING';
+  } else if (isKicked(users, me.userId)) {
+    state = 'KICKED';
+  } else if (isAlone(users, me.userId)) {
+    state = 'ALONE';
+  } else if (isEveryoneChosen(users)) {
+    state = 'EVERYONE_CHOSEN';
+  } else if (isChoosing(users, me.userId)) {
+    state = 'CHOOSING';
+  } else {
+    state = 'WAITING_OTHERS';
+  }
 
-    return { state } as Poker;
-  },
+  return { state } as Poker;
 });

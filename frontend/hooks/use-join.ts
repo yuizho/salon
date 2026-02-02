@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/nextjs';
 /* eslint-disable no-await-in-loop */
+import { useAtom, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import getRoom from '../graphql/clients/get-room';
 import join from '../graphql/clients/join';
 import { NETWORK_ERROR } from '../graphql/error-message';
@@ -28,10 +28,10 @@ const getRoomWithRetry = async (roomId: string) => {
 const useJoin = () => {
   const router = useRouter();
 
-  const [me, setMe] = useRecoilState(myState);
-  const [, setUsers] = useRecoilState(usersState);
-  const [, setRoom] = useRecoilState(roomState);
-  const setApp = useSetRecoilState(appState);
+  const [me, setMe] = useAtom(myState);
+  const [, setUsers] = useAtom(usersState);
+  const [, setRoom] = useAtom(roomState);
+  const setApp = useSetAtom(appState);
 
   useEffect(() => {
     const execute = async () => {

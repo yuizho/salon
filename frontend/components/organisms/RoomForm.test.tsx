@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
+import { Provider } from 'jotai';
 
 import RoomForm from './RoomForm';
 
@@ -16,9 +16,9 @@ describe('RoomForm', () => {
     });
 
     const { asFragment } = render(
-      <RecoilRoot>
+      <Provider>
         <RoomForm />
-      </RecoilRoot>,
+      </Provider>,
     );
     expect(asFragment()).toMatchSnapshot();
   });
