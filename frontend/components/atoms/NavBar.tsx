@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FC } from 'react';
 import { BsGithub } from 'react-icons/bs';
+import LanguageToggle from './LanguageToggle';
 
 export const Component: FC = () => (
   <nav className='flex justify-between flex-wrap py-4 px-6 border-b'>
@@ -11,14 +12,17 @@ export const Component: FC = () => (
         Salon
       </a>
     </div>
-    <div className='flex items-center flex-shrink-0 text-slate-600 text-xl'>
-      <Link
-        href='https://github.com/yuizho/salon'
-        target='_blank'
-        rel='noopener noreferrer'
-      >
-        <BsGithub />
-      </Link>
+    <div className='flex items-center flex-shrink-0 space-x-4'>
+      <LanguageToggle />
+      <div className='text-slate-600 text-xl'>
+        <Link
+          href='https://github.com/yuizho/salon'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          <BsGithub />
+        </Link>
+      </div>
     </div>
   </nav>
 );
