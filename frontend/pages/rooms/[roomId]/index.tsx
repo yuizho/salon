@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import Hands from '../../../components/organisms/Hands';
 import PokerTable from '../../../components/organisms/PokerTable';
 import Frame from '../../../components/templates/Frame';
@@ -13,11 +14,12 @@ const Rooms: FC = () => {
   useSubscription();
   useLeave();
   useExpirationCheck();
+  const { t } = useTranslation();
 
   return (
     <>
       <Head>
-        <title>Salon Room</title>
+        <title>{t('home.title')} Room</title>
         <meta name='robots' content='noindex' />
       </Head>
 

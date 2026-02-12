@@ -22,5 +22,8 @@
     "alone_message": "Share this room's URL to invite members!",
     "reset_button": "Reset",
     "reset_confirm": "Reset all players to an unselected state. Are you sure?"
+  },
+  "player": {
+    "kick_confirm": "The selected user will be removed from the room. Are you sure?"
   }
 }
