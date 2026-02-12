@@ -25,5 +25,6 @@
   },
   "player": {
     "kick_confirm": "The selected user will be removed from the room. Are you sure?"
-  }
+  },
+  "not_found": "This room has closed because it has expired. To start a new planning poker, please create a new room from the <0>top page</0>."
 }
