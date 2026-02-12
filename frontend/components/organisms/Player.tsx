@@ -25,7 +25,7 @@ type ComponentProps = Props & {
   onKick: () => void;
   openKickDialog: boolean;
   setOpenKickDialog: (b: boolean) => void;
-  t: any;
+  t?: any;
 };
 
 export const Component: FC<ComponentProps> = ({
@@ -38,7 +38,7 @@ export const Component: FC<ComponentProps> = ({
   onKick,
   openKickDialog,
   setOpenKickDialog,
-  t,
+  t = (k: any) => k,
 }) => (
   <div key={userId} className='flex flex-col items-center gap-2 p-2 w-20'>
     <User

@@ -26,7 +26,7 @@ type ComponentProps = {
   openResetDialog: boolean;
   setOpenResetDialog: (b: boolean) => void;
   pokerState: PokerState;
-  t: any;
+  t?: any;
 };
 
 const getMessageByPokerState = (state: PokerState) => {
@@ -47,7 +47,7 @@ export const Component: FC<ComponentProps> = ({
   openResetDialog,
   setOpenResetDialog,
   pokerState,
-  t,
+  t = (k: any) => k,
 }) => {
   const messageKey = getMessageByPokerState(poker.state);
   const message = messageKey ? t(messageKey) : '';

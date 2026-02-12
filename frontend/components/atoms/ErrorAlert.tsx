@@ -6,7 +6,11 @@ type Props = {
   onClose: () => void;
 };
 
-export const Component: FC<Props & { t: any }> = ({ message, onClose, t }) => (
+export const Component: FC<Props & { t?: any }> = ({
+  message,
+  onClose,
+  t = (k: any) => k,
+}) => (
   <div>
     {message && (
       <div

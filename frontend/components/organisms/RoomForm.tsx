@@ -11,10 +11,10 @@ import Button from '../atoms/Button';
 
 type Props = {
   onClick: () => void;
-  t: any;
+  t?: any;
 };
 
-export const Component: FC<Props> = ({ onClick, t }) => (
+export const Component: FC<Props> = ({ onClick, t = (k: any) => k }) => (
   <div className='flex flex-col space-y-3 border rounded p-8 '>
     <h1 className='text-slate-700 text-xl font-semibold'>
       {t('room_form.hero_title')}
