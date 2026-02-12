@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.9",
-    "@sentry/nextjs": "^10.37.0",
     "@vercel/analytics": "^1.6.1",
     "aws-amplify": "^6.16.0",
     "i18next": "^25.8.6",

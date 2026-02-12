@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -97,7 +96,7 @@ const Container: FC = () => {
     try {
       await refresh(me.roomId, me.userId, me.userToken);
     } catch (e) {
-      Sentry.captureException(e);
+      console.error(e);
       setApp((app) => ({
         ...app,
         loading: false,

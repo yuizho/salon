@@ -8,7 +8,7 @@
     "disclaimer": "Disclaimer",
     "disclaimer_item1": "This service is personally operated by <0>yuizho</0>. The service may be terminated without notice if it becomes difficult to maintain.",
     "disclaimer_item2": "While we strive to maintain the service as much as possible, we cannot be held responsible for any bugs detected or damages caused by them.",
-    "disclaimer_item3": "This service uses <0>Sentry</0> and <1>Vercel Analytics</1> to help improve the service.",
+    "disclaimer_item3": "This service uses <0>Vercel Analytics</0> to help improve the service.",
     "license": "License",
     "license_item1": "This service uses partially modified images created with <0>Hero Patterns</0> under <1>CC BY 4.0</1>."
   },

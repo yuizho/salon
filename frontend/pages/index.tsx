@@ -64,14 +64,6 @@ const Home: FC = () => {
                     i18nKey='home.disclaimer_item3'
                     components={[
                       <Link
-                        key='sentry'
-                        href='https://sentry.io'
-                        newWindow
-                        className='underline'
-                      >
-                        Sentry
-                      </Link>,
-                      <Link
                         key='vercel-analytics'
                         href='https://vercel.com/analytics'
                         newWindow

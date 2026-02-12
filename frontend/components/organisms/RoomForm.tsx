@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAtom, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
@@ -40,7 +39,7 @@ const Container: FC = () => {
 
       router.push(`/rooms/${roomId}`);
     } catch (e) {
-      Sentry.captureException(e);
+      console.error(e);
       setApp((app) => ({
         ...app,
         loading: false,
