@@ -1,0 +1,30 @@
+{
+  "common": {
+    "network_error": "A network error occurred. Please check your network status and try again later if the problem persists."
+  },
+  "home": {
+    "title": "Salon",
+    "description": "Salon is a free web planning poker service that requires no login. You can start team estimations immediately without registration.",
+    "disclaimer": "Disclaimer",
+    "disclaimer_item1": "This service is personally operated by <0>yuizho</0>. The service may be terminated without notice if it becomes difficult to maintain.",
+    "disclaimer_item2": "While we strive to maintain the service as much as possible, we cannot be held responsible for any bugs detected or damages caused by them.",
+    "disclaimer_item3": "This service uses <0>Vercel Analytics</0> to help improve the service.",
+    "license": "License",
+    "license_item1": "This service uses partially modified images created with <0>Hero Patterns</0> under <1>CC BY 4.0</1>."
+  },
+  "room_form": {
+    "hero_title": "Salon is a free web planning poker service that requires no login",
+    "hero_description": "Please create a room to start planning poker. Created rooms are valid for approximately 3 hours.",
+    "create_room_button": "Create Room"
+  },
+  "poker_table": {
+    "kicked_message": "You have been kicked from the room by another user. Please refresh your browser to re-enter.",
+    "alone_message": "Share this room's URL to invite members!",
+    "reset_button": "Reset",
+    "reset_confirm": "Reset all players to an unselected state. Are you sure?"
+  },
+  "player": {
+    "kick_confirm": "The selected user will be removed from the room. Are you sure?"
+  },
+  "not_found": "This room has closed because it has expired. To start a new planning poker, please create a new room from the <0>top page</0>."
+}

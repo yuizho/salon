@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 /* eslint-disable no-await-in-loop */
 import { useAtom, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
@@ -53,7 +52,7 @@ const useJoin = () => {
             userToken: joinned.data?.join.user_token ?? '',
           });
         } catch (e) {
-          Sentry.captureException(e);
+          console.error(e);
           setApp((app) => ({
             ...app,
             loading: false,
@@ -87,7 +86,7 @@ const useJoin = () => {
 
         setUsers(users);
       } catch (e) {
-        Sentry.captureException(e);
+        console.error(e);
         setApp((app) => ({
           ...app,
           loading: false,

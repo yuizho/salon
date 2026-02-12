@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import refresh from '../../graphql/clients/refresh';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
@@ -25,14 +25,15 @@ type ComponentProps = {
   openResetDialog: boolean;
   setOpenResetDialog: (b: boolean) => void;
   pokerState: PokerState;
+  t?: any;
 };
 
 const getMessageByPokerState = (state: PokerState) => {
   if (state === 'KICKED') {
-    return '他のユーザによって部屋からキックされました。再度入室する場合はブラウザを更新してください。';
+    return 'poker_table.kicked_message';
   }
   if (state === 'ALONE') {
-    return 'この部屋のURLを共有して、メンバーを招待しましょう！';
+    return 'poker_table.alone_message';
   }
   return '';
 };
@@ -45,8 +46,10 @@ export const Component: FC<ComponentProps> = ({
   openResetDialog,
   setOpenResetDialog,
   pokerState,
+  t = (k: any) => k,
 }) => {
-  const message = getMessageByPokerState(poker.state);
+  const messageKey = getMessageByPokerState(poker.state);
+  const message = messageKey ? t(messageKey) : '';
 
   return (
     <div
@@ -63,7 +66,7 @@ export const Component: FC<ComponentProps> = ({
         shown={poker.state === 'EVERYONE_CHOSEN'}
       />
       <Button
-        text='Reset'
+        text={t('poker_table.reset_button')}
         onClick={() => {
           setOpenResetDialog(true);
         }}
@@ -71,7 +74,7 @@ export const Component: FC<ComponentProps> = ({
         clickable={poker.state !== 'KICKED'}
       />
       <ModalDialog
-        message='全員カードを未選択の状態にリセットします。よろしいですか？'
+        message={t('poker_table.reset_confirm')}
         onClickOK={onReset}
         open={openResetDialog}
         setOpen={setOpenResetDialog}
@@ -86,13 +89,14 @@ const Container: FC = () => {
   const poker = useAtomValue(pokerAtom);
   const [openResetDialog, setOpenResetDialog] = useState(false);
   const setApp = useSetAtom(appState);
+  const { t } = useTranslation();
 
   const refreshPoker = async () => {
     setApp((app) => ({ ...app, loading: true }));
     try {
       await refresh(me.roomId, me.userId, me.userToken);
     } catch (e) {
-      Sentry.captureException(e);
+      console.error(e);
       setApp((app) => ({
         ...app,
         loading: false,
@@ -110,6 +114,7 @@ const Container: FC = () => {
       openResetDialog={openResetDialog}
       setOpenResetDialog={setOpenResetDialog}
       pokerState={poker.state}
+      t={t}
     />
   );
 };

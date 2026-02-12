@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import kick from '../../graphql/clients/kick';
 import { NETWORK_ERROR } from '../../graphql/error-message';
 import { Status } from '../../graphql/schema';
@@ -24,6 +24,7 @@ type ComponentProps = Props & {
   onKick: () => void;
   openKickDialog: boolean;
   setOpenKickDialog: (b: boolean) => void;
+  t?: any;
 };
 
 export const Component: FC<ComponentProps> = ({
@@ -36,6 +37,7 @@ export const Component: FC<ComponentProps> = ({
   onKick,
   openKickDialog,
   setOpenKickDialog,
+  t = (k: any) => k,
 }) => (
   <div key={userId} className='flex flex-col items-center gap-2 p-2 w-20'>
     <User
@@ -52,7 +54,7 @@ export const Component: FC<ComponentProps> = ({
       chosen={status === Status.CHOSEN}
     />
     <ModalDialog
-      message='選択したユーザを部屋から退出させます。よろしいですか？'
+      message={t('player.kick_confirm')}
       onClickOK={onKick}
       open={openKickDialog}
       setOpen={setOpenKickDialog}
@@ -65,6 +67,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
   const [openKickDialog, setOpenKickDialog] = useState(false);
   const poker = useAtomValue(pokerState);
   const setApp = useSetAtom(appState);
+  const { t } = useTranslation();
 
   const kickThisUser = async () => {
     setApp((app) => ({ ...app, loading: true }));
@@ -76,7 +79,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
         userId,
       );
     } catch (e) {
-      Sentry.captureException(e);
+      console.error(e);
       setApp((app) => ({
         ...app,
         loading: false,
@@ -96,6 +99,7 @@ const Container: FC<Props> = ({ userId, status, value, shown, me }) => {
       onKick={() => kickThisUser()}
       openKickDialog={openKickDialog}
       setOpenKickDialog={setOpenKickDialog}
+      t={t}
     />
   );
 };
