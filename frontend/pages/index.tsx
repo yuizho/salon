@@ -1,112 +1,118 @@
 import Head from 'next/head';
 import { FC } from 'react';
+import { useTranslation, Trans } from 'react-i18next';
 import Link from '../components/atoms/Link';
 import RoomForm from '../components/organisms/RoomForm';
 import Frame from '../components/templates/Frame';
 
-const Home: FC = () => (
-  <>
-    <Head>
-      <title>Salon</title>
-      <meta
-        name='description'
-        content='Salonはログイン不要の無料Webプランニングポーカーサービスです。登録なしですぐにチームの見積もりが開始できます。'
-      />
-      <link rel='canonical' href='https://salon-ppoker.com/' />
+const Home: FC = () => {
+  const { t } = useTranslation();
 
-      <meta property='og:title' content='Salon' />
-      <meta property='og:site_name' content='Salon' />
-      <meta
-        property='og:description'
-        content='Salonはログイン不要の無料Webプランニングポーカーサービスです'
-      />
-      <meta
-        property='og:image'
-        content='https://salon-ppoker.com/og-image.png'
-      />
-      <meta property='og:url' content='https://salon-ppoker.com/' />
-      <meta property='og:type' content='website' />
+  return (
+    <>
+      <Head>
+        <title>{t('home.title')}</title>
+        <meta name='description' content={t('home.description')} />
+        <link rel='canonical' href='https://salon-ppoker.com/' />
 
-      <meta name='twitter:card' content='summary_large_image' />
-      <meta name='twitter:title' content='Salon' />
-      <meta
-        name='twitter:description'
-        content='Salonはログイン不要の無料Webプランニングポーカーサービスです'
-      />
-      <meta
-        name='twitter:image'
-        content='https://salon-ppoker.com/og-image.png'
-      />
-    </Head>
+        <meta property='og:title' content={t('home.title')} />
+        <meta property='og:site_name' content={t('home.title')} />
+        <meta property='og:description' content={t('home.description')} />
+        <meta
+          property='og:image'
+          content='https://salon-ppoker.com/og-image.png'
+        />
+        <meta property='og:url' content='https://salon-ppoker.com/' />
+        <meta property='og:type' content='website' />
 
-    <Frame>
-      <main className='flex flex-col space-y-6'>
-        <RoomForm />
-        <div className='flex flex-col space-y-3'>
-          <h2 className='text-slate-700 font-semibold px-1'>免責事項</h2>
-          <div className='text-slate-600 text-sm px-6'>
-            <ul className='list-disc'>
-              <li>
-                当サービスは{' '}
-                <Link
-                  href='https://github.com/yuizho'
-                  newWindow
-                  className='underline'
-                >
-                  yuizho
-                </Link>{' '}
-                が個人で運営するサービスです。サービスの維持が難しくなった場合には予告なくサービスを終了するかもしれません。
-              </li>
-              <li>
-                できる範囲でサービスの維持に努めますが、当サービスで検出された不具合やそれが原因で発生した損害などについては一切責任を負いかねます。
-              </li>
-              <li>
-                当サービスは、サービスの改善に役立てる目的で{' '}
-                <Link href='https://sentry.io' newWindow className='underline'>
-                  Sentry
-                </Link>
-                {', '}
-                <Link
-                  href='https://vercel.com/analytics'
-                  newWindow
-                  className='underline'
-                >
-                  Vercel Analytics
-                </Link>{' '}
-                を利用しています。
-              </li>
-            </ul>
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:title' content={t('home.title')} />
+        <meta name='twitter:description' content={t('home.description')} />
+        <meta
+          name='twitter:image'
+          content='https://salon-ppoker.com/og-image.png'
+        />
+      </Head>
+
+      <Frame>
+        <main className='flex flex-col space-y-6'>
+          <RoomForm />
+          <div className='flex flex-col space-y-3'>
+            <h2 className='text-slate-700 font-semibold px-1'>
+              {t('home.disclaimer')}
+            </h2>
+            <div className='text-slate-600 text-sm px-6'>
+              <ul className='list-disc'>
+                <li>
+                  <Trans
+                    i18nKey='home.disclaimer_item1'
+                    components={[
+                      <Link
+                        key='yuizho'
+                        href='https://github.com/yuizho'
+                        newWindow
+                        className='underline'
+                      >
+                        yuizho
+                      </Link>,
+                    ]}
+                  />
+                </li>
+                <li>{t('home.disclaimer_item2')}</li>
+                <li>
+                  <Trans
+                    i18nKey='home.disclaimer_item3'
+                    components={[
+                      <Link
+                        key='vercel-analytics'
+                        href='https://vercel.com/analytics'
+                        newWindow
+                        className='underline'
+                      >
+                        Vercel Analytics
+                      </Link>,
+                    ]}
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div className='flex flex-col space-y-3'>
-          <h2 className='text-slate-700 font-semibold px-1'>ライセンス</h2>
-          <div className='text-slate-600 text-sm px-6'>
-            <ul className='list-disc'>
-              <li>
-                当サービスは{' '}
-                <Link
-                  href='https://heropatterns.com/'
-                  newWindow
-                  className='underline'
-                >
-                  Hero Patterns
-                </Link>{' '}
-                で作成した画像を一部加工し、{' '}
-                <Link
-                  href='https://creativecommons.org/licenses/by/4.0/'
-                  newWindow
-                  className='underline'
-                >
-                  CC BY 4.0
-                </Link>{' '}
-                に基づいて利用しています
-              </li>
-            </ul>
+          <div className='flex flex-col space-y-3'>
+            <h2 className='text-slate-700 font-semibold px-1'>
+              {t('home.license')}
+            </h2>
+            <div className='text-slate-600 text-sm px-6'>
+              <ul className='list-disc'>
+                <li>
+                  <Trans
+                    i18nKey='home.license_item1'
+                    components={[
+                      <Link
+                        key='heropatterns'
+                        href='https://heropatterns.com/'
+                        newWindow
+                        className='underline'
+                      >
+                        Hero Patterns
+                      </Link>,
+                      <Link
+                        key='ccby4'
+                        href='https://creativecommons.org/licenses/by/4.0/'
+                        newWindow
+                        className='underline'
+                      >
+                        CC BY 4.0
+                      </Link>,
+                    ]}
+                  />
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </main>
-    </Frame>
-  </>
-);
+        </main>
+      </Frame>
+    </>
+  );
+};
 
 export default Home;

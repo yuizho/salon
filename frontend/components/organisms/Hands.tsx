@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { FC } from 'react';
 import pick from '../../graphql/clients/pick';
@@ -70,7 +69,7 @@ const Container: FC<Props> = ({ values }) => {
         const result = await pick(roomId, userId, me.userToken, pickedCard);
         return result.data?.pick.user_id === userId;
       } catch (e) {
-        Sentry.captureException(e);
+        console.error(e);
         setApp((app) => ({
           ...app,
           loading: false,

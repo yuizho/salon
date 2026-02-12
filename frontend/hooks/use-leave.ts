@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/nextjs';
 import { useAtomValue } from 'jotai';
 import { useEffect } from 'react';
 import leave from '../graphql/clients/leave';
@@ -15,7 +14,7 @@ const useLeave = () => {
           try {
             await leave(me.roomId, me.userId, me.userToken);
           } catch (e) {
-            Sentry.captureException(e);
+            console.error(e);
           }
         })();
         return '';

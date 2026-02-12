@@ -38,6 +38,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# Sentry
-.sentryclirc
 storybook-static
