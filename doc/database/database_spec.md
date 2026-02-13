@@ -27,14 +27,26 @@
 
 ### Operation
 
-![operation](./operation.png)
+| Primary Key (Partition Key) | operation_type | room_id | user_id | attribute 1 | attribute 2 | attribute 3 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| {event_id} | OPEN_ROOM | {room_id} | {user_id} | {user_token} | {operated_at} | |
+| {event_id} | JOIN | {room_id} | {user_id} | {user_token} | {operated_at} | |
+| {event_id} | LEAVE | {room_id} | {user_id} | {user_token} | {operated_at} | |
+| {event_id} | PICK | {room_id} | {user_id} | {picked_card} | {user_token} | {operated_at} |
+| {event_id} | REFRESH_TABLE | {room_id} | {user_id} | {user_token} | {operated_at} | |
+| {event_id} | KICK | {room_id} | {user_id} | {kicked_user_id} | {user_token} | {operated_at} |
 
 - CQRS の command 側のイベントがひたすら insert され、参照とかは基本されないテーブル
   - 将来的に OLAP 処理とかでどこかにデータ転送したりはするかも
 
 ### Room
 
-![room](./room.png)
+| Partition Key | Sort Key | item_type | status | attribute 1 | attribute 2 | attribute 3 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| {room_id} | {item_key} | ROOM | | {expiration_unix_timestamp} | | |
+| {room_id} | {item_key} | USER | CHOOSING | {operated_at} | {user_token} | |
+| {room_id} | {item_key} | USER | CHOSEN | {operated_at} | {user_token} | {picked_card} |
+| {room_id} | {item_key} | USER | LEAVED | {operated_at} | {user_token} | |
 
 - CQRS の query 側のテーブルなので、command 操作に応じて更新されたり、ユーザ側から参照されたりする
 - ulid で発行される room_id を partition キーにしているが、一つの部屋の人数は 10 人とかそんなもんなので Hot key が起きる心配とかも特にないと考えている
