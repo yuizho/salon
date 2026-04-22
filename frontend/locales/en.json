@@ -14,8 +14,8 @@
   },
   "room_form": {
     "hero_title": "Salon is a free web planning poker service that requires no login",
-    "hero_description": "Please create a room to start planning poker. Created rooms are valid for approximately 3 hours.",
-    "create_room_button": "Create Room"
+    "hero_description": "Start immediately without login. Just create a room and share the URL with team members to start poker. Created rooms are valid for approximately 3 hours.",
+    "create_room_button": "Create a room in 1 click"
   },
   "poker_table": {
     "kicked_message": "You have been kicked from the room by another user. Please refresh your browser to re-enter.",
