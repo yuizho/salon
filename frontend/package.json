@@ -16,7 +16,7 @@
     "@headlessui/react": "^2.2.9",
     "@vercel/analytics": "^1.6.1",
     "aws-amplify": "^6.16.0",
-    "i18next": "^25.8.6",
+    "i18next": "^26.0.10",
     "jotai": "^2.17.0",
     "next": "^16.2.6",
     "react": "^19.2.3",
