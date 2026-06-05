@@ -1,4 +1,4 @@
-# GEMINI.md
+# AGENTS.md
 
 ## 概要
 開発を進めるうえで遵守すべきルールを定義します。
@@ -8,23 +8,23 @@
 ```
 .
 ├── backend
-│   ├── appsync
-│   │   └── room-api
-│   │       └── resolvers: AppSyncのマッピングテンプレート
-│   ├── lambda: backendのlambdaコード
-│   └── lib: aws cdkのコード
+│ ├── appsync
+│ │ └── room-api
+│ │     └── resolvers: AppSyncのマッピングテンプレート
+│ ├── lambda: backendのlambdaコード
+│ └── lib: aws cdkのコード
 ├── doc
-│   ├── architecture: architectureに関するドキュメント
-│   ├── database: database設計に関するドキュメント
-│   └── product: RDRAドキュメント
+│ ├── architecture: architectureに関するドキュメント
+│ │ ├── database: database設計に関するドキュメント
+│ │ └── product: RDRAドキュメント
 ├── frontend
-│   ├── components: Reactのコンポーネント
-│   ├── graphql: graphqlクライアント
-│   ├── hooks: ReactのHooks
-│   ├── pages: Next.jsのページ
-│   ├── public: 静的ファイル
-│   ├── states: 状態管理
-│   └── styles: CSS
+│ ├── components: Reactのコンポーネント
+│ ├── graphql: graphqlクライアント
+│ ├── hooks: ReactのHooks
+│ ├── pages: Next.jsのページ
+│ ├── public: 静的ファイル
+│ ├── states: 状態管理
+│ └── styles: CSS
 └── graphql: graphqlのスキーマ
 ```
 
@@ -37,21 +37,21 @@
 ステアリングファイルはあくまで作業のためのメモなのでcommitしないでください。
 
 - **requirements.md** - 今回の作業の要求内容
-　- 変更・追加する機能の説明
-　- ユーザーストーリー
-　- 受け入れ条件
-　- 制約事項
+- 変更・追加する機能の説明
+- ユーザーストーリー
+- 受け入れ条件
+- 制約事項
 
 - **design.md** - 変更内容の設計
-　- 実装アプローチ
-　- 変更するコンポーネント
-　- データ構造の変更
-　- 影響範囲の分析
+- 実装アプローチ
+- 変更するコンポーネント
+- データ構造の変更
+- 影響範囲の分析
 
 - **tasklist.md** - タスクリスト
-　- 具体的な実装タスク
-　- タスクの進捗状況
-　- 完了条件
+- 具体的な実装タスク
+- タスクの進捗状況
+- 完了条件
 
 ### ステアリングディレクトリの命名規則
 
@@ -87,4 +87,3 @@
 ```bash
 mkdir -p .steering
 ```
-
