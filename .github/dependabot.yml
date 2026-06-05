@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 7
