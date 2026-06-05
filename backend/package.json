@@ -17,10 +17,10 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^20.11.0",
     "aws-cdk": "^2.1104.0",
-    "jest": "^29.0.0",
+    "jest": "^30.4.2",
     "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "@aws-cdk/aws-lambda-go-alpha": "^2.236.0-alpha.0",
