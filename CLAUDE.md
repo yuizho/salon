@@ -1,4 +1,4 @@
-# GEMINI.md
+# AGENTS.md
 
 ## 概要
 開発を進めるうえで遵守すべきルールを定義します。
@@ -87,4 +87,3 @@
 ```bash
 mkdir -p .steering
 ```
-
