@@ -4,6 +4,7 @@ updates:
     directory: "/frontend"
     schedule:
       interval: "daily"
+    target-branch: "develop"
     cooldown:
       default-days: 7
 
@@ -11,5 +12,6 @@ updates:
     directory: "/backend"
     schedule:
       interval: "daily"
+    target-branch: "develop"
     cooldown:
       default-days: 7
