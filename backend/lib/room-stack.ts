@@ -134,6 +134,7 @@ export class RoomStack extends Stack {
     const roomRMUFunction = new lambdaGo.GoFunction(this, 'room-rmu', {
       functionName: 'RoomRMU',
       entry: 'lambda/room-rmu',
+      runtime: lambda.Runtime.PROVIDED_AL2023,
       timeout: Duration.seconds(10),
       tracing: lambda.Tracing.ACTIVE,
     });
@@ -149,6 +150,7 @@ export class RoomStack extends Stack {
     const mutateUserFunction = new lambdaGo.GoFunction(this, 'mutate-user', {
       functionName: 'MutateUser',
       entry: 'lambda/mutate-user',
+      runtime: lambda.Runtime.PROVIDED_AL2023,
       environment: {
         ROOM_API_URL: roomAPI.graphqlUrl,
         REGION: this.region,
