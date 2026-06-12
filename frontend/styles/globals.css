@@ -1,2 +1,16 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
+
+/*
+  Tailwind v4 ではデフォルトのボーダー色が currentColor に変わったため、
+  色指定のない border が v3 より濃くなる。v3 のデフォルト(gray-200)へ戻す。
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
