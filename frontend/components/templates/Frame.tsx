@@ -8,7 +8,7 @@ type Props = {
 export const Component: FC<Props> = ({ children }) => (
   <>
     <Header />
-    <div className='container max-w-3xl p-6'>{children}</div>
+    <div className='container mx-auto max-w-3xl p-6'>{children}</div>
   </>
 );
 
