@@ -9,6 +9,7 @@ module.exports = {
     options: {},
   },
   viteFinal: async (config) => {
+    config.resolve ??= {};
     config.resolve.alias = {
       ...config.resolve.alias,
       'next/config': path.join(__dirname, './next-config-mock.js'),
