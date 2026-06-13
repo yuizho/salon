@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`RoomForm snapshot 1`] = `
 <DocumentFragment>
@@ -13,7 +13,7 @@ exports[`RoomForm snapshot 1`] = `
     <p
       class="text-slate-600"
     >
-      プランニングポーカーを開始するには部屋を作成してください。作成した部屋は約3時間有効です。
+      ログイン不要ですぐに開始。部屋を作って、チームメンバーにURLをシェアするだけでポーカーを始められます。作成した部屋は約3時間有効です。
     </p>
     <div
       class="relative w-full"
@@ -33,7 +33,7 @@ exports[`RoomForm snapshot 1`] = `
     "
         type="button"
       >
-        部屋を作成する
+        1クリックで部屋を作る
       </button>
     </div>
   </div>

@@ -38,6 +38,7 @@
     "@vitejs/plugin-react": "^6.0.2",
     "esbuild": "^0.28.1",
     "jest": "30.4.2",
+    "jest-environment-jsdom": "^30",
     "jotai-devtools": "^0.13.0",
     "postcss": "^8.5.10",
     "storybook": "^10.4.4",
