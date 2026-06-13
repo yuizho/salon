@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Player snapshot 1`] = `
 <DocumentFragment>
@@ -79,7 +79,7 @@ bg-white
             
             
           "
-          style="background-image: url(/intersecting-circles.svg);"
+          style="background-image: url("/intersecting-circles.svg");"
           type="button"
         />
       </div>
