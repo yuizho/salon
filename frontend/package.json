@@ -37,7 +37,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "esbuild": "^0.28.1",
-    "jest": "30.4.2",
+    "jest": "30.5.0",
     "jest-environment-jsdom": "^30",
     "jotai-devtools": "^0.14.0",
     "postcss": "^8.5.10",
